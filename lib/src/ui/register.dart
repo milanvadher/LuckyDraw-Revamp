@@ -1,29 +1,39 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
-import 'package:lucky_draw_revamp/src/ui/register.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final PublishSubject<bool> autoValidate = PublishSubject<bool>();
-  final loginFormKey = GlobalKey<FormState>();
-  String mobileNo, password;
+  final registerFormKey = GlobalKey<FormState>();
+  String mobileNo;
   Repository repository = Repository();
 
-  void login() async {
-    if (loginFormKey.currentState.validate()) {
+  int generateOtp() {
+    var rnd = Random();
+    var next = rnd.nextDouble() * 1000000;
+    while (next < 100000) {
+      next *= 10;
+    }
+    return next.toInt();
+  }
+
+  void sendOtp() async {
+    if (registerFormKey.currentState.validate()) {
       try {
         Loading.show(context);
-        loginFormKey.currentState.save();
-        await repository.login(mobileNo: mobileNo, password: password);
+        registerFormKey.currentState.save();
+        await repository.sendOtp(mobileNo: mobileNo, otp: generateOtp());
         Loading.hide(context);
         Navigator.push(
           context,
@@ -45,13 +55,13 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget loginForm() {
+  Widget registerForm() {
     return StreamBuilder(
       initialData: false,
       stream: autoValidate,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Form(
-          key: loginFormKey,
+          key: registerFormKey,
           autovalidate: snapshot.data,
           child: Column(
             children: <Widget>[
@@ -72,29 +82,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Container(
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your Password',
-                    prefixIcon: Icon(Icons.security),
-                  ),
-                  validator: Validation.password,
-                  onSaved: (value) {
-                    password = value;
-                  },
-                  obscureText: true,
-                  keyboardType: TextInputType.text,
-                ),
-              ),
-              Container(
                 child: ButtonBar(
                   alignment: MainAxisAlignment.end,
                   children: <Widget>[
                     RaisedButton(
                       onPressed: () {
-                        login();
+                        sendOtp();
                       },
-                      child: Text('Login'),
+                      child: Text('Register'),
                     ),
                   ],
                 ),
@@ -117,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Login'),
+        title: Text('Register'),
       ),
       body: SafeArea(
         child: ListView(
@@ -139,30 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: Theme.of(context).textTheme.title,
               ),
             ),
-            loginForm(),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('New User ?'),
-                  OutlineButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterPage(),
-                        ),
-                      );
-                    },
-                    child: Text('Register'),
-                  ),
-                ],
-              ),
-            ),
+            registerForm(),
           ],
         ),
       ),
