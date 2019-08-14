@@ -25,7 +25,8 @@ class _LoginPageState extends State<LoginPage> {
       try {
         Loading.show(context);
         loginFormKey.currentState.save();
-        User user = await repository.login(mobileNo: mobileNo, password: password);
+        User user =
+            await repository.login(mobileNo: mobileNo, password: password);
         CacheData.userInfo = user;
         Loading.hide(context);
         Navigator.pushReplacement(
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(10),
           children: <Widget>[
             Container(
-              padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+              padding: EdgeInsets.fromLTRB(40, 5, 40, 10),
               child: Icon(
                 Icons.confirmation_number,
                 size: 100,
@@ -144,14 +145,31 @@ class _LoginPageState extends State<LoginPage> {
             ),
             loginForm(),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
+              alignment: Alignment.center,
+              child: OutlineButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegisterPage(
+                        isResetPassword: true,
+                      ),
+                    ),
+                  );
+                },
+                child: Text('Forgot Password'),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
               alignment: Alignment.center,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text('New User ?'),
+                  Text('New User ?\n'),
                   OutlineButton(
                     onPressed: () {
                       Navigator.push(

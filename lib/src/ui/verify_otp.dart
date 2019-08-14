@@ -119,7 +119,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Verify'),
+        title: Text('Verify OTP'),
       ),
       body: SafeArea(
         child: ListView(

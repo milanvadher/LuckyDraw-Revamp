@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'ui/login.dart';
 
 class MyApp extends StatelessWidget {
+  final Widget homepage;
+
+  MyApp({@required this.homepage});
+
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     accentColor: Colors.blueAccent.shade100,

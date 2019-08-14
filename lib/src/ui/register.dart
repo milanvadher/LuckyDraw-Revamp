@@ -9,6 +9,9 @@ import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RegisterPage extends StatefulWidget {
+  final bool isResetPassword;
+
+  const RegisterPage({Key key, this.isResetPassword = false}) : super(key: key);
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -123,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Register'),
+        title: Text(widget.isResetPassword ? 'Reset Password' : 'Register'),
       ),
       body: SafeArea(
         child: ListView(
