@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/login.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/loading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,41 +16,35 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Home Page'),
         elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: ListView(
         padding: EdgeInsets.all(5),
         children: <Widget>[
-          Text('Home Page Content'),
-          Icon(Icons.today),
           ListTile(
-            title: Text('Title'),
-            subtitle: Text('Subtitle'),
+            title: Text('${CacheData.userInfo?.username}'),
+            subtitle: Text('${CacheData.userInfo?.contactNumber}'),
             leading: CircleAvatar(
-              backgroundColor: Colors.transparent,
               child: Icon(
                 Icons.person_outline,
                 color: Theme.of(context).iconTheme.color,
               ),
             ),
-          ),
-          Container(
-            child: ButtonBar(
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    );
-                  },
-                  child: Text('LogOut'),
-                ),
-              ],
+            trailing: IconButton(
+              icon: Icon(Icons.power_settings_new),
+              onPressed: () async {
+                Loading.show(context);
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                await pref.clear();
+                Loading.hide(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:lucky_draw_revamp/src/model/user.dart';
+import 'package:lucky_draw_revamp/src/utils/config.dart';
 
 import '../utils/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Client;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthApiProvider {
   Client client = Client();
@@ -24,8 +24,7 @@ class AuthApiProvider {
     );
     if (response.statusCode == 200) {
       debugPrint('login data ${response.body}');
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      await pref.setString('$userDataKey', response.body);
+      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
     throw json.decode(response.body)['err'] ?? 'Error to Login';
@@ -68,8 +67,7 @@ class AuthApiProvider {
     );
     if (response.statusCode == 200) {
       debugPrint('register data ${response.body}');
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      await pref.setString('$userDataKey', response.body);
+      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
     throw json.decode(response.body)['err'] ?? 'Error to Register';

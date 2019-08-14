@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'ui/login.dart';
 
 class MyApp extends StatelessWidget {
   final Widget homepage;
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
       title: 'Lucky Draw JJ112',
       theme: darkTheme,
       darkTheme: darkTheme,
-      home: LoginPage(),
+      home: homepage,
     );
   }
 }
