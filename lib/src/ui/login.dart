@@ -5,6 +5,7 @@ import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/ui/register.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/firebase_notification.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -28,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         User user =
             await repository.login(mobileNo: mobileNo, password: password);
         CacheData.userInfo = user;
+        await FirebaseNotification.setupNotification();
         Loading.hide(context);
         Navigator.pushReplacement(
           context,
