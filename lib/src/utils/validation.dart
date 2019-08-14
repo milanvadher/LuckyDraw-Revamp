@@ -8,9 +8,34 @@ class Validation {
     return null;
   }
 
-  static String password(value) {
+  static String password(String value) {
     if (value.isEmpty) {
       return 'Password is required';
+    }
+    return null;
+  }
+  
+  static String verifyPassword(String matchValue, String value) {
+    if (value.isEmpty) {
+      return 'Password is required';
+    } else if (matchValue != value) {
+      return 'Password and Verify Password does not match';
+    }
+    return null;
+  }
+
+  static String otp(String value) {
+    if (value.isEmpty) {
+      return 'OTP is required';
+    } else if (value.length != 6) {
+      return 'Enter Valid OTP';
+    }
+    return null;
+  }
+
+  static String username(String value) {
+    if (value.isEmpty) {
+      return 'Username is required';
     }
     return null;
   }

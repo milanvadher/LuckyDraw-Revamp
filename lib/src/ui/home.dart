@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/ui/login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -34,8 +35,15 @@ class _HomePageState extends State<HomePage> {
             child: ButtonBar(
               children: <Widget>[
                 RaisedButton(
-                  onPressed: () {},
-                  child: Text('Raised Button'),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ),
+                    );
+                  },
+                  child: Text('LogOut'),
                 ),
               ],
             ),

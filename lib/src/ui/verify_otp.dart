@@ -1,64 +1,60 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/ui/verify_otp.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
+import 'package:lucky_draw_revamp/src/ui/edit_profile.dart';
+import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RegisterPage extends StatefulWidget {
+class OTPVerifyPage extends StatefulWidget {
+  final int otp;
+  final bool isNewUser;
+  final String mobileNo;
+
+  const OTPVerifyPage({
+    Key key,
+    @required this.otp,
+    @required this.isNewUser,
+    @required this.mobileNo,
+  }) : super(key: key);
+
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _OTPVerifyPageState createState() => _OTPVerifyPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _OTPVerifyPageState extends State<OTPVerifyPage> {
   final PublishSubject<bool> autoValidate = PublishSubject<bool>();
-  final otpFormKey = GlobalKey<FormState>();
-  String mobileNo;
+  final registerFormKey = GlobalKey<FormState>();
+  String otp;
   Repository repository = Repository();
 
-  int generateOtp() {
-    var rnd = Random();
-    var next = rnd.nextDouble() * 1000000;
-    while (next < 100000) {
-      next *= 10;
-    }
-    return next.toInt();
-  }
-
-  void sendOtp() async {
-    if (otpFormKey.currentState.validate()) {
-      try {
-        Loading.show(context);
-        otpFormKey.currentState.save();
-        int otp = generateOtp();
-        bool isNewUser = await repository.sendOtp(mobileNo: mobileNo, otp: otp);
-        print('isNewUser $isNewUser');
-        Loading.hide(context);
+  void verifyOtp() async {
+    if (registerFormKey.currentState.validate()) {
+      registerFormKey.currentState.save();
+      if (widget.otp == int.parse(otp)) {
         Fluttertoast.showToast(
-          msg: 'OTP is Send to $mobileNo',
+          msg: 'OTP is Verified',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
         );
+        Navigator.pop(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => OTPVerifyPage(
-              mobileNo: mobileNo,
-              otp: otp,
-              isNewUser: isNewUser,
-            ),
+            builder: (context) {
+              return widget.isNewUser
+                  ? EditProfilePage(
+                      mobileNo: widget.mobileNo,
+                    )
+                  : HomePage();
+            },
           ),
         );
-      } catch (e) {
-        Loading.hide(context);
+      } else {
         Fluttertoast.showToast(
-          msg: '$e',
-          backgroundColor: Colors.red,
-          gravity: ToastGravity.CENTER,
+          msg: 'OTP Does not match',
           toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
         );
       }
     } else {
@@ -66,13 +62,13 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  Widget registerForm() {
+  Widget otpForm() {
     return StreamBuilder(
       initialData: false,
       stream: autoValidate,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Form(
-          key: otpFormKey,
+          key: registerFormKey,
           autovalidate: snapshot.data,
           child: Column(
             children: <Widget>[
@@ -80,16 +76,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding: EdgeInsets.only(bottom: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Mobile Number',
-                    hintText: 'Enter your Mobile Number',
-                    prefixIcon: Icon(Icons.call),
+                    labelText: 'OTP',
+                    hintText: 'Enter OTP',
+                    prefixIcon: Icon(Icons.vpn_key),
                   ),
-                  validator: Validation.mobileNo,
+                  validator: Validation.otp,
                   onSaved: (value) {
-                    mobileNo = value;
+                    otp = value;
                   },
                   maxLength: 10,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.number,
                 ),
               ),
               Container(
@@ -98,9 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: <Widget>[
                     RaisedButton(
                       onPressed: () {
-                        sendOtp();
+                        verifyOtp();
                       },
-                      child: Text('Register'),
+                      child: Text('Verify'),
                     ),
                   ],
                 ),
@@ -123,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Register'),
+        title: Text('Verify'),
       ),
       body: SafeArea(
         child: ListView(
@@ -145,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: Theme.of(context).textTheme.title,
               ),
             ),
-            registerForm(),
+            otpForm(),
           ],
         ),
       ),

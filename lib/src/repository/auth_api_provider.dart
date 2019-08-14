@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:lucky_draw_revamp/src/model/user.dart';
+
 import '../utils/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Client;
@@ -7,47 +9,69 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthApiProvider {
   Client client = Client();
 
-  Future login({
+  Future<User> login({
     @required String mobileNo,
     @required String password,
   }) async {
     Map<String, dynamic> reqData = {
       'contactNumber': mobileNo,
-      'password': password
+      'password': password,
     };
     final response = await client.post(
       '$apiUrl/login',
       body: json.encode(reqData),
       headers: headers,
     );
-    print(response.body);
     if (response.statusCode == 200) {
-      print('login data ${response.body}');
+      debugPrint('login data ${response.body}');
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('$userDataKey', response.body);
+      await pref.setString('$userDataKey', response.body);
+      return User.fromJson(json.decode(response.body));
     }
     throw json.decode(response.body)['err'] ?? 'Error to Login';
   }
-  
-  Future sendOtp({
+
+  Future<bool> sendOtp({
     @required String mobileNo,
     @required int otp,
   }) async {
     Map<String, dynamic> reqData = {
       'contactNumber': mobileNo,
-      'otp': otp
+      'otp': otp,
     };
     final response = await client.post(
       '$apiUrl/otp',
       body: json.encode(reqData),
       headers: headers,
     );
-    print(response.body);
     if (response.statusCode == 200) {
-      print('otp data ${response.body}');
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('$userDataKey', response.body);
+      debugPrint('otp data ${response.body}');
+      return json.decode(response.body)['isNewUser'];
     }
-    throw json.decode(response.body)['err'] ?? 'Error to Login';
+    throw json.decode(response.body)['err'] ?? 'Error to Send OTP';
+  }
+
+  Future<User> registerUser({
+    @required String username,
+    @required String mobileNo,
+    @required String password,
+  }) async {
+    Map<String, dynamic> reqData = {
+      'username': username,
+      'contactNumber': mobileNo,
+      'password': password,
+    };
+    final response = await client.post(
+      '$apiUrl/register',
+      body: json.encode(reqData),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      debugPrint('register data ${response.body}');
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      await pref.setString('$userDataKey', response.body);
+      return User.fromJson(json.decode(response.body));
+    }
+    throw json.decode(response.body)['err'] ?? 'Error to Register';
   }
 }

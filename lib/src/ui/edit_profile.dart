@@ -3,31 +3,39 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
-import 'package:lucky_draw_revamp/src/ui/register.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LoginPage extends StatefulWidget {
+class EditProfilePage extends StatefulWidget {
+  final String mobileNo;
+
+  const EditProfilePage({Key key, @required this.mobileNo}) : super(key: key);
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   final PublishSubject<bool> autoValidate = PublishSubject<bool>();
-  final loginFormKey = GlobalKey<FormState>();
-  String mobileNo, password;
+  final passwordController = TextEditingController();
+  final registerFormKey = GlobalKey<FormState>();
+  String username, password, verifyPassword;
   Repository repository = Repository();
 
-  void login() async {
-    if (loginFormKey.currentState.validate()) {
+  void register() async {
+    if (registerFormKey.currentState.validate()) {
       try {
         Loading.show(context);
-        loginFormKey.currentState.save();
-        User user = await repository.login(mobileNo: mobileNo, password: password);
+        registerFormKey.currentState.save();
+        User user = await repository.register(
+          mobileNo: widget.mobileNo,
+          username: username,
+          password: password,
+        );
         CacheData.userInfo = user;
         Loading.hide(context);
+        Navigator.pop(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -48,13 +56,13 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget loginForm() {
+  Widget registerForm() {
     return StreamBuilder(
       initialData: false,
       stream: autoValidate,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Form(
-          key: loginFormKey,
+          key: registerFormKey,
           autovalidate: snapshot.data,
           child: Column(
             children: <Widget>[
@@ -62,16 +70,16 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(bottom: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Mobile Number',
-                    hintText: 'Enter your Mobile Number',
-                    prefixIcon: Icon(Icons.call),
+                    labelText: 'Username',
+                    hintText: 'Enter your Username',
+                    prefixIcon: Icon(Icons.person_outline),
                   ),
-                  validator: Validation.mobileNo,
+                  validator: Validation.username,
                   onSaved: (value) {
-                    mobileNo = value;
+                    username = value;
                   },
                   maxLength: 10,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                 ),
               ),
               Container(
@@ -81,9 +89,30 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Enter your Password',
                     prefixIcon: Icon(Icons.security),
                   ),
+                  controller: passwordController,
                   validator: Validation.password,
                   onSaved: (value) {
                     password = value;
+                  },
+                  obscureText: true,
+                  keyboardType: TextInputType.text,
+                ),
+              ),
+              Container(
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Verify Password',
+                    hintText: 'Enter your Password',
+                    prefixIcon: Icon(Icons.security),
+                  ),
+                  validator: (String value) {
+                    return Validation.verifyPassword(
+                      passwordController.text,
+                      value,
+                    );
+                  },
+                  onSaved: (value) {
+                    verifyPassword = value;
                   },
                   obscureText: true,
                   keyboardType: TextInputType.text,
@@ -95,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     RaisedButton(
                       onPressed: () {
-                        login();
+                        register();
                       },
-                      child: Text('Login'),
+                      child: Text('Register'),
                     ),
                   ],
                 ),
@@ -120,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Login'),
+        title: Text('Register'),
       ),
       body: SafeArea(
         child: ListView(
@@ -142,30 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: Theme.of(context).textTheme.title,
               ),
             ),
-            loginForm(),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('New User ?'),
-                  OutlineButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterPage(),
-                        ),
-                      );
-                    },
-                    child: Text('Register'),
-                  ),
-                ],
-              ),
-            ),
+            registerForm(),
           ],
         ),
       ),
