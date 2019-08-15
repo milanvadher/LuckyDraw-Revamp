@@ -83,6 +83,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
               Container(
+                padding: EdgeInsets.only(bottom: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Password',
