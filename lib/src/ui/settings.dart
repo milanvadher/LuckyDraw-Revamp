@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/app.dart';
 import 'package:lucky_draw_revamp/src/ui/about.dart';
-import 'package:lucky_draw_revamp/src/ui/login.dart';
+import 'package:lucky_draw_revamp/src/ui/profile.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -15,7 +12,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final FirebaseMessaging _fcm = FirebaseMessaging();
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -44,17 +40,12 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             trailing: IconButton(
-              icon: Icon(Icons.power_settings_new),
-              onPressed: () async {
-                Loading.show(context);
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                await pref.clear();
-                await _fcm.deleteInstanceID();
-                Loading.hide(context);
-                Navigator.pushReplacement(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginPage(),
+                    builder: (context) => Profile(),
                   ),
                 );
               },
