@@ -5,6 +5,7 @@ import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/ui/register.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/firebase_notification.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
@@ -65,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(bottom: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
+                    filled: true,
                     labelText: 'Mobile Number',
                     hintText: 'Enter your Mobile Number',
                     prefixIcon: Icon(Icons.call),
@@ -80,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 child: TextFormField(
                   decoration: InputDecoration(
+                    filled: true,
                     labelText: 'Password',
                     hintText: 'Enter your Password',
                     prefixIcon: Icon(Icons.security),
@@ -96,6 +99,19 @@ class _LoginPageState extends State<LoginPage> {
                 child: ButtonBar(
                   alignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    FlatButton(
+                      child: Text('Forgot Password ?'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterPage(
+                              isResetPassword: true,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     RaisedButton(
                       onPressed: () {
                         login();
@@ -121,48 +137,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Login'),
-      ),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(10),
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(40, 5, 40, 10),
-              child: Icon(
-                Icons.confirmation_number,
-                size: 100,
-                color: Colors.deepOrangeAccent,
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
-              child: Text(
-                'Lucky Draw',
-                style: Theme.of(context).textTheme.title,
-              ),
+            CommonWidget.authTopPortion(
+              context: context,
+              title: 'Login',
             ),
             loginForm(),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
-              alignment: Alignment.center,
-              child: OutlineButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegisterPage(
-                        isResetPassword: true,
-                      ),
-                    ),
-                  );
-                },
-                child: Text('Forgot Password'),
-              ),
-            ),
             Container(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
               alignment: Alignment.center,

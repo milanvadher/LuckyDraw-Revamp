@@ -39,4 +39,15 @@ class Repository {
       password: password,
     );
   }
+  
+  // Reset Password
+  Future<User> resetPassword({
+    @required String mobileNo,
+    @required String password,
+  }) {
+    return _authApiProvider.resetPassword(
+      mobileNo: mobileNo,
+      password: password,
+    );
+  }
 }

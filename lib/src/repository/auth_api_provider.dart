@@ -72,4 +72,25 @@ class AuthApiProvider {
     }
     throw json.decode(response.body)['err'] ?? 'Error to Register';
   }
+  
+  Future<User> resetPassword({
+    @required String mobileNo,
+    @required String password,
+  }) async {
+    Map<String, dynamic> reqData = {
+      'contactNumber': mobileNo,
+      'password': password,
+    };
+    final response = await client.post(
+      '$apiUrl/forgotPassword',
+      body: json.encode(reqData),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      debugPrint('forgotPassword data ${response.body}');
+      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
+      return User.fromJson(json.decode(response.body));
+    }
+    throw json.decode(response.body)['err'] ?? 'Error to Reset Password';
+  }
 }

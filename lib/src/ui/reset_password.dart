@@ -5,36 +5,37 @@ import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
+import 'package:lucky_draw_revamp/src/utils/firebase_notification.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EditProfilePage extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   final String mobileNo;
 
-  const EditProfilePage({Key key, @required this.mobileNo}) : super(key: key);
+  const ResetPassword({Key key, @required this.mobileNo}) : super(key: key);
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _ResetPasswordState extends State<ResetPassword> {
   final PublishSubject<bool> autoValidate = PublishSubject<bool>();
+  final loginFormKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
-  final registerFormKey = GlobalKey<FormState>();
-  String username, password, verifyPassword;
+  String password, verifyPassword;
   Repository repository = Repository();
 
-  void register() async {
-    if (registerFormKey.currentState.validate()) {
+  void resetPassword() async {
+    if (loginFormKey.currentState.validate()) {
       try {
         Loading.show(context);
-        registerFormKey.currentState.save();
-        User user = await repository.register(
+        loginFormKey.currentState.save();
+        User user = await repository.resetPassword(
           mobileNo: widget.mobileNo,
-          username: username,
           password: password,
         );
         CacheData.userInfo = user;
+        await FirebaseNotification.setupNotification();
         Loading.hide(context);
         Navigator.pop(context);
         Navigator.pushReplacement(
@@ -57,32 +58,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Widget registerForm() {
+  Widget resetPasswordForm() {
     return StreamBuilder(
       initialData: false,
       stream: autoValidate,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Form(
-          key: registerFormKey,
+          key: loginFormKey,
           autovalidate: snapshot.data,
           child: Column(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(bottom: 10),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Username',
-                    hintText: 'Enter your Username',
-                    prefixIcon: Icon(Icons.person_outline),
-                  ),
-                  validator: Validation.username,
-                  onSaved: (value) {
-                    username = value;
-                  },
-                  maxLength: 10,
-                  keyboardType: TextInputType.text,
-                ),
-              ),
               Container(
                 padding: EdgeInsets.only(bottom: 10),
                 child: TextFormField(
@@ -126,9 +111,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: <Widget>[
                     RaisedButton(
                       onPressed: () {
-                        register();
+                        resetPassword();
                       },
-                      child: Text('Register'),
+                      child: Text('Update'),
                     ),
                   ],
                 ),
@@ -155,9 +140,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           children: <Widget>[
             CommonWidget.authTopPortion(
               context: context,
-              title: 'Register',
+              title: 'Reset Password',
             ),
-            registerForm(),
+            resetPasswordForm(),
           ],
         ),
       ),

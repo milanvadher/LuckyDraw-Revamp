@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/verify_otp.dart';
+import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -103,7 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       onPressed: () {
                         sendOtp();
                       },
-                      child: Text('Register'),
+                      child: Text('Get OTP'),
                     ),
                   ],
                 ),
@@ -124,29 +125,13 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.isResetPassword ? 'Reset Password' : 'Register'),
-      ),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(10),
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-              child: Icon(
-                Icons.confirmation_number,
-                size: 100,
-                color: Colors.deepOrangeAccent,
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
-              child: Text(
-                'Lucky Draw',
-                style: Theme.of(context).textTheme.title,
-              ),
+            CommonWidget.authTopPortion(
+              context: context,
+              title: widget.isResetPassword ? 'Forgot Password' : 'Register',
             ),
             registerForm(),
           ],

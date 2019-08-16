@@ -7,26 +7,42 @@ class MyApp extends StatelessWidget {
 
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    accentColor: Colors.blueAccent.shade100,
-    iconTheme: IconThemeData(
-      color: Colors.blueAccent.shade100,
+    primaryColor: Colors.cyan,
+    fontFamily: 'GoogleSans',
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.cyan,
+      textTheme: ButtonTextTheme.primary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(),
     ),
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     ),
+  );
+
+  final ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.orangeAccent,
+    fontFamily: 'GoogleSans',
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.orangeAccent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: Colors.blueAccent.shade100,
-      textTheme: ButtonTextTheme.primary,
-    ),
-    errorColor: Colors.red,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      color: Colors.black12,
+    dialogTheme: DialogTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
     ),
   );
 
@@ -34,7 +50,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Lucky Draw JJ112',
-      theme: darkTheme,
+      theme: lightTheme,
       darkTheme: darkTheme,
       home: homepage,
     );

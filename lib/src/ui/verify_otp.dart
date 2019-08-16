@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/edit_profile.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
+import 'package:lucky_draw_revamp/src/ui/reset_password.dart';
+import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -46,7 +48,9 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
                   ? EditProfilePage(
                       mobileNo: widget.mobileNo,
                     )
-                  : HomePage();
+                  : ResetPassword(
+                      mobileNo: widget.mobileNo,
+                    );
             },
           ),
         );
@@ -117,29 +121,13 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Verify OTP'),
-      ),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(10),
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-              child: Icon(
-                Icons.confirmation_number,
-                size: 100,
-                color: Colors.deepOrangeAccent,
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
-              child: Text(
-                'Lucky Draw',
-                style: Theme.of(context).textTheme.title,
-              ),
+            CommonWidget.authTopPortion(
+              context: context,
+              title: 'Verify OTP',
             ),
             otpForm(),
           ],
