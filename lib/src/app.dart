@@ -7,10 +7,10 @@ class MyApp extends StatelessWidget {
 
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.cyan,
+    primaryColor: Colors.orangeAccent,
     fontFamily: 'GoogleSans',
     buttonTheme: ButtonThemeData(
-      buttonColor: Colors.cyan,
+      buttonColor: Colors.orangeAccent,
       textTheme: ButtonTextTheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(5)),

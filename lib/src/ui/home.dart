@@ -14,51 +14,109 @@ class _HomePageState extends State<HomePage>
   AnimationController _controller;
   static const PANEL_HEADER_HEIGHT = 32.0;
 
+  Future<bool> _onWillPop() {
+    return showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App ?'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
   Widget backPage() {
-    return ListView(
-      padding: EdgeInsets.all(10),
-      children: List.generate(10, (int index) {
-        return ListTile(
-          onTap: () {
-            print('$index');
-          },
-          title: Text('Index ${index + 1}'),
-          subtitle: Text('Description ${index + 1}'),
-        );
-      }).toList(),
+    return Theme(
+      data: ThemeData(
+        brightness: Brightness.light,
+      ),
+      child: ListView(
+        padding: EdgeInsets.all(10),
+        children: <Widget>[
+          ListTile(
+            title: Text('${CacheData.userInfo?.username}'),
+            subtitle: Text('${CacheData.userInfo?.contactNumber}'),
+            leading: CircleAvatar(
+              backgroundColor: Colors.black54,
+              child: Icon(
+                Icons.person_outline,
+                color: Theme.of(context).iconTheme.color,
+              ),
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.power_settings_new),
+              onPressed: () async {
+                Loading.show(context);
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                await pref.clear();
+                Loading.hide(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ),
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.black54,
+              child: Icon(
+                Icons.brightness_6,
+                color: Theme.of(context).iconTheme.color,
+              ),
+            ),
+            title: Text('Dark Theme'),
+            subtitle: Text('Change app theme'),
+            trailing: CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.transparent,
+              child: Switch(
+                onChanged: (bool value) {
+                  print(value);
+                },
+                value: false,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget frontPage() {
-    return ListView(
-      padding: EdgeInsets.all(5),
-      children: <Widget>[
-        ListTile(
-          title: Text('${CacheData.userInfo?.username}'),
-          subtitle: Text('${CacheData.userInfo?.contactNumber}'),
-          leading: CircleAvatar(
-            child: Icon(
-              Icons.person_outline,
-              color: Theme.of(context).iconTheme.color,
+    return Container(
+      child: ListView(
+        padding: EdgeInsets.all(10),
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
+            child: Image.asset(
+              'images/logo.png',
+              height: 200,
             ),
           ),
-          trailing: IconButton(
-            icon: Icon(Icons.power_settings_new),
-            onPressed: () async {
-              Loading.show(context);
-              SharedPreferences pref = await SharedPreferences.getInstance();
-              await pref.clear();
-              Loading.hide(context);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ),
-              );
-            },
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
+            child: Text(
+              'LUCKY DRAW',
+              style: Theme.of(context).textTheme.title,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -99,7 +157,7 @@ class _HomePageState extends State<HomePage>
                     height: PANEL_HEADER_HEIGHT,
                     // padding: EdgeInsets.only(left: 22),
                     alignment: Alignment.center,
-                    child: Text("Title"),
+                    child: Text("Home"),
                   ),
                   Expanded(
                     child: frontPage(),
@@ -137,24 +195,27 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: AnimatedIcon(
-              icon: AnimatedIcons.close_menu,
-              progress: _controller.view,
-            ),
-            onPressed: () {
-              _controller.fling(velocity: _isPanelVisible ? -1.0 : 1.0);
-            },
-          )
-        ],
-      ),
-      body: LayoutBuilder(
-        builder: buildStack,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Lucky Draw'),
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+              icon: AnimatedIcon(
+                icon: AnimatedIcons.close_menu,
+                progress: _controller.view,
+              ),
+              onPressed: () {
+                _controller.fling(velocity: _isPanelVisible ? -1.0 : 1.0);
+              },
+            )
+          ],
+        ),
+        body: LayoutBuilder(
+          builder: buildStack,
+        ),
       ),
     );
   }
