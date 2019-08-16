@@ -6,3 +6,4 @@ const Map<String, String> headers = {'content-type': 'application/json'};
 
 // SharedPref keys
 const String userDataKey = 'userData';
+const String darkModeKey = 'isDarkMode';

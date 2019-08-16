@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/ui/login.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lucky_draw_revamp/src/ui/settings.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -35,66 +32,6 @@ class _HomePageState extends State<HomePage>
         false;
   }
 
-  Widget backPage() {
-    return Theme(
-      data: ThemeData(
-        brightness: Brightness.light,
-      ),
-      child: ListView(
-        padding: EdgeInsets.all(10),
-        children: <Widget>[
-          ListTile(
-            title: Text('${CacheData.userInfo?.username}'),
-            subtitle: Text('${CacheData.userInfo?.contactNumber}'),
-            leading: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: Icon(
-                Icons.person_outline,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.power_settings_new),
-              onPressed: () async {
-                Loading.show(context);
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                await pref.clear();
-                Loading.hide(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: Icon(
-                Icons.brightness_6,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
-            title: Text('Dark Theme'),
-            subtitle: Text('Change app theme'),
-            trailing: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.transparent,
-              child: Switch(
-                onChanged: (bool value) {
-                  print(value);
-                },
-                value: false,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget frontPage() {
     return Container(
       child: ListView(
@@ -104,7 +41,7 @@ class _HomePageState extends State<HomePage>
             padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
             child: Image.asset(
               'images/logo.png',
-              height: 200,
+              height: 150,
             ),
           ),
           Container(
@@ -141,7 +78,7 @@ class _HomePageState extends State<HomePage>
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(bottom: PANEL_HEADER_HEIGHT),
-            child: backPage(),
+            child: Settings(),
           ),
           PositionedTransition(
             rect: animation,

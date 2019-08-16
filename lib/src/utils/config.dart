@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:lucky_draw_revamp/src/app.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +20,19 @@ class Config {
     }
     await clearStorage();
     return false;
+  }
+
+  static Future<bool> isDarkMode() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    bool isDarkMode = pref.getBool('$darkModeKey') ?? false;
+    return isDarkMode;
+  }
+
+  static Future<void> changeTheme({@required isDarkTheme}) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    CacheData.isDarkTheme = isDarkTheme;
+    await pref.setBool('$darkModeKey', isDarkTheme);
+    isDarkThemeStream.sink.add(isDarkTheme);
   }
 
   static Future<dynamic> getObjectJson(String key) async {

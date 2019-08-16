@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:rxdart/rxdart.dart';
 
-class MyApp extends StatelessWidget {
+PublishSubject<bool> isDarkThemeStream = PublishSubject<bool>();
+
+class MyApp extends StatefulWidget {
   final Widget homepage;
 
-  MyApp({@required this.homepage});
+  const MyApp({Key key, this.homepage}) : super(key: key);
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeData appTheme;
 
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
@@ -47,12 +57,29 @@ class MyApp extends StatelessWidget {
   );
 
   @override
+  void initState() {
+    isDarkThemeStream.sink.add(CacheData.isDarkTheme ?? false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    isDarkThemeStream.drain();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Lucky Draw JJ112',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      home: homepage,
+    return StreamBuilder(
+      initialData: CacheData.isDarkTheme,
+      stream: isDarkThemeStream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return MaterialApp(
+          title: 'Lucky Draw JJ112',
+          theme: snapshot.data ? darkTheme : lightTheme,
+          home: widget.homepage,
+        );
+      },
     );
   }
 }
