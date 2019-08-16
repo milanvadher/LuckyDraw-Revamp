@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/app.dart';
+import 'package:lucky_draw_revamp/src/ui/about.dart';
 import 'package:lucky_draw_revamp/src/ui/login.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
@@ -95,6 +96,29 @@ class _SettingsState extends State<Settings> {
                   },
                 ),
               ),
+            ),
+          ),
+          Divider(height: 0),
+          MaterialButton(
+            padding: EdgeInsets.all(0),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => About(),
+                ),
+              );
+            },
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.black54,
+                child: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+              ),
+              title: Text('About'),
+              subtitle: Text('Know more about App OR Send bug report'),
             ),
           ),
           Divider(height: 0),
