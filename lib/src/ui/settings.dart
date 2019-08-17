@@ -12,6 +12,51 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  Widget settingItem({
+    @required String title,
+    @required String description,
+    @required IconData icon,
+    Widget trailingWidget,
+    Function onTap,
+  }) {
+    return Column(
+      children: <Widget>[
+        Divider(height: 0),
+        MaterialButton(
+          padding: EdgeInsets.all(0),
+          onPressed: () {},
+          child: ListTile(
+            onTap: onTap,
+            leading: CircleAvatar(
+              backgroundColor: Colors.black54,
+              child: Icon(
+                icon,
+                color: Colors.white,
+              ),
+            ),
+            title: Text('$title'),
+            subtitle: Text('$description'),
+            trailing: CircleAvatar(
+              radius: trailingWidget != null ? 30 : 0,
+              backgroundColor: Colors.transparent,
+              child: trailingWidget ?? Container(),
+            ),
+          ),
+        ),
+        Divider(height: 0),
+      ],
+    );
+  }
+
+  void navigateToProfile() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Profile(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -28,74 +73,52 @@ class _SettingsState extends State<Settings> {
       child: ListView(
         children: <Widget>[
           CommonWidget.settingsTitle(context: context, title: 'Profile'),
-          Divider(height: 0),
-          ListTile(
-            title: Text('${CacheData.userInfo?.username}'),
-            subtitle: Text('${CacheData.userInfo?.contactNumber}'),
-            leading: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: Icon(
-                Icons.person_outline,
-                color: Colors.white,
+          // User Info
+          settingItem(
+            title: '${CacheData.userInfo?.username}',
+            description: '${CacheData.userInfo?.contactNumber}',
+            icon: Icons.person_outline,
+            onTap: navigateToProfile,
+            trailingWidget: IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: Colors.black,
               ),
+              onPressed: navigateToProfile,
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(),
-                  ),
+          ),
+          CommonWidget.settingsTitle(context: context, title: 'Settings'),
+          // APP Theme
+          settingItem(
+            title: 'Dark Theme',
+            description: 'Change app theme',
+            icon: Icons.brightness_6,
+            onTap: () async {
+              await Config.changeTheme(isDarkTheme: !CacheData.isDarkTheme);
+            },
+            trailingWidget: StreamBuilder(
+              initialData: CacheData.isDarkTheme,
+              stream: isDarkThemeStream,
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<bool> snapshot,
+              ) {
+                return Switch(
+                  activeColor: Colors.black54,
+                  onChanged: (bool value) async {
+                    await Config.changeTheme(isDarkTheme: value);
+                  },
+                  value: snapshot.data,
                 );
               },
             ),
           ),
-          Divider(height: 0),
-          CommonWidget.settingsTitle(context: context, title: 'Settings'),
-          Divider(height: 0),
-          MaterialButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () {},
-            child: ListTile(
-              onTap: () async {
-                await Config.changeTheme(isDarkTheme: !CacheData.isDarkTheme);
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.black54,
-                child: Icon(
-                  Icons.brightness_6,
-                  color: Colors.white,
-                ),
-              ),
-              title: Text('Dark Theme'),
-              subtitle: Text('Change app theme'),
-              trailing: CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.transparent,
-                child: StreamBuilder(
-                  initialData: CacheData.isDarkTheme,
-                  stream: isDarkThemeStream,
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<bool> snapshot,
-                  ) {
-                    return Switch(
-                      activeColor: Colors.black54,
-                      onChanged: (bool value) async {
-                        await Config.changeTheme(isDarkTheme: value);
-                      },
-                      value: snapshot.data,
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-          Divider(height: 0),
-          MaterialButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () {
+          // About US
+          settingItem(
+            title: 'About',
+            description: 'Know more about App OR Send bug report',
+            icon: Icons.settings,
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -103,19 +126,7 @@ class _SettingsState extends State<Settings> {
                 ),
               );
             },
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.black54,
-                child: Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                ),
-              ),
-              title: Text('About'),
-              subtitle: Text('Know more about App OR Send bug report'),
-            ),
           ),
-          Divider(height: 0),
         ],
       ),
     );

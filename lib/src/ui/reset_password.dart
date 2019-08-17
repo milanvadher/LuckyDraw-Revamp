@@ -69,7 +69,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -86,6 +86,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ),
               ),
               Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Verify Password',

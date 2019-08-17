@@ -101,6 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
               Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Verify Password',

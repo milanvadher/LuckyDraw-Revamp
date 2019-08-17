@@ -1,9 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
-
 import '../utils/constant.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Client;
 
 class AuthApiProvider {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/ui/front_page.dart';
 import 'package:lucky_draw_revamp/src/ui/settings.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,31 +31,6 @@ class _HomePageState extends State<HomePage>
           ),
         ) ??
         false;
-  }
-
-  Widget frontPage() {
-    return Container(
-      child: ListView(
-        padding: EdgeInsets.all(10),
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
-            child: Image.asset(
-              'images/logo.png',
-              height: 150,
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
-            child: Text(
-              'LUCKY DRAW',
-              style: Theme.of(context).textTheme.title,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Animation<RelativeRect> _getPanelAnimation(BoxConstraints constraints) {
@@ -97,7 +73,7 @@ class _HomePageState extends State<HomePage>
                     child: Text("Home"),
                   ),
                   Expanded(
-                    child: frontPage(),
+                    child: FrontPage(),
                   )
                 ],
               ),

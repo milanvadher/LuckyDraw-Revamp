@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
+import 'package:lucky_draw_revamp/src/repository/coupons_api_provider.dart';
 import 'auth_api_provider.dart';
 
 class Repository {
   final AuthApiProvider _authApiProvider = AuthApiProvider();
+  final CouponsApiProvider _couponApiProvider = CouponsApiProvider();
 
   // Login User
   Future<User> login({
@@ -49,5 +51,10 @@ class Repository {
       mobileNo: mobileNo,
       password: password,
     );
+  }
+
+  // Get user Coupons
+  Future getUserCoupons() {
+    return _couponApiProvider.getUserCoupons();
   }
 }

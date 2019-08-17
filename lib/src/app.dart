@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(),
+      filled: true,
     ),
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
@@ -48,6 +49,7 @@ class _MyAppState extends State<MyApp> {
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(),
+      filled: true,
     ),
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
