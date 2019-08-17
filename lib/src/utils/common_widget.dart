@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/utils/constant.dart';
 
 class CommonWidget {
   static Widget authTopPortion({
@@ -47,6 +48,51 @@ class CommonWidget {
             ),
       ),
       padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
+    );
+  }
+
+  static Widget displayError({
+    @required BuildContext context,
+    String error,
+  }) {
+    return ListView(
+      children: <Widget>[
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height - 120,
+          ),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(25),
+                  child: Icon(
+                    Icons.error_outline,
+                    size: 80,
+                    color: Colors.redAccent,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(
+                    '${error ?? defaultError}',
+                    style: Theme.of(context).textTheme.title,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget progressIndicator() {
+    return Center(
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/app.dart';
 import 'package:lucky_draw_revamp/src/ui/about.dart';
+import 'package:lucky_draw_revamp/src/ui/coupon.dart';
 import 'package:lucky_draw_revamp/src/ui/profile.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
@@ -86,6 +87,20 @@ class _SettingsState extends State<Settings> {
               ),
               onPressed: navigateToProfile,
             ),
+          ),
+          // Coupons
+          settingItem(
+            title: 'Coupons',
+            description: 'Assign and Un-Assign',
+            icon: Icons.confirmation_number,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CouponPage(),
+                ),
+              );
+            },
           ),
           CommonWidget.settingsTitle(context: context, title: 'Settings'),
           // APP Theme

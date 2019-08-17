@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 // API END-POINT
 const String apiUrl = 'http://3.16.51.94:60371';
 
@@ -10,6 +12,12 @@ const String appStoreURL = 'https://itunes.apple.com/app/id1457589389';
 
 // Contact Details
 const String contactEmailId = 'gncapps@googlegroups.com';
+
+// Error
+const String defaultError = 'Something wrong happend\nPlease contact to $contactEmailId';
+
+// Date-Format
+DateFormat couponDateFormat = new DateFormat.yMEd().add_jms();
 
 // SharedPref keys
 const String userDataKey = 'userData';

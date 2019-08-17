@@ -25,7 +25,7 @@ class _FrontPageState extends State<FrontPage> {
                 ),
           ),
           trailing: CircleAvatar(
-            radius: 30,
+            radius: 50,
             backgroundColor: Colors.transparent,
             child: Center(
               child: Text(
@@ -148,7 +148,7 @@ class _FrontPageState extends State<FrontPage> {
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline,
+                                            .title,
                                       ),
                               ),
                             )
