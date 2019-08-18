@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/coupon.dart';
+import 'package:lucky_draw_revamp/src/ui/assign_coupon.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
 
@@ -10,6 +11,18 @@ class CouponPage extends StatefulWidget {
 }
 
 class _CouponPageState extends State<CouponPage> {
+  assignCoupon(int coupon) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return AssignCoupon(coupon: coupon);
+        },
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
   @override
   void initState() {
     bloc.getUserCoupon();
@@ -47,6 +60,14 @@ class _CouponPageState extends State<CouponPage> {
                           title: Text(
                             '🎫 Coupon - $coupon',
                             style: Theme.of(context).textTheme.title,
+                          ),
+                          trailing: OutlineButton(
+                            textColor: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              print('Assign Coupon $coupon');
+                              assignCoupon(coupon);
+                            },
+                            child: Text('Assign'),
                           ),
                         ),
                       );

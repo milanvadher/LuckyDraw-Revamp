@@ -24,17 +24,12 @@ class _FrontPageState extends State<FrontPage> {
                   fontSize: (fontSize != null ? fontSize - 4 : fontSize) ?? 16,
                 ),
           ),
-          trailing: CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.transparent,
-            child: Center(
-              child: Text(
-                '$value',
-                style: Theme.of(context).textTheme.title.copyWith(
-                      fontSize: fontSize ?? 20,
-                    ),
-              ),
-            ),
+          trailing: Text(
+            '$value',
+            style: Theme.of(context).textTheme.title.copyWith(
+                  fontSize: fontSize ?? 20,
+                ),
+            textAlign: TextAlign.end,
           ),
         ),
         Divider(height: 0),
@@ -146,9 +141,8 @@ class _FrontPageState extends State<FrontPage> {
                                     : Text(
                                         '${snapshot.error}',
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .title,
+                                        style:
+                                            Theme.of(context).textTheme.title,
                                       ),
                               ),
                             )
