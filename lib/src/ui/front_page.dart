@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/coupon.dart';
+import 'package:lucky_draw_revamp/src/ui/pikachar.dart';
 
 class FrontPage extends StatefulWidget {
   @override
@@ -72,8 +73,14 @@ class _FrontPageState extends State<FrontPage> {
           ),
           MaterialButton(
             color: Theme.of(context).primaryColor,
-            onPressed: () {
-              // Navigator.pushNamed(context, '/start');
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Pikachar(),
+                ),
+              );
+              bloc.getUserCoupon();
             },
             height: 50.0,
             child: Row(

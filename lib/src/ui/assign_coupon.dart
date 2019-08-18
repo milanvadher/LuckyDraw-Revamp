@@ -59,7 +59,6 @@ class _AssignCouponState extends State<AssignCoupon> {
           Container(
             padding: EdgeInsets.all(10),
             child: RaisedButton(
-              // textColor: Theme.of(context).primaryColor,
               onPressed: () {
                 print('Assign Date : $userSelectedDate Time $userSelectedTime');
                 Navigator.pop(context, [
