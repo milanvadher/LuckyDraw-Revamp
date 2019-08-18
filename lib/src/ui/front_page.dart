@@ -131,19 +131,36 @@ class _FrontPageState extends State<FrontPage> {
                                 ],
                               ),
                             )
-                          : Container(
-                              height: 145,
-                              child: Center(
-                                child: !snapshot.hasError
-                                    ? CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      )
-                                    : Text(
-                                        '${snapshot.error}',
-                                        textAlign: TextAlign.center,
-                                        style:
-                                            Theme.of(context).textTheme.title,
-                                      ),
+                          : ConstrainedBox(
+                              constraints: BoxConstraints(minHeight: 145),
+                              child: Container(
+                                height: 145,
+                                child: Center(
+                                  child: snapshot.hasError
+                                      ? CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        )
+                                      : Container(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                '${snapshot.error}',
+                                                textAlign: TextAlign.center,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .title,
+                                              ),
+                                              RaisedButton(
+                                                onPressed: () {
+                                                  bloc.dispose();
+                                                  bloc.getUserCoupon();
+                                                },
+                                                child: Text('Try Again'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                ),
                               ),
                             )
                     ],

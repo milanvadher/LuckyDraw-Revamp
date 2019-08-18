@@ -53,7 +53,7 @@ class CommonWidget {
 
   static Widget displayError({
     @required BuildContext context,
-    String error,
+    error,
   }) {
     return ListView(
       children: <Widget>[

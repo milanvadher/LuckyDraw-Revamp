@@ -58,12 +58,26 @@ class _AssignCouponState extends State<AssignCoupon> {
         actions: <Widget>[
           Container(
             padding: EdgeInsets.all(10),
-            child: FlatButton(
-              textColor: Theme.of(context).primaryColor,
+            child: RaisedButton(
+              // textColor: Theme.of(context).primaryColor,
               onPressed: () {
                 print('Assign Date : $userSelectedDate Time $userSelectedTime');
+                Navigator.pop(context, [
+                  userSelectedDate.day,
+                  userSelectedDate.month,
+                  userSelectedDate.year,
+                  userSelectedTime.hour,
+                  userSelectedTime.minute,
+                  0,
+                  0,
+                ]);
               },
-              child: Text('Assign'),
+              child: Text(
+                'Assign',
+                style: Theme.of(context).textTheme.subhead.copyWith(
+                      color: Colors.black,
+                    ),
+              ),
             ),
           ),
         ],
@@ -74,7 +88,7 @@ class _AssignCouponState extends State<AssignCoupon> {
           children: <Widget>[
             ListTile(
               title: Text(
-                'Coupon - ${widget.coupon}',
+                'Coupon - ${widget.coupon} 🎫',
                 style: Theme.of(context).textTheme.headline.copyWith(
                       fontSize: 30,
                       fontWeight: FontWeight.w100,
@@ -175,7 +189,7 @@ class DateTimePicker extends StatelessWidget {
             brightness: brightness == Brightness.dark
                 ? Brightness.dark
                 : Brightness.light,
-            accentColor: Theme.of(context).primaryColor,
+            primarySwatch: Colors.orange,
           ),
           child: child,
         );

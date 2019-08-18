@@ -57,4 +57,15 @@ class Repository {
   Future getUserCoupons() {
     return _couponApiProvider.getUserCoupons();
   }
+  
+  // Assign user Coupons to Slot
+  Future assignCoupon({
+    @required int coupon,
+    @required List<int> date,
+  }) {
+    return _couponApiProvider.assignCoupon(
+      coupon: coupon,
+      date: date,
+    );
+  }
 }

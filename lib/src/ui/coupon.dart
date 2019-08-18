@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/coupon.dart';
+import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/assign_coupon.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
+import 'package:lucky_draw_revamp/src/utils/loading.dart';
 
 class CouponPage extends StatefulWidget {
   @override
@@ -11,8 +14,10 @@ class CouponPage extends StatefulWidget {
 }
 
 class _CouponPageState extends State<CouponPage> {
-  assignCoupon(int coupon) {
-    Navigator.push(
+  Repository repository = Repository();
+
+  assignCoupon(int coupon) async {
+    List<int> assignDate = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
@@ -21,6 +26,22 @@ class _CouponPageState extends State<CouponPage> {
         fullscreenDialog: true,
       ),
     );
+    if (assignDate != null) {
+      try {
+        Loading.show(context);
+        await repository.assignCoupon(coupon: coupon, date: assignDate);
+        bloc.getUserCoupon();
+        Loading.hide(context);
+      } catch (e) {
+        Loading.hide(context);
+        Fluttertoast.showToast(
+          msg: '$e',
+          backgroundColor: Colors.red,
+          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
   }
 
   @override
