@@ -3,6 +3,7 @@ import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/question.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
+import 'package:lucky_draw_revamp/src/utils/ans_result.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
@@ -65,11 +66,13 @@ class _PikacharState extends State<Pikachar> {
         questionState: CacheData.userInfo.questionState + 1,
       );
       CacheData.userInfo = user;
-      await Point.updatePoint();
       await bloc.getQuestion(questionState: CacheData.userInfo.questionState);
+      await Point.updatePoint();
       Loading.hide(context);
+      await AnsResultAnimation.rightAns(context);
     } else {
       print('Answer is In-Correct ${userAnswer.join('')}');
+      AnsResultAnimation.wrongAns(context);
     }
   }
 
