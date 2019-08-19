@@ -80,4 +80,15 @@ class Repository {
       questionState: questionState,
     );
   }
+
+  // Save Userdata
+  Future<User> saveUserData({
+    @required int points,
+    @required int questionState,
+  }) {
+    return _authApiProvider.saveUserData(
+      points: points,
+      questionState: questionState
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
 import '../utils/constant.dart';
 import 'package:http/http.dart' show Client;
@@ -71,7 +72,7 @@ class AuthApiProvider {
     }
     throw json.decode(response.body)['err'] ?? 'Error to Register';
   }
-  
+
   Future<User> resetPassword({
     @required String mobileNo,
     @required String password,
@@ -91,5 +92,27 @@ class AuthApiProvider {
       return User.fromJson(json.decode(response.body));
     }
     throw json.decode(response.body)['err'] ?? 'Error to Reset Password';
+  }
+
+  Future<User> saveUserData({
+    @required int points,
+    @required int questionState,
+  }) async {
+    Map<String, dynamic> reqData = {
+      'contactNumber': CacheData.userInfo?.contactNumber,
+      'points': points,
+      'questionState': questionState,
+    };
+    final response = await client.post(
+      '$apiUrl/saveUserData',
+      body: json.encode(reqData),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      debugPrint('saveUserData ${response.body}');
+      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
+      return User.fromJson(json.decode(response.body));
+    }
+    throw json.decode(response.body)['err'] ?? 'Error to Save User Data';
   }
 }
