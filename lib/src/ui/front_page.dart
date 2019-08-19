@@ -143,7 +143,7 @@ class _FrontPageState extends State<FrontPage> {
                               child: Container(
                                 height: 145,
                                 child: Center(
-                                  child: snapshot.hasError
+                                  child: !snapshot.hasError
                                       ? CircularProgressIndicator(
                                           strokeWidth: 2,
                                         )

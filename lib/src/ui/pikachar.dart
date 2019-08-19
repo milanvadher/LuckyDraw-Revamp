@@ -12,19 +12,23 @@ class Pikachar extends StatefulWidget {
 }
 
 class _PikacharState extends State<Pikachar> {
-
-  void showPhoto(BuildContext context, String tag, Image image) {
-    Navigator.push(context,
-        MaterialPageRoute<void>(builder: (BuildContext context) {
-      return Scaffold(
-        body: SizedBox.expand(
-          child: Hero(
-            tag: '$tag',
-            child: image,
-          ),
-        ),
-      );
-    }));
+  void showPhoto(BuildContext context, String tag, String imageSrc) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return Scaffold(
+            body: SizedBox.expand(
+              child: Hero(
+                tag: '$tag',
+                child: Image.network(imageSrc),
+              ),
+            ),
+          );
+        },
+        fullscreenDialog: true,
+      ),
+    );
   }
 
   String getImageLink({@required String imageSrc}) {
@@ -44,11 +48,139 @@ class _PikacharState extends State<Pikachar> {
     super.dispose();
   }
 
+  Widget pikView({@required Question question}) {
+    double size = MediaQuery.of(context).size.width / 2.2;
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runAlignment: WrapAlignment.spaceBetween,
+      spacing: 6,
+      runSpacing: 6,
+      children: List.generate(question.imageList.length, (int index) {
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+            ),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          width: size,
+          height: size,
+          child: ClipRRect(
+            borderRadius: new BorderRadius.circular(4.0),
+            child: InkWell(
+              onTap: () {
+                showPhoto(context, 'image_$index',
+                    getImageLink(imageSrc: question.imageList[index]));
+              },
+              child: Hero(
+                tag: 'image_$index',
+                child: Image.network(
+                  '${getImageLink(imageSrc: question.imageList[index])}',
+                  width: size,
+                  loadingBuilder: (
+                    BuildContext context,
+                    Widget child,
+                    ImageChunkEvent imageChunkEvent,
+                  ) {
+                    if (imageChunkEvent?.cumulativeBytesLoaded ==
+                        imageChunkEvent?.expectedTotalBytes) {
+                      return child;
+                    }
+                    return Center(
+                      child: CommonWidget.progressIndicator(),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget charView({@required Question question}) {
+    List<String> answer = question.answer.split('');
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runSpacing: 6.0,
+      spacing: 6.0,
+      children: answer.map((String char) {
+        return Container(
+          width: 40,
+          height: 40,
+          child: MaterialButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+            ),
+            onPressed: char.isEmpty
+                ? null
+                : () {
+                    print(char);
+                  },
+            child: Text(
+              '${char.toUpperCase()}',
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
+            ),
+            color: Theme.of(context).primaryColor,
+            padding: EdgeInsets.all(0),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget questionCharView({@required Question question}) {
+    List<String> jumbleData = question.randomString.split('');
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runSpacing: 6.0,
+      spacing: 6.0,
+      children: jumbleData.map((String char) {
+        return Container(
+          width: 40,
+          height: 40,
+          decoration: new BoxDecoration(
+            border: new Border.all(
+              color: Theme.of(context).primaryColor,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(2),
+          ),
+          child: MaterialButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(0)),
+            ),
+            onPressed: char.isEmpty
+                ? null
+                : () {
+                    print(char);
+                  },
+            child: Text(
+              '${char.toUpperCase()}',
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    fontSize: 24,
+                  ),
+            ),
+            padding: EdgeInsets.all(0),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return CommonFunction.onWillPop(context: context, msg: 'Do you want to exit the Game ?');
+        return CommonFunction.onWillPop(
+            context: context, msg: 'Do you want to exit the Game ?');
       },
       child: Scaffold(
         appBar: AppBar(
@@ -65,46 +197,15 @@ class _PikacharState extends State<Pikachar> {
                 return ListView(
                   padding: EdgeInsets.all(10),
                   children: <Widget>[
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      runAlignment: WrapAlignment.spaceBetween,
-                      spacing: 5,
-                      runSpacing: 5,
-                      children: List.generate(snapshot.data.imageList.length,
-                          (int index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          width: MediaQuery.of(context).size.width / 2.2,
-                          height: MediaQuery.of(context).size.width / 2.2,
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(8.0),
-                            child: Image.network(
-                              '${getImageLink(imageSrc: snapshot.data.imageList[index])}',
-                              width: MediaQuery.of(context).size.width / 2.2,
-                              loadingBuilder: (
-                                BuildContext context,
-                                Widget child,
-                                ImageChunkEvent imageChunkEvent,
-                              ) {
-                                if (imageChunkEvent?.cumulativeBytesLoaded ==
-                                    imageChunkEvent?.expectedTotalBytes) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CommonWidget.progressIndicator(),
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    )
+                    pikView(question: snapshot.data),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: charView(question: snapshot.data),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: questionCharView(question: snapshot.data),
+                    ),
                   ],
                 );
               }

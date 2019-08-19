@@ -9,8 +9,8 @@ class CommonFunction {
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
-            title: new Text('$title' ?? 'Are you sure?'),
-            content: new Text('$msg' ?? 'Do you want to exit an App ?'),
+            title: new Text(title ?? 'Are you sure?'),
+            content: new Text(msg ?? 'Do you want to exit an App ?'),
             actions: <Widget>[
               new FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
