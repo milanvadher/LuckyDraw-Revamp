@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/question.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
@@ -70,10 +71,37 @@ class _PikacharState extends State<Pikachar> {
       await Point.updatePoint();
       Loading.hide(context);
       await AnsResultAnimation.rightAns(context);
+      if (CacheData.userInfo.questionState % 5 == 0 &&
+          CacheData.userInfo.questionState != 0) {
+        generateTicket();
+      }
     } else {
       print('Answer is In-Correct ${userAnswer.join('')}');
       AnsResultAnimation.wrongAns(context);
     }
+  }
+
+  generateTicket() async {
+    Loading.show(context);
+    try {
+      await repository.generateCoupon(
+        questionState: CacheData.userInfo?.questionState,
+      );
+      CommonWidget.displayDialog(
+        context: context,
+        title: 'Congratulations',
+        msg: 'You got one LuckyDraw Coupon',
+      );
+    } catch (e) {
+      print('Error $e');
+      Fluttertoast.showToast(
+        msg: '$e',
+        backgroundColor: Colors.red,
+        gravity: ToastGravity.CENTER,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+    Loading.hide(context);
   }
 
   onOptionClick(String char, int index) {

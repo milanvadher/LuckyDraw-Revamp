@@ -24,6 +24,25 @@ class CouponsApiProvider {
     throw json.decode(response.body)['err'] ?? 'Error to Get User coupons';
   }
 
+  Future generateCoupon({
+    @required int questionState,
+  }) async {
+    Map<String, dynamic> reqData = {
+      'contactNumber': CacheData.userInfo?.contactNumber,
+      'questionState': questionState,
+    };
+    final response = await client.post(
+      '$apiUrl/generateTicket',
+      body: json.encode(reqData),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      debugPrint('generateTicket ${response.body}');
+      return json.decode(response.body);
+    }
+    throw json.decode(response.body)['err'] ?? 'Error to Generate coupon';
+  }
+
   Future<Coupon> assignCoupon({
     @required int coupon,
     @required List<int> date,

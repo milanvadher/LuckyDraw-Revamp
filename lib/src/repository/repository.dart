@@ -61,6 +61,15 @@ class Repository {
     return _couponApiProvider.getUserCoupons();
   }
 
+  // Get Question
+  Future generateCoupon({
+    @required int questionState,
+  }) {
+    return _couponApiProvider.generateCoupon(
+      questionState: questionState,
+    );
+  }
+
   // Assign user Coupons to Slot
   Future assignCoupon({
     @required int coupon,

@@ -95,4 +95,27 @@ class CommonWidget {
       ),
     );
   }
+
+  static displayDialog({
+    @required BuildContext context,
+    @required String title,
+    @required String msg,
+    AlertDialog Function() builder,
+  }) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return new AlertDialog(
+          title: new Text(title),
+          content: new Text(msg),
+          actions: <Widget>[
+            new FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: new Text('Okay'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
