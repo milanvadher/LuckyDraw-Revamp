@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/question.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/points.dart';
 
@@ -11,26 +12,6 @@ class Pikachar extends StatefulWidget {
 }
 
 class _PikacharState extends State<Pikachar> {
-  Future<bool> exitGame() {
-    return showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit the Game ?'),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: new Text('Yes'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
 
   void showPhoto(BuildContext context, String tag, Image image) {
     Navigator.push(context,
@@ -66,7 +47,9 @@ class _PikacharState extends State<Pikachar> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: exitGame,
+      onWillPop: () {
+        return CommonFunction.onWillPop(context: context, msg: 'Do you want to exit the Game ?');
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text('Pikachar'),

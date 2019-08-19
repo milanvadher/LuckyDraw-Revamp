@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/front_page.dart';
 import 'package:lucky_draw_revamp/src/ui/settings.dart';
+import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,27 +12,6 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   static const PANEL_HEADER_HEIGHT = 32.0;
-
-  Future<bool> _onWillPop() {
-    return showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App ?'),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: new Text('Yes'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
 
   Animation<RelativeRect> _getPanelAnimation(BoxConstraints constraints) {
     final double height = constraints.biggest.height;
@@ -109,7 +89,9 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () {
+        return CommonFunction.onWillPop(context: context);
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text('Lucky Draw'),
