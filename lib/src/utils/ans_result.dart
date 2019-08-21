@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AnsResultAnimation {
-  static rightAns(BuildContext context) async {
+  static rightAns(BuildContext context, bool hintTaken) async {
     await mainView(
       context: context,
       signAnimation: Container(
@@ -17,6 +17,7 @@ class AnsResultAnimation {
         ),
       ),
       isCorrectAns: true,
+      isHintTaken: hintTaken,
     );
   }
 
@@ -37,7 +38,7 @@ class AnsResultAnimation {
     );
   }
 
-  static rightAnsWithCoupon(BuildContext context, String msg) async {
+  static rightAnsWithCoupon(BuildContext context, String msg, bool hintTaken) async {
     await mainView(
       context: context,
       signAnimation: Container(
@@ -52,6 +53,7 @@ class AnsResultAnimation {
       isCorrectAns: true,
       isGetCoupon: true,
       msg: msg,
+      isHintTaken: hintTaken,
     );
   }
 }
@@ -62,6 +64,7 @@ mainView({
   @required bool isCorrectAns,
   bool isGetCoupon = false,
   String msg,
+  bool isHintTaken = false,
 }) async {
   double screenHeight = MediaQuery.of(context).size.height;
   Navigator.of(context).push(
@@ -89,6 +92,7 @@ mainView({
                         isCorrectAns: isCorrectAns,
                         isGetCoupon: isGetCoupon,
                         msg: msg,
+                        isHintTaken: isHintTaken,
                       ),
                     ],
                   ),
@@ -106,9 +110,14 @@ class AnsResult extends StatefulWidget {
   final bool isCorrectAns;
   final bool isGetCoupon;
   final String msg;
+  final bool isHintTaken;
 
-  AnsResult(
-      {@required this.isCorrectAns, @required this.isGetCoupon, this.msg});
+  AnsResult({
+    @required this.isCorrectAns,
+    @required this.isGetCoupon,
+    this.msg,
+    this.isHintTaken = false,
+  });
   @override
   _AnsResultState createState() => _AnsResultState();
 }
@@ -173,7 +182,7 @@ class _AnsResultState extends State<AnsResult> {
               Container(
                 margin: EdgeInsets.only(top: 10),
                 child: Text(
-                  widget.isCorrectAns ? '+100' : '',
+                  widget.isCorrectAns ? widget.isHintTaken ? '+0' : '+100' : '',
                   style: TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
@@ -182,6 +191,22 @@ class _AnsResultState extends State<AnsResult> {
                   textAlign: TextAlign.center,
                 ),
               ),
+              widget.isHintTaken
+                  ? Container(
+                      margin: EdgeInsets.only(top: 20, left: 30, right: 30),
+                      child: Text(
+                        'You can\'t get point. Bcz you use Hint.',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                      width: 0,
+                    ),
               widget.isGetCoupon
                   ? Container(
                       margin: EdgeInsets.only(top: 20),

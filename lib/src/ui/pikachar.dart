@@ -65,20 +65,15 @@ class _PikacharState extends State<Pikachar> {
     bool result = userAnswer.join().toLowerCase() == answer.toLowerCase();
     if (result) {
       print('Answer is correct ${userAnswer.join('')}');
+      await updateUserData();
       Loading.show(context);
-      User user = await repository.saveUserData(
-        points: CacheData.userInfo.points + 100,
-        questionState: CacheData.userInfo.questionState + 1,
-      );
-      CacheData.userInfo = user;
       await bloc.getQuestion(questionState: CacheData.userInfo.questionState);
-      await Point.updatePoint();
       Loading.hide(context);
       if (CacheData.userInfo.questionState % 5 == 0 &&
           CacheData.userInfo.questionState != 0) {
-        generateTicket();
+        generateTicket(hintTaken);
       } else {
-        await AnsResultAnimation.rightAns(context);
+        await AnsResultAnimation.rightAns(context, hintTaken);
       }
     } else {
       print('Answer is In-Correct ${userAnswer.join('')}');
@@ -86,14 +81,14 @@ class _PikacharState extends State<Pikachar> {
     }
   }
 
-  generateTicket() async {
+  generateTicket(bool hintTaken) async {
     Loading.show(context);
     try {
       String msg = await repository.generateCoupon(
         questionState: CacheData.userInfo?.questionState,
       );
       Loading.hide(context);
-      return AnsResultAnimation.rightAnsWithCoupon(context, msg);
+      return AnsResultAnimation.rightAnsWithCoupon(context, msg, hintTaken);
     } catch (e) {
       Loading.hide(context);
       Fluttertoast.showToast(
@@ -130,15 +125,39 @@ class _PikacharState extends State<Pikachar> {
     }
   }
 
-  getFullHint() {
+  getFullHint() async {
     print('Full Hint');
     for (var i = 0; i < answer.length; i++) {
       userAnswer[i] = answer[i];
     }
+    CacheData.userInfo.points -= 500;
+    await updateUserData();
     refreshUI.sink.add(true);
+    checkAns(hintTaken: true);
   }
 
-  getOneWordHint() {
+  updateUserData() async {
+    try {
+      Loading.show(context);
+      User user = await repository.saveUserData(
+        points: CacheData.userInfo.points + 100,
+        questionState: CacheData.userInfo.questionState + 1,
+      );
+      CacheData.userInfo = user;
+      await Point.updatePoint();
+      Loading.hide(context);
+    } catch (e) {
+      Loading.hide(context);
+      Fluttertoast.showToast(
+        msg: '$e',
+        backgroundColor: Colors.red,
+        gravity: ToastGravity.CENTER,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
+  getOneWordHint() async {
     print('One Word Hint $userAnswer');
     if (userAnswer.contains('')) {
       var leftIndices = [];
@@ -160,6 +179,8 @@ class _PikacharState extends State<Pikachar> {
           break;
         }
       }
+      CacheData.userInfo.points -= 50;
+      await updateUserData();
       refreshUI.sink.add(true);
       if (!userAnswer.contains('')) {
         checkAns(hintTaken: true);
@@ -167,18 +188,32 @@ class _PikacharState extends State<Pikachar> {
     }
   }
 
-  chooseHont() async {
+  chooseHint() async {
     bool isFullHintTaken = await Hint.choose(context: context);
     if (isFullHintTaken != null) {
       if (isFullHintTaken) {
+        if (CacheData.userInfo.points < 500) {
+          return CommonWidget.displayDialog(
+            context: context,
+            title: 'Oh No !!',
+            msg: 'You don\'t have enough Points',
+          );
+        }
         bool confirm = await CommonWidget.confirmDialog(
           context: context,
-          msg: 'Do you want to spent 100 Points ?',
+          msg: 'Do you want to spent 500 Points ?',
         );
         if (confirm) {
           getFullHint();
         }
       } else {
+        if (CacheData.userInfo.points < 50) {
+          return CommonWidget.displayDialog(
+            context: context,
+            title: 'Oh No !!',
+            msg: 'You don\'t have enough Points',
+          );
+        }
         bool confirm = await CommonWidget.confirmDialog(
           context: context,
           msg: 'Do you want to spent 50 Points ?',
@@ -413,7 +448,7 @@ class _PikacharState extends State<Pikachar> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: chooseHont,
+          onPressed: chooseHint,
           tooltip: 'Get Hint',
           child: Icon(
             Icons.help_outline,

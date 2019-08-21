@@ -30,10 +30,10 @@ class Hint {
                         createHint(
                           context: context,
                           icon: Icons.outlined_flag,
-                          requiredPoint: '100',
+                          requiredPoint: '500',
                           returnValue: true,
                           screenHeight: screenHeight,
-                          title: 'Revel Answer',
+                          title: 'Revel Full Answer',
                           color: Colors.greenAccent,
                         ),
                         Divider(
