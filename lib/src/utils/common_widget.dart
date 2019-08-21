@@ -118,4 +118,32 @@ class CommonWidget {
       },
     );
   }
+
+  static confirmDialog({
+    @required BuildContext context,
+    String title,
+    String msg,
+    AlertDialog Function() builder,
+  }) async {
+    return await showDialog(
+          context: context,
+          builder: (_) {
+            return new AlertDialog(
+              title: new Text(title ?? 'Are you sure ?'),
+              content: new Text(msg ?? 'Do you want to do this action ?'),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text('No'),
+                ),
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: new Text('Yes'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
 }

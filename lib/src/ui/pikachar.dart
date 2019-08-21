@@ -140,9 +140,21 @@ class _PikacharState extends State<Pikachar> {
     bool isFullHintTaken = await Hint.choose(context: context);
     if (isFullHintTaken != null) {
       if (isFullHintTaken) {
-        getFullHint();
+        bool confirm = await CommonWidget.confirmDialog(
+          context: context,
+          msg: 'Do you want to spent 100 Points ?',
+        );
+        if (confirm) {
+          getFullHint();
+        }
       } else {
-        getOneWordHint();
+        bool confirm = await CommonWidget.confirmDialog(
+          context: context,
+          msg: 'Do you want to spent 50 Points ?',
+        );
+        if (confirm) {
+          getOneWordHint();
+        }
       }
     }
   }
