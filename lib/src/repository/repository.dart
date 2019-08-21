@@ -62,7 +62,7 @@ class Repository {
   }
 
   // Get Question
-  Future generateCoupon({
+  Future<String> generateCoupon({
     @required int questionState,
   }) {
     return _couponApiProvider.generateCoupon(

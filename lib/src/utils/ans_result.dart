@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 class AnsResultAnimation {
   static rightAns(BuildContext context) async {
-    mainView(
+    await mainView(
       context: context,
       signAnimation: Container(
         width: 200,
@@ -21,7 +21,7 @@ class AnsResultAnimation {
   }
 
   static wrongAns(BuildContext context) async {
-    mainView(
+    await mainView(
       context: context,
       signAnimation: Container(
         margin: EdgeInsets.only(bottom: 30),
@@ -36,12 +36,32 @@ class AnsResultAnimation {
       isCorrectAns: false,
     );
   }
+
+  static rightAnsWithCoupon(BuildContext context, String msg) async {
+    await mainView(
+      context: context,
+      signAnimation: Container(
+        width: 200,
+        height: 200,
+        child: FlareActor(
+          'images/animation/right-ans.flr',
+          animation: 'done',
+          fit: BoxFit.fitHeight,
+        ),
+      ),
+      isCorrectAns: true,
+      isGetCoupon: true,
+      msg: msg,
+    );
+  }
 }
 
 mainView({
   @required BuildContext context,
   @required Widget signAnimation,
   @required bool isCorrectAns,
+  bool isGetCoupon = false,
+  String msg,
 }) async {
   double screenHeight = MediaQuery.of(context).size.height;
   Navigator.of(context).push(
@@ -58,14 +78,18 @@ mainView({
             body: ListView(
               children: <Widget>[
                 Container(
-                  height: screenHeight,
+                  height: screenHeight - 100,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       signAnimation,
-                      AnsResult(isCorrectAns: isCorrectAns),
+                      AnsResult(
+                        isCorrectAns: isCorrectAns,
+                        isGetCoupon: isGetCoupon,
+                        msg: msg,
+                      ),
                     ],
                   ),
                 )
@@ -80,8 +104,11 @@ mainView({
 
 class AnsResult extends StatefulWidget {
   final bool isCorrectAns;
+  final bool isGetCoupon;
+  final String msg;
 
-  AnsResult({@required this.isCorrectAns});
+  AnsResult(
+      {@required this.isCorrectAns, @required this.isGetCoupon, this.msg});
   @override
   _AnsResultState createState() => _AnsResultState();
 }
@@ -155,6 +182,22 @@ class _AnsResultState extends State<AnsResult> {
                   textAlign: TextAlign.center,
                 ),
               ),
+              widget.isGetCoupon
+                  ? Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Text(
+                        '${widget.msg}',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                      width: 0,
+                    )
             ],
           ),
         );

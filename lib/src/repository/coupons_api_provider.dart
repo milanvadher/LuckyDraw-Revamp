@@ -24,7 +24,7 @@ class CouponsApiProvider {
     throw json.decode(response.body)['err'] ?? 'Error to Get User coupons';
   }
 
-  Future generateCoupon({
+  Future<String> generateCoupon({
     @required int questionState,
   }) async {
     Map<String, dynamic> reqData = {
@@ -38,7 +38,7 @@ class CouponsApiProvider {
     );
     if (response.statusCode == 200) {
       debugPrint('generateTicket ${response.body}');
-      return json.decode(response.body);
+      return json.decode(response.body)['msg'];
     }
     throw json.decode(response.body)['err'] ?? 'Error to Generate coupon';
   }

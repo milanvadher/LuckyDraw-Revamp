@@ -4,6 +4,7 @@ import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
 import 'package:lucky_draw_revamp/src/model/question.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
+import 'package:lucky_draw_revamp/src/ui/hint.dart';
 import 'package:lucky_draw_revamp/src/utils/ans_result.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_function.dart';
@@ -55,6 +56,7 @@ class _PikacharState extends State<Pikachar> {
     options = question.randomString.split('');
     userAnswer = List.generate(answerLength, (int index) => '');
     disabledOption = List.generate(options.length, (int index) => false);
+    Fluttertoast.showToast(msg: '${question.answer.toUpperCase()}');
   }
 
   checkAns() async {
@@ -70,10 +72,11 @@ class _PikacharState extends State<Pikachar> {
       await bloc.getQuestion(questionState: CacheData.userInfo.questionState);
       await Point.updatePoint();
       Loading.hide(context);
-      await AnsResultAnimation.rightAns(context);
       if (CacheData.userInfo.questionState % 5 == 0 &&
           CacheData.userInfo.questionState != 0) {
         generateTicket();
+      } else {
+        await AnsResultAnimation.rightAns(context);
       }
     } else {
       print('Answer is In-Correct ${userAnswer.join('')}');
@@ -84,16 +87,13 @@ class _PikacharState extends State<Pikachar> {
   generateTicket() async {
     Loading.show(context);
     try {
-      await repository.generateCoupon(
+      String msg = await repository.generateCoupon(
         questionState: CacheData.userInfo?.questionState,
       );
-      CommonWidget.displayDialog(
-        context: context,
-        title: 'Congratulations',
-        msg: 'You got one LuckyDraw Coupon',
-      );
+      Loading.hide(context);
+      return AnsResultAnimation.rightAnsWithCoupon(context, msg);
     } catch (e) {
-      print('Error $e');
+      Loading.hide(context);
       Fluttertoast.showToast(
         msg: '$e',
         backgroundColor: Colors.red,
@@ -125,6 +125,25 @@ class _PikacharState extends State<Pikachar> {
       }
       userAnswer[index] = '';
       refreshUI.sink.add(true);
+    }
+  }
+
+  getFullHint() {
+    print('Full Hint');
+  }
+
+  getOneWordHint() {
+    print('One Word Hint');
+  }
+
+  chooseHont() async {
+    bool isFullHintTaken = await Hint.choose(context: context);
+    if (isFullHintTaken != null) {
+      if (isFullHintTaken) {
+        getFullHint();
+      } else {
+        getOneWordHint();
+      }
     }
   }
 
@@ -334,7 +353,7 @@ class _PikacharState extends State<Pikachar> {
                       child: answerTiles(),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: EdgeInsets.only(top: 20, bottom: 80),
                       child: optionsTiles(),
                     ),
                   ],
@@ -348,6 +367,14 @@ class _PikacharState extends State<Pikachar> {
               }
               return CommonWidget.progressIndicator();
             },
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: chooseHont,
+          tooltip: 'Get Hint',
+          child: Icon(
+            Icons.help_outline,
+            size: 32,
           ),
         ),
       ),
