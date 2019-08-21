@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
@@ -59,7 +61,7 @@ class _PikacharState extends State<Pikachar> {
     Fluttertoast.showToast(msg: '${question.answer.toUpperCase()}');
   }
 
-  checkAns() async {
+  checkAns({hintTaken = false}) async {
     bool result = userAnswer.join().toLowerCase() == answer.toLowerCase();
     if (result) {
       print('Answer is correct ${userAnswer.join('')}');
@@ -130,10 +132,39 @@ class _PikacharState extends State<Pikachar> {
 
   getFullHint() {
     print('Full Hint');
+    for (var i = 0; i < answer.length; i++) {
+      userAnswer[i] = answer[i];
+    }
+    refreshUI.sink.add(true);
   }
 
   getOneWordHint() {
-    print('One Word Hint');
+    print('One Word Hint $userAnswer');
+    if (userAnswer.contains('')) {
+      var leftIndices = [];
+      for (var i = 0; i < userAnswer.length; i++) {
+        if (userAnswer[i] == '') {
+          leftIndices.add(i);
+        }
+      }
+      int no = Random().nextInt(leftIndices.length);
+      if (leftIndices.length > 0) {
+        userAnswer[leftIndices[no]] = answer[leftIndices[no]];
+      }
+      print('$no ${userAnswer[no]} ${answer[no]}');
+      // Disable Option Tile
+      for (int i = 0; i < options.length; i++) {
+        if (!disabledOption[i] &&
+            options[i].toUpperCase() == answer[leftIndices[no]].toUpperCase()) {
+          disabledOption[i] = true;
+          break;
+        }
+      }
+      refreshUI.sink.add(true);
+      if (!userAnswer.contains('')) {
+        checkAns(hintTaken: true);
+      }
+    }
   }
 
   chooseHont() async {
