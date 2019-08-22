@@ -2,21 +2,10 @@
     <item android:drawable="@android:color/white" />
 
     <!-- You can insert your own image assets here -->
-    <item 
-        android:width="10dp"
-        android:height="10dp"
-        android:gravity="center">
+    <item>
         <bitmap
             android:gravity="center"
             android:src="@drawable/launch_image" />
-    </item>
-
-    <item
-        android:bottom="60dp">
-        <bitmap
-            android:height="10dp"
-            android:gravity="bottom"
-            android:src="@drawable/title" />
     </item>
 
 </layer-list>
