@@ -28,6 +28,7 @@ class _PikacharState extends State<Pikachar> {
   int answerLength;
   List<String> options;
   String answer;
+  bool isHintTaken = false;
 
   void showPhoto(BuildContext context, String tag, String imageSrc) {
     Navigator.push(
@@ -53,6 +54,7 @@ class _PikacharState extends State<Pikachar> {
   }
 
   setupData(Question question) {
+    isHintTaken = false;
     answer = question.answer.split(' ')[0];
     answerLength = answer.length;
     options = question.randomString.split('');
@@ -61,9 +63,10 @@ class _PikacharState extends State<Pikachar> {
     Fluttertoast.showToast(msg: '${question.answer.toUpperCase()}');
   }
 
-  checkAns({hintTaken = false}) async {
+  checkAns() async {
     bool result = userAnswer.join().toLowerCase() == answer.toLowerCase();
     if (result) {
+      bool hintTaken = isHintTaken;
       print('Answer is correct ${userAnswer.join('')}');
       if (!hintTaken) {
         CacheData.userInfo.points += 100;
@@ -133,10 +136,11 @@ class _PikacharState extends State<Pikachar> {
     for (var i = 0; i < answer.length; i++) {
       userAnswer[i] = answer[i];
     }
+    isHintTaken = true;
     CacheData.userInfo.points -= 500;
     await updateUserData();
     refreshUI.sink.add(true);
-    checkAns(hintTaken: true);
+    checkAns();
   }
 
   updateUserData() async {
@@ -182,11 +186,12 @@ class _PikacharState extends State<Pikachar> {
           break;
         }
       }
+      isHintTaken = true;
       CacheData.userInfo.points -= 50;
       await updateUserData();
       refreshUI.sink.add(true);
       if (!userAnswer.contains('')) {
-        checkAns(hintTaken: true);
+        checkAns();
       }
     }
   }
