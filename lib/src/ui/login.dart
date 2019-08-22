@@ -27,8 +27,10 @@ class _LoginPageState extends State<LoginPage> {
       try {
         Loading.show(context);
         loginFormKey.currentState.save();
-        User user =
-            await repository.login(mobileNo: mobileNo, password: password);
+        User user = await repository.login(
+          mobileNo: mobileNo,
+          password: password,
+        );
         CacheData.userInfo = user;
         await FirebaseNotification.setupNotification();
         Loading.hide(context);

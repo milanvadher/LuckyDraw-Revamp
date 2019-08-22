@@ -4,7 +4,7 @@ import 'package:lucky_draw_revamp/src/model/question.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CouponBloc {
+class Bloc {
   final repository = Repository();
   final couponFetcher = PublishSubject<Coupon>();
   final questionFetcher = PublishSubject<Question>();
@@ -40,4 +40,4 @@ class CouponBloc {
   }
 }
 
-final bloc = CouponBloc();
+final bloc = Bloc();
