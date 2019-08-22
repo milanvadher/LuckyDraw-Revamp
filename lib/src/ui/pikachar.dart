@@ -65,6 +65,9 @@ class _PikacharState extends State<Pikachar> {
     bool result = userAnswer.join().toLowerCase() == answer.toLowerCase();
     if (result) {
       print('Answer is correct ${userAnswer.join('')}');
+      if (!hintTaken) {
+        CacheData.userInfo.points += 100;
+      }
       await updateUserData();
       Loading.show(context);
       await bloc.getQuestion(questionState: CacheData.userInfo.questionState);
@@ -140,7 +143,7 @@ class _PikacharState extends State<Pikachar> {
     try {
       Loading.show(context);
       User user = await repository.saveUserData(
-        points: CacheData.userInfo.points + 100,
+        points: CacheData.userInfo.points,
         questionState: CacheData.userInfo.questionState + 1,
       );
       CacheData.userInfo = user;
@@ -227,6 +230,7 @@ class _PikacharState extends State<Pikachar> {
 
   @override
   void initState() {
+    bloc.question.listen(setupData);
     bloc.getQuestion(questionState: CacheData.userInfo?.questionState);
     Point.updatePoint();
     super.initState();
@@ -421,7 +425,6 @@ class _PikacharState extends State<Pikachar> {
             stream: bloc.question,
             builder: (BuildContext context, AsyncSnapshot<Question> snapshot) {
               if (snapshot.hasData) {
-                setupData(snapshot.data);
                 return ListView(
                   padding: EdgeInsets.all(10),
                   children: <Widget>[
