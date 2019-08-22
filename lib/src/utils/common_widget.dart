@@ -51,6 +51,42 @@ class CommonWidget {
     );
   }
 
+  static Widget displayNoData({
+    @required BuildContext context,
+    String msg = 'No Data Available',
+  }) {
+    return ListView(
+      children: <Widget>[
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height - 120,
+          ),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(25),
+                  child: Image.asset(
+                    'images/chilling.png',
+                    height: 120,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(
+                    '$msg',
+                    style: Theme.of(context).textTheme.title,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget displayError({
     @required BuildContext context,
     error,

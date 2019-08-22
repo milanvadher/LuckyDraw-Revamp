@@ -430,19 +430,25 @@ class _PikacharState extends State<Pikachar> {
             stream: bloc.question,
             builder: (BuildContext context, AsyncSnapshot<Question> snapshot) {
               if (snapshot.hasData) {
-                return ListView(
-                  padding: EdgeInsets.all(10),
-                  children: <Widget>[
-                    pikView(question: snapshot.data),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: answerTiles(),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20, bottom: 80),
-                      child: optionsTiles(),
-                    ),
-                  ],
+                if (CacheData.userInfo.questionState < 100) {
+                  return ListView(
+                    padding: EdgeInsets.all(10),
+                    children: <Widget>[
+                      pikView(question: snapshot.data),
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: answerTiles(),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 20, bottom: 80),
+                        child: optionsTiles(),
+                      ),
+                    ],
+                  );
+                }
+                return CommonWidget.displayNoData(
+                  context: context,
+                  msg: 'No Questions Available',
                 );
               }
               if (snapshot.hasError) {
@@ -455,13 +461,24 @@ class _PikacharState extends State<Pikachar> {
             },
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: chooseHint,
-          tooltip: 'Get Hint',
-          child: Icon(
-            Icons.help_outline,
-            size: 32,
-          ),
+        floatingActionButton: StreamBuilder(
+          stream: bloc.question,
+          builder: (BuildContext context, AsyncSnapshot<Question> snapshot) {
+            if (snapshot.hasData && CacheData.userInfo.questionState < 100) {
+              return FloatingActionButton(
+                onPressed: chooseHint,
+                tooltip: 'Get Hint',
+                child: Icon(
+                  Icons.help_outline,
+                  size: 32,
+                ),
+              );
+            }
+            return SizedBox(
+              height: 0,
+              width: 0,
+            );
+          },
         ),
       ),
     );
