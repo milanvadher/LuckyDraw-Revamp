@@ -21,6 +21,7 @@ class Pikachar extends StatefulWidget {
 }
 
 class _PikacharState extends State<Pikachar> {
+  ScrollController _scrollController = ScrollController();
   final Repository repository = Repository();
   final PublishSubject<bool> refreshUI = PublishSubject<bool>();
   List<String> userAnswer;
@@ -29,6 +30,16 @@ class _PikacharState extends State<Pikachar> {
   List<String> options;
   String answer;
   bool isHintTaken = false;
+
+  void scrollToTop() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0.0,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
+  }
 
   void showPhoto(BuildContext context, String tag, String imageSrc) {
     Navigator.push(
@@ -61,6 +72,7 @@ class _PikacharState extends State<Pikachar> {
     userAnswer = List.generate(answerLength, (int index) => '');
     disabledOption = List.generate(options.length, (int index) => false);
     Fluttertoast.showToast(msg: '${question.answer.toUpperCase()}');
+    scrollToTop();
   }
 
   checkAns() async {
@@ -432,6 +444,7 @@ class _PikacharState extends State<Pikachar> {
               if (snapshot.hasData) {
                 if (CacheData.userInfo.questionState < 100) {
                   return ListView(
+                    controller: _scrollController,
                     padding: EdgeInsets.all(10),
                     children: <Widget>[
                       pikView(question: snapshot.data),
@@ -467,10 +480,12 @@ class _PikacharState extends State<Pikachar> {
             if (snapshot.hasData && CacheData.userInfo.questionState < 100) {
               return FloatingActionButton(
                 onPressed: chooseHint,
+                backgroundColor: Theme.of(context).primaryColor,
                 tooltip: 'Get Hint',
                 child: Icon(
                   Icons.help_outline,
                   size: 32,
+                  color: Colors.black,
                 ),
               );
             }

@@ -29,6 +29,27 @@ class AuthApiProvider {
     }
     throw json.decode(response.body)['err'] ?? 'Error to Login';
   }
+  
+  Future<User> editUser({
+    @required String mobileNo,
+    @required String username,
+  }) async {
+    Map<String, dynamic> reqData = {
+      'contactNumber': mobileNo,
+      'username': username,
+    };
+    final response = await client.post(
+      '$apiUrl/profileUpdate',
+      body: json.encode(reqData),
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      debugPrint('edit data ${response.body}');
+      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
+      return User.fromJson(json.decode(response.body));
+    }
+    throw json.decode(response.body)['err'] ?? 'Error to Edit User';
+  }
 
   Future<bool> sendOtp({
     @required String mobileNo,

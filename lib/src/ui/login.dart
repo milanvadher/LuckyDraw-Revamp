@@ -34,11 +34,12 @@ class _LoginPageState extends State<LoginPage> {
         CacheData.userInfo = user;
         await FirebaseNotification.setupNotification();
         Loading.hide(context);
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => HomePage(),
           ),
+          (_) => false,
         );
       } catch (e) {
         Loading.hide(context);

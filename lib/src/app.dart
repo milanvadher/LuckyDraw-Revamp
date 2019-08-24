@@ -17,10 +17,10 @@ class _MyAppState extends State<MyApp> {
 
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.orangeAccent,
+    primaryColor: Colors.cyan,
     fontFamily: 'GoogleSans',
     buttonTheme: ButtonThemeData(
-      buttonColor: Colors.orangeAccent,
+      buttonColor: Colors.cyan,
       textTheme: ButtonTextTheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(5)),

@@ -71,12 +71,7 @@ class _AssignCouponState extends State<AssignCoupon> {
                   0,
                 ]);
               },
-              child: Text(
-                'Assign',
-                style: Theme.of(context).textTheme.subhead.copyWith(
-                      color: Colors.black,
-                    ),
-              ),
+              child: Text('Assign'),
             ),
           ),
         ],

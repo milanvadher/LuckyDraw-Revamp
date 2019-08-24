@@ -20,6 +20,17 @@ class Repository {
       password: password,
     );
   }
+  
+  // Edit User
+  Future<User> editUser({
+    @required String mobileNo,
+    @required String username,
+  }) {
+    return _authApiProvider.editUser(
+      mobileNo: mobileNo,
+      username: username,
+    );
+  }
 
   // Send OTP
   Future<bool> sendOtp({

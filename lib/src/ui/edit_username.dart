@@ -2,48 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:lucky_draw_revamp/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EditProfilePage extends StatefulWidget {
-  final String mobileNo;
-
-  const EditProfilePage({Key key, @required this.mobileNo}) : super(key: key);
+class EditUserName extends StatefulWidget {
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  _EditUserNameState createState() => _EditUserNameState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditUserNameState extends State<EditUserName> {
   final PublishSubject<bool> autoValidate = PublishSubject<bool>();
-  final passwordController = TextEditingController();
-  final registerFormKey = GlobalKey<FormState>();
-  String username, password, verifyPassword;
+  final editUsernameFormKey = GlobalKey<FormState>();
+  String username;
   Repository repository = Repository();
 
-  void register() async {
-    if (registerFormKey.currentState.validate()) {
+  void save() async {
+    if (editUsernameFormKey.currentState.validate()) {
       try {
         Loading.show(context);
-        registerFormKey.currentState.save();
-        User user = await repository.register(
-          mobileNo: widget.mobileNo,
+        editUsernameFormKey.currentState.save();
+        User user = await repository.editUser(
+          mobileNo: CacheData.userInfo.contactNumber,
           username: username,
-          password: password,
         );
         CacheData.userInfo = user;
+        Fluttertoast.showToast(
+          msg: 'Updated Successfully',
+          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
+        );
         Loading.hide(context);
         Navigator.pop(context);
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-          (_) => false,
-        );
       } catch (e) {
         Loading.hide(context);
         Fluttertoast.showToast(
@@ -58,19 +50,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Widget registerForm() {
+  Widget editUsernameForm() {
     return StreamBuilder(
       initialData: false,
       stream: autoValidate,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Form(
-          key: registerFormKey,
+          key: editUsernameFormKey,
           autovalidate: snapshot.data,
           child: Column(
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(bottom: 10),
                 child: TextFormField(
+                  initialValue: CacheData.userInfo.username,
                   decoration: InputDecoration(
                     labelText: 'Username',
                     hintText: 'Enter your Username',
@@ -85,52 +78,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 10),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your Password',
-                    prefixIcon: Icon(Icons.security),
-                  ),
-                  controller: passwordController,
-                  validator: Validation.password,
-                  onSaved: (value) {
-                    password = value;
-                  },
-                  obscureText: true,
-                  keyboardType: TextInputType.text,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Verify Password',
-                    hintText: 'Enter your Password',
-                    prefixIcon: Icon(Icons.security),
-                  ),
-                  validator: (String value) {
-                    return Validation.verifyPassword(
-                      passwordController.text,
-                      value,
-                    );
-                  },
-                  onSaved: (value) {
-                    verifyPassword = value;
-                  },
-                  obscureText: true,
-                  keyboardType: TextInputType.text,
-                ),
-              ),
-              Container(
                 child: ButtonBar(
                   alignment: MainAxisAlignment.end,
                   children: <Widget>[
                     RaisedButton(
                       onPressed: () {
-                        register();
+                        save();
                       },
-                      child: Text('Register'),
+                      child: Text('Update'),
                     ),
                   ],
                 ),
@@ -157,9 +112,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           children: <Widget>[
             CommonWidget.authTopPortion(
               context: context,
-              title: 'Register',
+              title: 'Update',
             ),
-            registerForm(),
+            editUsernameForm(),
           ],
         ),
       ),

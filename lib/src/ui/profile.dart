@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/ui/edit_username.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
@@ -15,10 +16,29 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
-  Widget buildUserInfo({@required String title, @required String description}) {
-    return ListTile(
-      title: Text('$title'),
-      subtitle: Text('$description'),
+  editUsername() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditUserName(),
+      ),
+    );
+  }
+
+  Widget viewUserInfo({
+    @required String title,
+    @required String value,
+  }) {
+    return Card(
+      child: ListTile(
+        title: Text('$title'),
+        trailing: Text(
+          '$value',
+          style: Theme.of(context).textTheme.headline.copyWith(
+                color: Theme.of(context).accentColor,
+              ),
+        ),
+      ),
     );
   }
 
@@ -28,12 +48,6 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: Text('Profile'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              print('Edit Username');
-            },
-          ),
           IconButton(
             icon: Icon(Icons.power_settings_new),
             onPressed: () async {
@@ -55,23 +69,32 @@ class _ProfileState extends State<Profile> {
       ),
       body: SafeArea(
         child: ListView(
+          padding: EdgeInsets.all(10),
           children: <Widget>[
-            buildUserInfo(
-              title: 'Username',
-              description: '${CacheData.userInfo?.username}',
+            // User Card
+            Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text(
+                    '${CacheData.userInfo?.username[0].toUpperCase()}',
+                    style: Theme.of(context).textTheme.headline.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                ),
+                title: Text('${CacheData.userInfo?.username}'),
+                subtitle: Text('${CacheData.userInfo?.contactNumber}'),
+                trailing: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: editUsername,
+                ),
+              ),
             ),
-            buildUserInfo(
-              title: 'Mobile No.',
-              description: '${CacheData.userInfo?.contactNumber}',
-            ),
-            buildUserInfo(
-              title: 'Total Points',
-              description: '${CacheData.userInfo?.points}',
-            ),
-            buildUserInfo(
-              title: 'Solved Questions',
-              description: '${CacheData.userInfo?.questionState} / 100',
-            ),
+            viewUserInfo(
+                title: 'Question Solved',
+                value: '${CacheData.userInfo?.questionState}'),
+            viewUserInfo(
+                title: 'Total Points', value: '${CacheData.userInfo?.points}'),
           ],
         ),
       ),

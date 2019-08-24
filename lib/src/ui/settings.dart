@@ -19,6 +19,7 @@ class _SettingsState extends State<Settings> {
     @required IconData icon,
     Widget trailingWidget,
     Function onTap,
+    bool isUsername = false,
   }) {
     return Column(
       children: <Widget>[
@@ -29,14 +30,30 @@ class _SettingsState extends State<Settings> {
           child: ListTile(
             onTap: onTap,
             leading: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: Icon(
-                icon,
-                color: Colors.white,
+              // backgroundColor: Colors.black54,
+              child: isUsername
+                  ? Text(
+                      '${CacheData.userInfo?.username[0].toUpperCase()}',
+                      style: Theme.of(context).textTheme.headline.copyWith(
+                            color: Colors.black,
+                          ),
+                    )
+                  : Icon(
+                      icon,
+                    ),
+            ),
+            title: Text(
+              '$title',
+              style: TextStyle(
+                color: Colors.black,
               ),
             ),
-            title: Text('$title'),
-            subtitle: Text('$description'),
+            subtitle: Text(
+              '$description',
+              style: TextStyle(
+                color: Colors.grey.shade700,
+              ),
+            ),
             trailing: CircleAvatar(
               radius: trailingWidget != null ? 30 : 0,
               backgroundColor: Colors.transparent,
@@ -60,90 +77,79 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.black,
-        accentColor: Colors.black,
-        buttonTheme: ButtonThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+    return ListView(
+      children: <Widget>[
+        CommonWidget.settingsTitle(context: context, title: 'Profile'),
+        // User Info
+        settingItem(
+          title: '${CacheData.userInfo?.username}',
+          description: '${CacheData.userInfo?.contactNumber}',
+          icon: Icons.person_outline,
+          onTap: navigateToProfile,
+          trailingWidget: IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: Colors.black,
+            ),
+            onPressed: navigateToProfile,
+          ),
+          isUsername: true,
+        ),
+        // Coupons
+        settingItem(
+          title: 'Coupons',
+          description: 'Assign and Un-Assign',
+          icon: Icons.confirmation_number,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CouponPage(),
+              ),
+            );
+          },
+        ),
+        CommonWidget.settingsTitle(context: context, title: 'Settings'),
+        // APP Theme
+        settingItem(
+          title: 'Dark Theme',
+          description: 'Change app theme',
+          icon: Icons.brightness_6,
+          onTap: () async {
+            await Config.changeTheme(isDarkTheme: !CacheData.isDarkTheme);
+          },
+          trailingWidget: StreamBuilder(
+            initialData: CacheData.isDarkTheme,
+            stream: isDarkThemeStream,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<bool> snapshot,
+            ) {
+              return Switch(
+                activeColor: Colors.black54,
+                onChanged: (bool value) async {
+                  await Config.changeTheme(isDarkTheme: value);
+                },
+                value: snapshot.data,
+              );
+            },
           ),
         ),
-      ),
-      child: ListView(
-        children: <Widget>[
-          CommonWidget.settingsTitle(context: context, title: 'Profile'),
-          // User Info
-          settingItem(
-            title: '${CacheData.userInfo?.username}',
-            description: '${CacheData.userInfo?.contactNumber}',
-            icon: Icons.person_outline,
-            onTap: navigateToProfile,
-            trailingWidget: IconButton(
-              icon: Icon(
-                Icons.edit,
-                color: Colors.black,
+        // About US
+        settingItem(
+          title: 'About',
+          description: 'Know more about App OR Send bug report',
+          icon: Icons.settings,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => About(),
               ),
-              onPressed: navigateToProfile,
-            ),
-          ),
-          // Coupons
-          settingItem(
-            title: 'Coupons',
-            description: 'Assign and Un-Assign',
-            icon: Icons.confirmation_number,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CouponPage(),
-                ),
-              );
-            },
-          ),
-          CommonWidget.settingsTitle(context: context, title: 'Settings'),
-          // APP Theme
-          settingItem(
-            title: 'Dark Theme',
-            description: 'Change app theme',
-            icon: Icons.brightness_6,
-            onTap: () async {
-              await Config.changeTheme(isDarkTheme: !CacheData.isDarkTheme);
-            },
-            trailingWidget: StreamBuilder(
-              initialData: CacheData.isDarkTheme,
-              stream: isDarkThemeStream,
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<bool> snapshot,
-              ) {
-                return Switch(
-                  activeColor: Colors.black54,
-                  onChanged: (bool value) async {
-                    await Config.changeTheme(isDarkTheme: value);
-                  },
-                  value: snapshot.data,
-                );
-              },
-            ),
-          ),
-          // About US
-          settingItem(
-            title: 'About',
-            description: 'Know more about App OR Send bug report',
-            icon: Icons.settings,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => About(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

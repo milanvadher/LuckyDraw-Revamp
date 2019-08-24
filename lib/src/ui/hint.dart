@@ -9,7 +9,7 @@ class Hint {
     result = await Navigator.of(context).push(
       PageRouteBuilder(
         barrierDismissible: false,
-        transitionDuration: Duration(milliseconds: 250),
+        transitionDuration: Duration(milliseconds: 500),
         barrierColor: Colors.black87,
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
@@ -33,7 +33,7 @@ class Hint {
                           requiredPoint: '500',
                           returnValue: true,
                           screenHeight: screenHeight,
-                          title: 'Revel Full Answer',
+                          title: 'Reveal Full Answer',
                           color: Colors.greenAccent,
                         ),
                         Divider(
@@ -46,7 +46,7 @@ class Hint {
                           requiredPoint: '50',
                           returnValue: false,
                           screenHeight: screenHeight,
-                          title: 'Revel One Character',
+                          title: 'Reveal One Character',
                           color: Colors.redAccent,
                         ),
                       ],
