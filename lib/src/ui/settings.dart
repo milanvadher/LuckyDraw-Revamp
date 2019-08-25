@@ -30,7 +30,6 @@ class _SettingsState extends State<Settings> {
           child: ListTile(
             onTap: onTap,
             leading: CircleAvatar(
-              // backgroundColor: Colors.black54,
               child: isUsername
                   ? Text(
                       '${CacheData.userInfo?.username[0].toUpperCase()}',
@@ -51,7 +50,7 @@ class _SettingsState extends State<Settings> {
             subtitle: Text(
               '$description',
               style: TextStyle(
-                color: Colors.grey.shade700,
+                color: Colors.grey.shade700.withAlpha(180),
               ),
             ),
             trailing: CircleAvatar(

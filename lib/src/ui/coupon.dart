@@ -16,7 +16,7 @@ class CouponPage extends StatefulWidget {
 class _CouponPageState extends State<CouponPage> {
   Repository repository = Repository();
 
-  assignCoupon(int coupon) async {
+  void assignCoupon(int coupon) async {
     List<int> assignDate = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -30,7 +30,7 @@ class _CouponPageState extends State<CouponPage> {
       try {
         Loading.show(context);
         await repository.assignCoupon(coupon: coupon, date: assignDate);
-        bloc.getUserCoupon();
+        await bloc.getUserCoupon();
         Loading.hide(context);
       } catch (e) {
         Loading.hide(context);
@@ -61,65 +61,73 @@ class _CouponPageState extends State<CouponPage> {
           stream: bloc.couponsList,
           builder: (BuildContext context, AsyncSnapshot<Coupon> snapshot) {
             if (snapshot.hasData) {
-              return ListView(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      'Your Earned Coupons:',
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: Theme.of(context).primaryColor,
-                          ),
+              if (snapshot.data.earnedTickets.length > 0 ||
+                  snapshot.data.ticketMapping.length > 0) {
+                return ListView(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(
+                        'Your Earned Coupons:',
+                        style: Theme.of(context).textTheme.subtitle.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                      ),
                     ),
-                  ),
-                  Column(
-                    children: snapshot.data.earnedTickets.map((coupon) {
-                      return Card(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            child: Icon(Icons.confirmation_number),
+                    Column(
+                      children: snapshot.data.earnedTickets.map((coupon) {
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: Icon(Icons.confirmation_number),
+                            ),
+                            title: Text(
+                              '🎫 Coupon - $coupon',
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                            trailing: OutlineButton(
+                              textColor: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                print('Assign Coupon $coupon');
+                                assignCoupon(coupon);
+                              },
+                              child: Text('Assign'),
+                            ),
                           ),
-                          title: Text(
-                            '🎫 Coupon - $coupon',
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          trailing: OutlineButton(
-                            textColor: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              print('Assign Coupon $coupon');
-                              assignCoupon(coupon);
-                            },
-                            child: Text('Assign'),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Assigned Coupons:',
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: Theme.of(context).primaryColor,
-                          ),
+                        );
+                      }).toList(),
                     ),
-                  ),
-                  Column(
-                    children: snapshot.data.ticketMapping.map((coupon) {
-                      return Card(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            child: Icon(Icons.confirmation_number),
+                    ListTile(
+                      title: Text(
+                        'Assigned Coupons:',
+                        style: Theme.of(context).textTheme.subtitle.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                      ),
+                    ),
+                    Column(
+                      children: snapshot.data.ticketMapping.map((coupon) {
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: Icon(Icons.confirmation_number),
+                            ),
+                            title: Text(
+                              '🎫 Coupon - ${coupon.ticketNo}',
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                            subtitle: Text(
+                                '📅 ${couponDateFormat.format(DateTime.parse(coupon.assignDate))}'),
                           ),
-                          title: Text(
-                            '🎫 Coupon - ${coupon.ticketNo}',
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          subtitle: Text(
-                              '📅 ${couponDateFormat.format(DateTime.parse(coupon.assignDate))}'),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                );
+              }
+              return CommonWidget.displayNoData(
+                context: context,
+                msg:
+                    'No Coupons Available\nYou can earn coupon by solving question',
               );
             }
             if (snapshot.hasError) {

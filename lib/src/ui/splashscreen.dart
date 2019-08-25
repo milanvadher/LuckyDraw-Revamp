@@ -16,6 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isLogin) {
       homepage = HomePage();
     }
+    await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => homepage),
