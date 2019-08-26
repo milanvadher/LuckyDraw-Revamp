@@ -9,7 +9,7 @@ class FirebaseNotification {
       getIosPermission();
     }
     String token = await _fcm.getToken();
-    print('Notification Registerd :: $token');
+    print('Firebase Notification Token :: $token');
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -25,7 +25,12 @@ class FirebaseNotification {
 
   static getIosPermission() {
     _fcm.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true));
+      IosNotificationSettings(
+        sound: true,
+        badge: true,
+        alert: true,
+      ),
+    );
     _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
