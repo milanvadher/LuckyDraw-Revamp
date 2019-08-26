@@ -40,3 +40,6 @@ final List<TimeOfDay> slots = <TimeOfDay>[
 // SharedPref keys
 const String userDataKey = 'userData';
 const String darkModeKey = 'isDarkMode';
+
+// Custom Spashscreen ON/OFF
+const bool isCustomSpashScreen = false;
