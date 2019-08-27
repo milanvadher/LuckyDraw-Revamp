@@ -1,24 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 import 'package:lucky_draw_revamp/src/model/coupon.dart';
+import 'package:lucky_draw_revamp/src/repository/app_api.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import '../utils/constant.dart';
-import 'package:http/http.dart' show Client;
 
 class CouponsApiProvider {
-  Client client = Client();
-
   Future<Coupon> getUserCoupons() async {
     Map<String, dynamic> reqData = {
       'contactNumber': CacheData.userInfo?.contactNumber,
     };
-    final response = await client.post(
-      '$apiUrl/getUserTickets',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'getUserTickets',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('getUserTickets ${response.body}');
       return Coupon.fromJson(json.decode(response.body));
     }
     throw json.decode(response.body)['err'] ?? 'Error to Get User coupons';
@@ -31,13 +27,11 @@ class CouponsApiProvider {
       'contactNumber': CacheData.userInfo?.contactNumber,
       'questionState': questionState,
     };
-    final response = await client.post(
-      '$apiUrl/generateTicket',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'generateTicket',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('generateTicket ${response.body}');
       return json.decode(response.body)['msg'];
     }
     throw json.decode(response.body)['err'] ?? 'Error to Generate coupon';
@@ -52,13 +46,11 @@ class CouponsApiProvider {
       'ticket': coupon,
       'date': date,
     };
-    final response = await client.post(
-      '$apiUrl/mapTicket',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'mapTicket',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('mapTicket ${response.body}');
       return Coupon.fromJson(json.decode(response.body));
     }
     throw json.decode(response.body)['err'] ?? 'Error to Assign coupon';

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
 import '../utils/constant.dart';
-import 'package:http/http.dart' show Client;
+import 'app_api.dart';
 
 class AuthApiProvider {
   Client client = Client();
@@ -17,13 +18,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'password': password,
     };
-    final response = await client.post(
-      '$apiUrl/login',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'login',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('login data ${response.body}');
       await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
@@ -38,13 +37,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'username': username,
     };
-    final response = await client.post(
-      '$apiUrl/profileUpdate',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'profileUpdate',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('edit data ${response.body}');
       await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
@@ -59,13 +56,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'otp': otp,
     };
-    final response = await client.post(
-      '$apiUrl/otp',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'otp',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('otp data ${response.body}');
       return json.decode(response.body)['isNewUser'];
     }
     throw json.decode(response.body)['err'] ?? 'Error to Send OTP';
@@ -81,13 +76,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'password': password,
     };
-    final response = await client.post(
-      '$apiUrl/register',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'register',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('register data ${response.body}');
       await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
@@ -102,13 +95,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'password': password,
     };
-    final response = await client.post(
-      '$apiUrl/forgotPassword',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'forgotPassword',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('forgotPassword data ${response.body}');
       await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
@@ -124,13 +115,11 @@ class AuthApiProvider {
       'points': points,
       'questionState': questionState,
     };
-    final response = await client.post(
-      '$apiUrl/saveUserData',
-      body: json.encode(reqData),
-      headers: headers,
+    Response response = await AppApi.postApi(
+      apiEndPoint: 'saveUserData',
+      reqData: reqData,
     );
     if (response.statusCode == 200) {
-      debugPrint('saveUserData ${response.body}');
       await Config.saveObjectJson('$userDataKey', json.decode(response.body));
       return User.fromJson(json.decode(response.body));
     }
