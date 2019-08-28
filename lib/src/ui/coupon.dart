@@ -5,7 +5,6 @@ import 'package:lucky_draw_revamp/src/model/coupon.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
 import 'package:lucky_draw_revamp/src/ui/assign_coupon.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 
 class CouponPage extends StatefulWidget {

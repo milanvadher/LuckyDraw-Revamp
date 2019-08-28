@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/config.dart';
-import '../utils/constant.dart';
 import 'app_api.dart';
 
 class AuthApiProvider {
@@ -18,17 +15,13 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'password': password,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'login',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => User.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'login',
     );
-    if (response.statusCode == 200) {
-      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
-      return User.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Login';
   }
-  
+
   Future<User> editUser({
     @required String mobileNo,
     @required String username,
@@ -37,15 +30,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'username': username,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'profileUpdate',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => User.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'profileUpdate',
     );
-    if (response.statusCode == 200) {
-      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
-      return User.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Edit User';
   }
 
   Future<bool> sendOtp({
@@ -56,14 +45,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'otp': otp,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'otp',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => json['isNewUser'],
       reqData: reqData,
+      apiEndPoint: 'otp',
     );
-    if (response.statusCode == 200) {
-      return json.decode(response.body)['isNewUser'];
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Send OTP';
   }
 
   Future<User> registerUser({
@@ -76,15 +62,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'password': password,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'register',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => User.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'register',
     );
-    if (response.statusCode == 200) {
-      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
-      return User.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Register';
   }
 
   Future<User> resetPassword({
@@ -95,15 +77,11 @@ class AuthApiProvider {
       'contactNumber': mobileNo,
       'password': password,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'forgotPassword',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => User.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'forgotPassword',
     );
-    if (response.statusCode == 200) {
-      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
-      return User.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Reset Password';
   }
 
   Future<User> saveUserData({
@@ -115,14 +93,10 @@ class AuthApiProvider {
       'points': points,
       'questionState': questionState,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'saveUserData',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => User.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'saveUserData',
     );
-    if (response.statusCode == 200) {
-      await Config.saveObjectJson('$userDataKey', json.decode(response.body));
-      return User.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Save User Data';
   }
 }

@@ -42,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
           (_) => false,
         );
       } catch (e) {
+        print('e');
+        print(e);
         Loading.hide(context);
         Fluttertoast.showToast(
           msg: '$e',

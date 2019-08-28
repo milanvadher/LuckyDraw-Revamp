@@ -13,6 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   initData() async {
     Widget homepage = LoginPage();
     bool isLogin = await Config.isLogin();
+    // await AppSettings.checkForUpdate(context);
     if (isLogin) {
       homepage = HomePage();
     }

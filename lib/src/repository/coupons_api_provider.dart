@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
 import 'package:lucky_draw_revamp/src/model/coupon.dart';
 import 'package:lucky_draw_revamp/src/repository/app_api.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
@@ -10,14 +8,11 @@ class CouponsApiProvider {
     Map<String, dynamic> reqData = {
       'contactNumber': CacheData.userInfo?.contactNumber,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'getUserTickets',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => Coupon.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'getUserTickets',
     );
-    if (response.statusCode == 200) {
-      return Coupon.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Get User coupons';
   }
 
   Future<String> generateCoupon({
@@ -27,14 +22,11 @@ class CouponsApiProvider {
       'contactNumber': CacheData.userInfo?.contactNumber,
       'questionState': questionState,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'generateTicket',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => json['msg'],
       reqData: reqData,
+      apiEndPoint: 'generateTicket',
     );
-    if (response.statusCode == 200) {
-      return json.decode(response.body)['msg'];
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Generate coupon';
   }
 
   Future<Coupon> assignCoupon({
@@ -46,13 +38,10 @@ class CouponsApiProvider {
       'ticket': coupon,
       'date': date,
     };
-    Response response = await AppApi.postApi(
-      apiEndPoint: 'mapTicket',
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => Coupon.fromJson(json),
       reqData: reqData,
+      apiEndPoint: 'mapTicket',
     );
-    if (response.statusCode == 200) {
-      return Coupon.fromJson(json.decode(response.body));
-    }
-    throw json.decode(response.body)['err'] ?? 'Error to Assign coupon';
   }
 }

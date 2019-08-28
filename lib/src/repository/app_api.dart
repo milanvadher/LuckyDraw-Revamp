@@ -1,11 +1,56 @@
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import '../utils/constant.dart';
 import 'package:http/http.dart' show Client;
 
 class AppApi {
   static Client client = Client();
+
+  static Future<dynamic> postApiWithParseRes({
+    @required String apiEndPoint,
+    @required Map<String, dynamic> reqData,
+    @required Function fromJson,
+    Map<String, String> headers = headers,
+    bool throwError = true,
+  }) async {
+    Response response = await AppApi.postApi(
+      apiEndPoint: apiEndPoint,
+      reqData: reqData,
+    );
+    if (response.statusCode == 200) {
+      return fromJson(json.decode(response.body));
+    }
+    if (throwError) {
+      var decodedJson = tryDecode(response.body);
+      throw decodedJson != null
+          ? (decodedJson['err'] ?? '$defaultError')
+          : '$defaultError';
+    }
+    return null;
+  }
+
+  static Future<dynamic> getApiWithParseRes({
+    @required String apiEndPoint,
+    @required Function fromJson,
+    Map<String, String> headers = headers,
+    bool throwError = true,
+  }) async {
+    Response response = await AppApi.getApi(
+      apiEndPoint: apiEndPoint,
+    );
+    if (response.statusCode == 200) {
+      return fromJson(json.decode(response.body));
+    }
+    if (throwError) {
+      var decodedJson = tryDecode(response.body);
+      throw decodedJson != null
+          ? (decodedJson['err'] ?? '$defaultError')
+          : '$defaultError';
+    }
+    return null;
+  }
 
   static Future<Response> postApi({
     @required String apiEndPoint,
@@ -18,7 +63,7 @@ class AppApi {
       body: json.encode(reqData),
       headers: headers,
     );
-    print('Response from $apiEndPoint :: $response');
+    print('Response from $apiEndPoint :: ${response.body}');
     return response;
   }
 
@@ -30,7 +75,16 @@ class AppApi {
       '$apiUrl/$apiEndPoint',
       headers: headers,
     );
-    print('Response from $apiEndPoint :: $response');
+    print(
+        'Response from $apiEndPoint :: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
     return response;
+  }
+
+  static dynamic tryDecode(String jsonStr) {
+    try {
+      return json.decode(jsonStr);
+    } catch (e) {
+      return null;
+    }
   }
 }
