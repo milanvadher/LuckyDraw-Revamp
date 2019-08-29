@@ -12,6 +12,7 @@ const Map<String, String> headers = {'content-type': 'application/json'};
 const String playStoreBaseURL =
     'https://play.google.com/store/apps/details?id=';
 const String appStoreURL = 'https://itunes.apple.com/app/id1457589389';
+const String youthWebsiteURL = 'https://youth.dadabhagwan.org/';
 
 // Contact Details
 const String contactEmailId = 'gncapps@googlegroups.com';

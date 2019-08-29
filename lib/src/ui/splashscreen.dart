@@ -1,12 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/ui/home.dart';
-import 'package:lucky_draw_revamp/src/ui/login.dart';
+import 'package:lucky_draw_revamp/src/ui/app_selection.dart';
 import 'package:lucky_draw_revamp/src/ui/no_internet.dart';
 import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/config.dart';
 import 'package:connectivity/connectivity.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -47,16 +46,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   processAhead() async {
-    bool isLogin = await Config.isLogin();
     await AppSettings.getAppSettings();
-    Widget homepage = LoginPage();
-    if (isLogin) {
-      homepage = HomePage();
-    }
-    Navigator.pushReplacement(
+    // if (CacheData.appSetting != null &&
+    //     CacheData.appSetting.isLuckyDrawActive) {
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => homepage),
+      MaterialPageRoute(
+        builder: (context) => AppSelection(),
+      ),
+      (_) => false,
     );
+    // } else {
+    //   CommonFunction.openYouthWebsite();
+    // }
   }
 
   @override

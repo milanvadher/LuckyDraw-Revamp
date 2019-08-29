@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/model/app_setting.dart';
 import 'package:lucky_draw_revamp/src/model/version.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
