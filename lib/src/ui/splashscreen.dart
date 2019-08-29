@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/app_selection.dart';
 import 'package:lucky_draw_revamp/src/ui/no_internet.dart';
 import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:connectivity/connectivity.dart';
 
