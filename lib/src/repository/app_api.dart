@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
@@ -15,20 +16,25 @@ class AppApi {
     Map<String, String> headers = headers,
     bool throwError = true,
   }) async {
-    Response response = await AppApi.postApi(
-      apiEndPoint: apiEndPoint,
-      reqData: reqData,
-    );
-    if (response.statusCode == 200) {
-      return fromJson(json.decode(response.body));
+    try {
+      Response response = await AppApi.postApi(
+        apiEndPoint: apiEndPoint,
+        reqData: reqData,
+      );
+      if (response.statusCode == 200) {
+        return fromJson(json.decode(response.body));
+      }
+      if (throwError) {
+        var decodedJson = tryDecode(response.body);
+        throw decodedJson != null
+            ? (decodedJson['err'] ?? '$defaultError')
+            : '$defaultError';
+      }
+    } on SocketException {
+      throw 'Please connect Internet';
+    } catch (e) {
+      throw e;
     }
-    if (throwError) {
-      var decodedJson = tryDecode(response.body);
-      throw decodedJson != null
-          ? (decodedJson['err'] ?? '$defaultError')
-          : '$defaultError';
-    }
-    return null;
   }
 
   static Future<dynamic> getApiWithParseRes({
@@ -37,19 +43,24 @@ class AppApi {
     Map<String, String> headers = headers,
     bool throwError = true,
   }) async {
-    Response response = await AppApi.getApi(
-      apiEndPoint: apiEndPoint,
-    );
-    if (response.statusCode == 200) {
-      return fromJson(json.decode(response.body));
+    try {
+      Response response = await AppApi.getApi(
+        apiEndPoint: apiEndPoint,
+      );
+      if (response.statusCode == 200) {
+        return fromJson(json.decode(response.body));
+      }
+      if (throwError) {
+        var decodedJson = tryDecode(response.body);
+        throw decodedJson != null
+            ? (decodedJson['err'] ?? '$defaultError')
+            : '$defaultError';
+      }
+    } on SocketException {
+      throw 'Please connect Internet';
+    } catch (e) {
+      throw e;
     }
-    if (throwError) {
-      var decodedJson = tryDecode(response.body);
-      throw decodedJson != null
-          ? (decodedJson['err'] ?? '$defaultError')
-          : '$defaultError';
-    }
-    return null;
   }
 
   static Future<Response> postApi({

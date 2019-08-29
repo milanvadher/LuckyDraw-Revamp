@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/ui/login.dart';
 import 'package:lucky_draw_revamp/src/ui/no_internet.dart';
-import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
 import 'package:connectivity/connectivity.dart';
@@ -47,13 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   processAhead() async {
-    Widget homepage = LoginPage();
     bool isLogin = await Config.isLogin();
+    Widget homepage = LoginPage();
     if (isLogin) {
-      bool isUpdateAvailable = await AppSettings.checkForUpdate(context);
-      homepage = HomePage(
-        isUpdateAvailable: isUpdateAvailable,
-      );
+      homepage = HomePage();
     }
     Navigator.pushReplacement(
       context,

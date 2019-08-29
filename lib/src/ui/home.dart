@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/front_page.dart';
 import 'package:lucky_draw_revamp/src/ui/settings.dart';
-import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
 import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 
 class HomePage extends StatefulWidget {
-  final bool isUpdateAvailable;
-
-  const HomePage({Key key, this.isUpdateAvailable}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -76,9 +72,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    if (widget.isUpdateAvailable) {
-      AppSettings.showUpdateDialog(context: context);
-    }
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
