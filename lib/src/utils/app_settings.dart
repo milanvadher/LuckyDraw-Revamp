@@ -20,7 +20,7 @@ class AppSettings {
     return packageInfo.packageName;
   }
 
-  static checkForUpdate(BuildContext context) async {
+  static Future<bool> checkForUpdate(BuildContext context) async {
     try {
       Repository repository = Repository();
       AppSetting appSetting = await repository.getAppSettings();
@@ -29,9 +29,10 @@ class AppSettings {
         Version currentVersion = Version(version: appVersion);
         Version playStoreVersion = Version(version: appSetting.version);
         if (playStoreVersion.compareTo(currentVersion) > 0) {
-          showUpdateDialog(context: context);
+          return true;
         }
       }
+      return false;
     } catch (e) {
       Fluttertoast.showToast(
         msg: '$e',
@@ -39,6 +40,7 @@ class AppSettings {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
       );
+      return false;
     }
   }
 

@@ -43,4 +43,4 @@ const String userDataKey = 'userData';
 const String darkModeKey = 'isDarkMode';
 
 // Custom Spashscreen ON/OFF
-const bool isCustomSpashScreen = false;
+const bool isCustomSpashScreen = true;
