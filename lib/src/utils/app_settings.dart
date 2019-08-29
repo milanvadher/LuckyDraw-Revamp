@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lucky_draw_revamp/src/model/app_setting.dart';
 import 'package:lucky_draw_revamp/src/model/version.dart';
 import 'package:lucky_draw_revamp/src/repository/repository.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,27 +21,25 @@ class AppSettings {
     return packageInfo.packageName;
   }
 
-  static Future<bool> checkForUpdate(BuildContext context) async {
+  static Future<bool> get isUpdateAvailable async {
+    if (CacheData.appSetting.version != null) {
+      String appVersion = await AppSettings.appVersion;
+      Version currentVersion = Version(version: appVersion);
+      Version playStoreVersion = Version(version: CacheData.appSetting.version);
+      if (playStoreVersion.compareTo(currentVersion) > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static Future<void> getAppSettings() async {
     try {
       Repository repository = Repository();
       AppSetting appSetting = await repository.getAppSettings();
-      if (appSetting.version != null) {
-        String appVersion = await AppSettings.appVersion;
-        Version currentVersion = Version(version: appVersion);
-        Version playStoreVersion = Version(version: appSetting.version);
-        if (playStoreVersion.compareTo(currentVersion) > 0) {
-          return true;
-        }
-      }
-      return false;
+      CacheData.appSetting = appSetting;
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: '$e',
-        backgroundColor: Colors.red,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
-      return false;
+      debugPrint('Error To Get AppSettings $e');
     }
   }
 
