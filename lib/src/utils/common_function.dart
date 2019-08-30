@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:lucky_draw_revamp/src/ui/youth_website.dart';
 
 class CommonFunction {
   static Future<bool> onWillPop({
@@ -28,9 +27,12 @@ class CommonFunction {
         false;
   }
 
-  static openYouthWebsite() async {
-    if (await canLaunch('$youthWebsiteURL')) {
-      launch('$youthWebsiteURL', forceWebView: true);
-    }
+  static openYouthWebsite({@required BuildContext context}) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => YouthWebsite(),
+      ),
+    );
   }
 }

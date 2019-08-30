@@ -58,9 +58,12 @@ class _FrontPageState extends State<FrontPage> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
-            child: Image.asset(
-              'images/logo.png',
-              height: 150,
+            child: Hero(
+              tag: 'lucky_draw',
+              child: Image.asset(
+                'images/logo.png',
+                height: 150,
+              ),
             ),
           ),
           Container(

@@ -4,6 +4,7 @@ import 'package:lucky_draw_revamp/src/ui/about.dart';
 import 'package:lucky_draw_revamp/src/ui/coupon.dart';
 import 'package:lucky_draw_revamp/src/ui/profile.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
 
@@ -20,6 +21,8 @@ class _SettingsState extends State<Settings> {
     Widget trailingWidget,
     Function onTap,
     bool isUsername = false,
+    bool isThreeLine = false,
+    bool isYouthWebsite = false,
   }) {
     return Column(
       children: <Widget>[
@@ -28,6 +31,7 @@ class _SettingsState extends State<Settings> {
           padding: EdgeInsets.all(0),
           onPressed: () {},
           child: ListTile(
+            isThreeLine: isThreeLine,
             onTap: onTap,
             leading: CircleAvatar(
               child: isUsername
@@ -37,9 +41,16 @@ class _SettingsState extends State<Settings> {
                             color: Colors.black,
                           ),
                     )
-                  : Icon(
-                      icon,
-                    ),
+                  : !isYouthWebsite
+                      ? Icon(
+                          icon,
+                        )
+                      : Hero(
+                          tag: 'youth_website',
+                          child: Image(
+                            image: AssetImage('images/youth_logo.png'),
+                          ),
+                        ),
             ),
             title: Text(
               '$title',
@@ -146,6 +157,17 @@ class _SettingsState extends State<Settings> {
                 builder: (context) => About(),
               ),
             );
+          },
+        ),
+        // Youth Website
+        settingItem(
+          title: 'Youth Website',
+          description: 'Spiritual guidance for our everyday challenges',
+          isThreeLine: true,
+          icon: Icons.ac_unit,
+          isYouthWebsite: true,
+          onTap: () {
+            CommonFunction.openYouthWebsite(context: context);
           },
         ),
       ],

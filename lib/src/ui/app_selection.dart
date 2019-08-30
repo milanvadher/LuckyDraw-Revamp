@@ -13,8 +13,9 @@ class AppSelection extends StatefulWidget {
 class _AppSelectionState extends State<AppSelection> {
   goToLuckyDraw() async {
     Loading.show(context);
-    bool isLogin = await Config.isLogin();
     Widget homepage = LoginPage();
+    bool isLogin = await Config.isLogin();
+    print('IsLOGIN $isLogin');
     if (isLogin) {
       homepage = HomePage();
     }
@@ -29,48 +30,52 @@ class _AppSelectionState extends State<AppSelection> {
   }
 
   navigateToYouthWebsite() {
-    CommonFunction.openYouthWebsite();
+    CommonFunction.openYouthWebsite(context: context);
   }
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height - 25;
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: ListView(
+          padding: EdgeInsets.all(10),
           children: <Widget>[
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: screenHeight - 25,
+            Container(
+              margin: EdgeInsets.all(25),
+              child: Text(
+                'Select Any One',
+                style: Theme.of(context).textTheme.display1,
+                textAlign: TextAlign.center,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  createHint(
-                    context: context,
-                    icon: Icons.outlined_flag,
-                    screenHeight: screenHeight,
-                    title: 'Youth App',
-                    color: Colors.greenAccent,
-                    navigateTo: navigateToYouthWebsite,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                selectionCard(
+                  context: context,
+                  image: Hero(
+                    tag: 'lucky_draw',
+                    child: Image(
+                      image: AssetImage('images/logo.png'),
+                    ),
                   ),
-                  Divider(
-                    height: 0,
-                    color: Colors.white,
+                  title: 'LuckyDraw',
+                  onTap: goToLuckyDraw,
+                ),
+                selectionCard(
+                  context: context,
+                  image: Hero(
+                    tag: 'youth_website',
+                    child: Image(
+                      image: AssetImage('images/youth_logo.png'),
+                    ),
                   ),
-                  createHint(
-                    context: context,
-                    icon: Icons.camera,
-                    screenHeight: screenHeight,
-                    title: 'LuckyDraw - JJ112',
-                    color: Colors.redAccent,
-                    navigateTo: goToLuckyDraw,
-                  ),
-                ],
-              ),
+                  title: 'Youth Website',
+                  onTap: navigateToYouthWebsite,
+                ),
+              ],
             )
           ],
         ),
@@ -79,40 +84,43 @@ class _AppSelectionState extends State<AppSelection> {
   }
 }
 
-Widget createHint({
+Widget selectionCard({
   @required BuildContext context,
-  @required double screenHeight,
-  @required IconData icon,
+  @required Widget image,
   @required String title,
-  @required Function navigateTo,
-  Color color,
+  @required Function onTap,
 }) {
-  return InkWell(
-    child: Container(
-      height: screenHeight / 2,
-      alignment: Alignment.center,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            icon,
-            color: color ?? Colors.white,
-            size: 70,
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20, left: 15, right: 15),
-            child: Text(
-              '$title',
-              style: Theme.of(context).textTheme.display1.copyWith(
-                    color: Colors.white,
-                  ),
-              textAlign: TextAlign.center,
+  return ConstrainedBox(
+    constraints: BoxConstraints(
+      minHeight: 225,
+      minWidth: 225,
+    ),
+    child: Card(
+      margin: EdgeInsets.all(12),
+      child: InkWell(
+        onTap: () {
+          onTap();
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 70,
+              width: 70,
+              child: image,
             ),
-          ),
-        ],
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.headline,
+              ),
+            )
+          ],
+        ),
       ),
     ),
-    onTap: navigateTo,
   );
 }

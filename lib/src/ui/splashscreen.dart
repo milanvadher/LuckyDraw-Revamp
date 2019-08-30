@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/app_selection.dart';
 import 'package:lucky_draw_revamp/src/ui/no_internet.dart';
 import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -45,18 +47,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   processAhead() async {
     await AppSettings.getAppSettings();
-    // if (CacheData.appSetting != null &&
-    //     CacheData.appSetting.isLuckyDrawActive) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AppSelection(),
-      ),
-      (_) => false,
-    );
-    // } else {
-    //   CommonFunction.openYouthWebsite();
-    // }
+    if (CacheData.isLuckyDrawActive) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AppSelection(),
+        ),
+        (_) => false,
+      );
+    } else {
+      Navigator.pop(context);
+      CommonFunction.openYouthWebsite(context: context);
+    }
   }
 
   @override

@@ -5,6 +5,8 @@ import 'package:lucky_draw_revamp/src/model/user.dart';
 import 'package:lucky_draw_revamp/src/repository/app_settings_api_provider.dart';
 import 'package:lucky_draw_revamp/src/repository/coupons_api_provider.dart';
 import 'package:lucky_draw_revamp/src/repository/question_api_provider.dart';
+import 'package:lucky_draw_revamp/src/utils/config.dart';
+import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import 'auth_api_provider.dart';
 
 class Repository {
@@ -17,22 +19,26 @@ class Repository {
   Future<User> login({
     @required String mobileNo,
     @required String password,
-  }) {
-    return _authApiProvider.login(
+  }) async {
+    User user = await _authApiProvider.login(
       mobileNo: mobileNo,
       password: password,
     );
+    await Config.saveObjectJson('$userDataKey', user);
+    return user;
   }
 
   // Edit User
   Future<User> editUser({
     @required String mobileNo,
     @required String username,
-  }) {
-    return _authApiProvider.editUser(
+  }) async {
+    User user = await _authApiProvider.editUser(
       mobileNo: mobileNo,
       username: username,
     );
+    await Config.saveObjectJson('$userDataKey', user);
+    return user;
   }
 
   // Send OTP
@@ -63,11 +69,13 @@ class Repository {
   Future<User> resetPassword({
     @required String mobileNo,
     @required String password,
-  }) {
-    return _authApiProvider.resetPassword(
+  }) async {
+    User user = await _authApiProvider.resetPassword(
       mobileNo: mobileNo,
       password: password,
     );
+    await Config.saveObjectJson('$userDataKey', user);
+    return user;
   }
 
   // Get user Coupons
@@ -108,11 +116,13 @@ class Repository {
   Future<User> saveUserData({
     @required int points,
     @required int questionState,
-  }) {
-    return _authApiProvider.saveUserData(
+  }) async {
+    User user = await _authApiProvider.saveUserData(
       points: points,
       questionState: questionState,
     );
+    await Config.saveObjectJson('$userDataKey', user);
+    return user;
   }
 
   Future<AppSetting> getAppSettings() {
