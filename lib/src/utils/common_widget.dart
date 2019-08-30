@@ -19,9 +19,12 @@ class CommonWidget {
         ),
         Container(
           padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
-          child: Image.asset(
-            'images/logo.png',
-            height: 120,
+          child: Hero(
+            tag: 'lucky_draw',
+            child: Image.asset(
+              'images/logo.png',
+              height: 120,
+            ),
           ),
         ),
         Container(

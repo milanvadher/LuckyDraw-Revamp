@@ -37,12 +37,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         CacheData.userInfo = user;
         Loading.hide(context);
         Navigator.pop(context);
-        Navigator.pushAndRemoveUntil(
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => HomePage(),
           ),
-          (_) => false,
         );
       } catch (e) {
         Loading.hide(context);

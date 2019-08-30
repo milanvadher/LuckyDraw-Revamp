@@ -20,12 +20,11 @@ class _AppSelectionState extends State<AppSelection> {
       homepage = HomePage();
     }
     Loading.hide(context);
-    Navigator.pushAndRemoveUntil(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => homepage,
       ),
-      (_) => false,
     );
   }
 
@@ -35,49 +34,54 @@ class _AppSelectionState extends State<AppSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(10),
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(25),
-              child: Text(
-                'Select Any One',
-                style: Theme.of(context).textTheme.display1,
-                textAlign: TextAlign.center,
+    return WillPopScope(
+      onWillPop: () {
+        return CommonFunction.onWillPop(context: context);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.all(10),
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.all(25),
+                child: Text(
+                  'Select Any One',
+                  style: Theme.of(context).textTheme.display1,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                selectionCard(
-                  context: context,
-                  image: Hero(
-                    tag: 'lucky_draw',
-                    child: Image(
-                      image: AssetImage('images/logo.png'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  selectionCard(
+                    context: context,
+                    image: Hero(
+                      tag: 'lucky_draw',
+                      child: Image(
+                        image: AssetImage('images/logo.png'),
+                      ),
                     ),
+                    title: 'LuckyDraw',
+                    onTap: goToLuckyDraw,
                   ),
-                  title: 'LuckyDraw',
-                  onTap: goToLuckyDraw,
-                ),
-                selectionCard(
-                  context: context,
-                  image: Hero(
-                    tag: 'youth_website',
-                    child: Image(
-                      image: AssetImage('images/youth_logo.png'),
+                  selectionCard(
+                    context: context,
+                    image: Hero(
+                      tag: 'youth_website',
+                      child: Image(
+                        image: AssetImage('images/youth_logo.png'),
+                      ),
                     ),
+                    title: 'Youth Website',
+                    onTap: navigateToYouthWebsite,
                   ),
-                  title: 'Youth Website',
-                  onTap: navigateToYouthWebsite,
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
