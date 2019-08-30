@@ -7,9 +7,9 @@ class CacheData {
   static AppSetting appSetting;
 
   static bool get isLuckyDrawActive {
-    if (appSetting != null && appSetting.isLuckyDrawActive) {
-      return true;
+    if (appSetting != null) {
+      return appSetting.isLuckyDrawActive;
     }
-    return true;
+    return false;
   }
 }

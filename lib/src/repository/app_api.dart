@@ -82,7 +82,8 @@ class AppApi {
     @required String apiEndPoint,
     Map<String, String> headers = headers,
   }) async {
-    final response = await client.post(
+    print('Start calling ... /$apiEndPoint');
+    final response = await client.get(
       '$apiUrl/$apiEndPoint',
       headers: headers,
     );
