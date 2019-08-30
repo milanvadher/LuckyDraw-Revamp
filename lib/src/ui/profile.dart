@@ -7,8 +7,6 @@ import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'login.dart';
-
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
