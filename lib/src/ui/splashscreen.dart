@@ -47,18 +47,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   processAhead() async {
     await AppSettings.getAppSettings();
-    if (CacheData.isLuckyDrawActive) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AppSelection(),
-        ),
-        (_) => false,
-      );
-    } else {
-      Navigator.pop(context);
-      CommonFunction.openYouthWebsite(context: context);
-    }
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AppSelection(),
+      ),
+      (_) => false,
+    );
   }
 
   @override

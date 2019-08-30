@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/ui/login.dart';
+import 'package:lucky_draw_revamp/src/ui/youth_website.dart';
+import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
@@ -30,6 +32,20 @@ class _AppSelectionState extends State<AppSelection> {
 
   navigateToYouthWebsite() {
     CommonFunction.openYouthWebsite(context: context);
+  }
+
+  @override
+  void initState() {
+    if (!CacheData.isLuckyDrawActive) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => YouthWebsite(),
+        ),
+        (_) => false,
+      );
+    }
+    super.initState();
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/ui/app_selection.dart';
 import 'package:lucky_draw_revamp/src/ui/edit_username.dart';
 import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
@@ -59,7 +60,7 @@ class _ProfileState extends State<Profile> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginPage(),
+                  builder: (context) => AppSelection(),
                 ),
                 (_) => false,
               );
