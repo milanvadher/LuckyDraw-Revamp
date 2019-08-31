@@ -87,7 +87,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
                   onSaved: (value) {
                     otp = value;
                   },
-                  maxLength: 10,
+                  maxLength: 6,
                   keyboardType: TextInputType.number,
                 ),
               ),

@@ -73,7 +73,6 @@ class _EditUserNameState extends State<EditUserName> {
                   onSaved: (value) {
                     username = value;
                   },
-                  maxLength: 10,
                   keyboardType: TextInputType.text,
                 ),
               ),

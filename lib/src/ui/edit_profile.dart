@@ -79,7 +79,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   onSaved: (value) {
                     username = value;
                   },
-                  maxLength: 10,
                   keyboardType: TextInputType.text,
                 ),
               ),
