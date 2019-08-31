@@ -44,6 +44,8 @@ class YouthWebsite extends StatelessWidget {
         ),
         body: WebView(
           initialUrl: '$youthWebsiteURL',
+          javascriptMode: JavascriptMode.unrestricted,
+          initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
         ),
       ),
     );
