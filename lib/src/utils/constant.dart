@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 
 // API END-POINT
 // const String apiUrl = 'http://3.16.51.94:60371'; // Node URL
-const String apiUrl = 'http://3.16.51.94:3000'; // Python URL
+// const String apiUrl = 'http://3.16.51.94:3000'; // Python URL
+const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000/'; // Live URL
 
 // Fix-Headers
 const Map<String, String> headers = {'content-type': 'application/json'};
