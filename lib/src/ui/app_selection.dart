@@ -43,43 +43,43 @@ class _AppSelectionState extends State<AppSelection> {
           child: ListView(
             padding: EdgeInsets.all(10),
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(25),
-                child: Text(
-                  'Select Any One',
-                  style: Theme.of(context).textTheme.display1,
-                  textAlign: TextAlign.center,
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height - 25,
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      selectionCard(
+                        context: context,
+                        image: Hero(
+                          tag: 'lucky_draw',
+                          child: Image(
+                            image: AssetImage('images/logo.png'),
+                          ),
+                        ),
+                        title: 'LuckyDraw',
+                        onTap: goToLuckyDraw,
+                      ),
+                      Divider(),
+                      selectionCard(
+                        context: context,
+                        image: Hero(
+                          tag: 'youth_website',
+                          child: Image(
+                            image: AssetImage('images/youth_logo.png'),
+                          ),
+                        ),
+                        title: 'Youth Website',
+                        onTap: navigateToYouthWebsite,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  selectionCard(
-                    context: context,
-                    image: Hero(
-                      tag: 'lucky_draw',
-                      child: Image(
-                        image: AssetImage('images/logo.png'),
-                      ),
-                    ),
-                    title: 'LuckyDraw',
-                    onTap: goToLuckyDraw,
-                  ),
-                  selectionCard(
-                    context: context,
-                    image: Hero(
-                      tag: 'youth_website',
-                      child: Image(
-                        image: AssetImage('images/youth_logo.png'),
-                      ),
-                    ),
-                    title: 'Youth Website',
-                    onTap: navigateToYouthWebsite,
-                  ),
-                ],
-              )
             ],
           ),
         ),
