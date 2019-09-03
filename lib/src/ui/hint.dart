@@ -10,11 +10,47 @@ class Hint {
       PageRouteBuilder(
         barrierDismissible: false,
         transitionDuration: Duration(milliseconds: 500),
-        barrierColor: Colors.black87,
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) {
+          return new ScaleTransition(
+            scale: new Tween<double>(
+              begin: 0.0,
+              end: 1.0,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Interval(
+                  0.00,
+                  0.50,
+                  curve: Curves.linear,
+                ),
+              ),
+            ),
+            child: ScaleTransition(
+              scale: Tween<double>(
+                begin: 1.5,
+                end: 1.0,
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: Interval(
+                    0.50,
+                    1.00,
+                    curve: Curves.linear,
+                  ),
+                ),
+              ),
+              child: child,
+            ),
+          );
+        },
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return Scaffold(
-            backgroundColor: Colors.transparent,
             body: SafeArea(
               child: ListView(
                 children: <Widget>[
@@ -27,27 +63,40 @@ class Hint {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        createHint(
-                          context: context,
-                          icon: Icons.outlined_flag,
-                          requiredPoint: '500',
-                          returnValue: true,
-                          screenHeight: screenHeight,
-                          title: 'Reveal Full Answer',
-                          color: Colors.greenAccent,
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: screenHeight / 2,
+                          ),
+                          child: Center(
+                            child: selectionCard(
+                              context: context,
+                              icon: Icons.outlined_flag,
+                              requiredPoint: '500',
+                              returnValue: true,
+                              screenHeight: screenHeight,
+                              title: 'Reveal Full Answer',
+                              color: Colors.greenAccent,
+                            ),
+                          ),
                         ),
                         Divider(
                           height: 0,
-                          color: Colors.white,
                         ),
-                        createHint(
-                          context: context,
-                          icon: Icons.camera,
-                          requiredPoint: '50',
-                          returnValue: false,
-                          screenHeight: screenHeight,
-                          title: 'Reveal One Character',
-                          color: Colors.redAccent,
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: screenHeight / 2,
+                          ),
+                          child: Center(
+                            child: selectionCard(
+                              context: context,
+                              icon: Icons.camera,
+                              requiredPoint: '50',
+                              returnValue: false,
+                              screenHeight: screenHeight,
+                              title: 'Reveal One Character',
+                              color: Colors.redAccent,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -62,7 +111,7 @@ class Hint {
     return result;
   }
 
-  static Widget createHint({
+  static Widget selectionCard({
     @required BuildContext context,
     @required double screenHeight,
     @required IconData icon,
@@ -71,44 +120,50 @@ class Hint {
     @required bool returnValue,
     Color color,
   }) {
-    return InkWell(
-      child: Container(
-        height: screenHeight / 2,
-        alignment: Alignment.center,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              icon,
-              color: color ?? Colors.white,
-              size: 70,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20, left: 15, right: 15),
-              child: Text(
-                '$title',
-                style: Theme.of(context).textTheme.headline.copyWith(
-                      color: Colors.white,
-                    ),
-                textAlign: TextAlign.center,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 250,
+        minWidth: 280,
+      ),
+      child: Card(
+        margin: EdgeInsets.all(12),
+        child: InkWell(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(
+                icon,
+                color: color ?? Colors.white,
+                size: 70,
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 15),
-              child: Text(
-                '-$requiredPoint',
-                style: Theme.of(context).textTheme.display1.copyWith(
-                      color: Colors.grey.shade300,
-                    ),
+              Container(
+                margin: EdgeInsets.only(top: 20, left: 15, right: 15),
+                child: Text(
+                  '$title',
+                  style: Theme.of(context).textTheme.headline.copyWith(
+                        color: Colors.white,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            )
-          ],
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                child: Text(
+                  '-$requiredPoint',
+                  style: Theme.of(context).textTheme.display1.copyWith(
+                        color: Colors.grey.shade300,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          onTap: () {
+            Navigator.pop(context, returnValue);
+          },
         ),
       ),
-      onTap: () {
-        Navigator.pop(context, returnValue);
-      },
     );
   }
 }

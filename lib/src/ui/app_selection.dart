@@ -34,7 +34,7 @@ class _AppSelectionState extends State<AppSelection> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height - 25;
+    double screenHeight = MediaQuery.of(context).size.height - 50;
     return WillPopScope(
       onWillPop: () {
         return CommonFunction.onWillPop(context: context);
@@ -46,7 +46,7 @@ class _AppSelectionState extends State<AppSelection> {
             children: <Widget>[
               ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height - 25,
+                  minHeight: screenHeight,
                 ),
                 child: Center(
                   child: Column(
