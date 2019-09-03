@@ -50,9 +50,9 @@ class AppSettings {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            title: Text('New App Update Available'),
+            title: Text('A New Update is Available'),
             content: Text(
-              'New App Version is avaliable.\nYou need to update the app to continue ... !!',
+              'You need to update app to continue ... !!!',
             ),
             actions: <Widget>[
               FlatButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucky_draw_revamp/src/ui/home.dart';
 import 'package:lucky_draw_revamp/src/ui/login.dart';
+import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
 import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/config.dart';
 import 'package:lucky_draw_revamp/src/utils/loading.dart';
@@ -30,6 +31,19 @@ class _AppSelectionState extends State<AppSelection> {
 
   navigateToYouthWebsite() {
     CommonFunction.openYouthWebsite(context: context);
+  }
+
+  checkAppUpdate() async {
+    bool result = await AppSettings.isUpdateAvailable;
+    if (result) {
+      AppSettings.showUpdateDialog(context: context);
+    }
+  }
+
+  @override
+  void initState() {
+    checkAppUpdate();
+    super.initState();
   }
 
   @override

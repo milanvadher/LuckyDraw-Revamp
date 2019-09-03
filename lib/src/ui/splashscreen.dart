@@ -21,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
         .onConnectivityChanged
         .listen((ConnectivityResult connectivityResult) {
       if (connectivityResult != ConnectivityResult.none) {
-        Navigator.pop(context);
         processAhead();
       }
     });

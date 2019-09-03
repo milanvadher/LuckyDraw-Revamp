@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
 import 'package:lucky_draw_revamp/src/utils/common_function.dart';
 import 'package:lucky_draw_revamp/src/utils/constant.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class YouthWebsite extends StatelessWidget {
+  checkAppUpdate(BuildContext context) async {
+    bool result = await AppSettings.isUpdateAvailable;
+    if (result) {
+      AppSettings.showUpdateDialog(context: context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkAppUpdate(context);
     return WillPopScope(
       onWillPop: () {
         return CommonFunction.onWillPop(
