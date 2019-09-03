@@ -22,6 +22,19 @@ class _LoginPageState extends State<LoginPage> {
   String mobileNo, password;
   Repository repository = Repository();
 
+  Future<void> saveFirebaseToken(String token) async {
+    try {
+      User user = await repository.saveUserData(
+        points: CacheData.userInfo.points,
+        questionState: CacheData.userInfo.questionState,
+        firebaseToken: token,
+      );
+      CacheData.userInfo = user;
+    } catch (e) {
+      Loading.hide(context);
+    }
+  }
+
   void login() async {
     if (loginFormKey.currentState.validate()) {
       try {
@@ -32,7 +45,10 @@ class _LoginPageState extends State<LoginPage> {
           password: password,
         );
         CacheData.userInfo = user;
-        await FirebaseNotification.setupNotification();
+        String token = await FirebaseNotification.setupNotification();
+        if (token != null) {
+          await saveFirebaseToken(token);
+        }
         Loading.hide(context);
         Navigator.pushReplacement(
           context,

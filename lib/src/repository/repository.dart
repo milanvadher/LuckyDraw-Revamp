@@ -116,6 +116,7 @@ class Repository {
   Future<User> saveUserData({
     @required int points,
     @required int questionState,
+    String firebaseToken
   }) async {
     User user = await _authApiProvider.saveUserData(
       points: points,

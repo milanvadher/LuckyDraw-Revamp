@@ -4,9 +4,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 class FirebaseNotification {
   static final FirebaseMessaging _fcm = FirebaseMessaging();
 
-  static setupNotification() async {
+  static Future<String> setupNotification() async {
     if (Platform.isIOS) {
-      getIosPermission();
+      await getIosPermission();
     }
     String token = await _fcm.getToken();
     print('Firebase Notification Token :: $token');
@@ -21,9 +21,10 @@ class FirebaseNotification {
         print("onResume: $message");
       },
     );
+    return token;
   }
 
-  static getIosPermission() {
+  static getIosPermission() async {
     _fcm.requestNotificationPermissions(
       IosNotificationSettings(
         sound: true,
