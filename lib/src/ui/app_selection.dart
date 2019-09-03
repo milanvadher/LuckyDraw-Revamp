@@ -34,6 +34,7 @@ class _AppSelectionState extends State<AppSelection> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height - 25;
     return WillPopScope(
       onWillPop: () {
         return CommonFunction.onWillPop(context: context);
@@ -53,28 +54,42 @@ class _AppSelectionState extends State<AppSelection> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      selectionCard(
-                        context: context,
-                        image: Hero(
-                          tag: 'lucky_draw',
-                          child: Image(
-                            image: AssetImage('images/logo.png'),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: screenHeight / 2,
+                        ),
+                        child: Center(
+                          child: selectionCard(
+                            context: context,
+                            image: Hero(
+                              tag: 'lucky_draw',
+                              child: Image(
+                                image: AssetImage('images/logo.png'),
+                              ),
+                            ),
+                            title: 'LuckyDraw',
+                            onTap: goToLuckyDraw,
                           ),
                         ),
-                        title: 'LuckyDraw',
-                        onTap: goToLuckyDraw,
                       ),
-                      Divider(),
-                      selectionCard(
-                        context: context,
-                        image: Hero(
-                          tag: 'youth_website',
-                          child: Image(
-                            image: AssetImage('images/youth_logo.png'),
+                      Divider(height: 0),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: screenHeight / 2,
+                        ),
+                        child: Center(
+                          child: selectionCard(
+                            context: context,
+                            image: Hero(
+                              tag: 'youth_website',
+                              child: Image(
+                                image: AssetImage('images/youth_logo.png'),
+                              ),
+                            ),
+                            title: 'Youth Website',
+                            onTap: navigateToYouthWebsite,
                           ),
                         ),
-                        title: 'Youth Website',
-                        onTap: navigateToYouthWebsite,
                       ),
                     ],
                   ),
