@@ -13,7 +13,7 @@
         android:label="lucky_draw_revamp"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_app_logo" />
+            android:resource="@mipmap/ic_stat_logo" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
         <activity
@@ -29,7 +29,7 @@
                  defined in @style/LaunchTheme). -->
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="true" />
+                android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

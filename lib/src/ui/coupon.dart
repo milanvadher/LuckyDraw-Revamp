@@ -115,7 +115,7 @@ class _CouponPageState extends State<CouponPage> {
                               style: Theme.of(context).textTheme.title,
                             ),
                             subtitle: Text(
-                                '📅 ${coupon.assignDate}'),
+                                '📅 ${coupon.assignDate.replaceRange(coupon.assignDate.length - 7, coupon.assignDate.length, '')}'),
                           ),
                         );
                       }).toList(),
