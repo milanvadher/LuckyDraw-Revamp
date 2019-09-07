@@ -1,5 +1,5 @@
-import 'package:lucky_draw_revamp/src/model/app_setting.dart';
-import 'package:lucky_draw_revamp/src/model/user.dart';
+import 'package:youth_app/src/model/app_setting.dart';
+import 'package:youth_app/src/model/user.dart';
 
 class CacheData {
   static User userInfo;

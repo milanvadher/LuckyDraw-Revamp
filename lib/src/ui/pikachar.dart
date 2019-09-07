@@ -2,17 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
-import 'package:lucky_draw_revamp/src/model/question.dart';
-import 'package:lucky_draw_revamp/src/model/user.dart';
-import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/ui/hint.dart';
-import 'package:lucky_draw_revamp/src/utils/ans_result.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/common_function.dart';
-import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
-import 'package:lucky_draw_revamp/src/utils/points.dart';
+import 'package:youth_app/src/bloc/bloc.dart';
+import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/repository/repository.dart';
+import 'package:youth_app/src/ui/hint.dart';
+import 'package:youth_app/src/utils/ans_result.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
+import 'package:youth_app/src/utils/loading.dart';
+import 'package:youth_app/src/utils/points.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Pikachar extends StatefulWidget {
@@ -71,7 +71,7 @@ class _PikacharState extends State<Pikachar> {
     options = question.randomString.split('');
     userAnswer = List.generate(answerLength, (int index) => '');
     disabledOption = List.generate(options.length, (int index) => false);
-    Fluttertoast.showToast(msg: '${question.answer.toUpperCase()}');
+    // Fluttertoast.showToast(msg: '${question.answer.toUpperCase()}');
     scrollToTop();
   }
 

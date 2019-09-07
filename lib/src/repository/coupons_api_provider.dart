@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:lucky_draw_revamp/src/model/coupon.dart';
-import 'package:lucky_draw_revamp/src/repository/app_api.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:youth_app/src/model/coupon.dart';
+import 'package:youth_app/src/repository/app_api.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
 
 class CouponsApiProvider {
   Future<Coupon> getUserCoupons() async {

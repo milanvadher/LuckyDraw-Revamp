@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/ui/edit_profile.dart';
-import 'package:lucky_draw_revamp/src/ui/reset_password.dart';
-import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/validation.dart';
+import 'package:youth_app/src/repository/repository.dart';
+import 'package:youth_app/src/ui/edit_profile.dart';
+import 'package:youth_app/src/ui/reset_password.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
+import 'package:youth_app/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class OTPVerifyPage extends StatefulWidget {

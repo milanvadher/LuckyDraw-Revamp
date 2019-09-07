@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
+import 'package:youth_app/src/utils/constant.dart';
 import '../utils/constant.dart';
 import 'package:http/http.dart' show Client;
 

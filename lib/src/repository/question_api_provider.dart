@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:lucky_draw_revamp/src/model/question.dart';
-import 'package:lucky_draw_revamp/src/repository/app_api.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/repository/app_api.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
 
 class QuestionApiProvider {
   Future<Question> getQuestion({@required int questionState}) async {

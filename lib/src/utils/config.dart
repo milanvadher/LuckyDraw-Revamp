@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:lucky_draw_revamp/src/app.dart';
-import 'package:lucky_draw_revamp/src/model/user.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:youth_app/src/app.dart';
+import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'constant.dart';
 

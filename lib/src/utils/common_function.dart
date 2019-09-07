@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/ui/youth_website.dart';
+import 'package:youth_app/src/ui/youth_website.dart';
 
 class CommonFunction {
   static Future<bool> onWillPop({

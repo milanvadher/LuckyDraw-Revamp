@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/app.dart';
-import 'package:lucky_draw_revamp/src/ui/about.dart';
-import 'package:lucky_draw_revamp/src/ui/coupon.dart';
-import 'package:lucky_draw_revamp/src/ui/profile.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/common_function.dart';
-import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/config.dart';
+import 'package:youth_app/src/app.dart';
+import 'package:youth_app/src/ui/about.dart';
+import 'package:youth_app/src/ui/coupon.dart';
+import 'package:youth_app/src/ui/profile.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
+import 'package:youth_app/src/utils/config.dart';
 
 class Settings extends StatefulWidget {
   @override

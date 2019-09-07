@@ -1,10 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/ui/app_selection.dart';
-import 'package:lucky_draw_revamp/src/ui/edit_username.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
+import 'package:youth_app/src/ui/app_selection.dart';
+import 'package:youth_app/src/ui/edit_username.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/constant.dart';
+import 'package:youth_app/src/utils/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:lucky_draw_revamp/src/model/app_setting.dart';
-import 'package:lucky_draw_revamp/src/model/version.dart';
-import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
+import 'package:youth_app/src/model/app_setting.dart';
+import 'package:youth_app/src/model/version.dart';
+import 'package:youth_app/src/repository/repository.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/constant.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 

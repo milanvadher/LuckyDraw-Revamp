@@ -1,4 +1,4 @@
-package org.jj.luckydraw.lucky_draw_revamp;
+package org.dadabhagwan.youth;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

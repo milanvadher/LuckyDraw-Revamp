@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
-import 'package:lucky_draw_revamp/src/model/user.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
+import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
 import 'app_api.dart';
 
 class AuthApiProvider {

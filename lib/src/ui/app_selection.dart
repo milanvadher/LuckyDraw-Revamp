@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/ui/home.dart';
-import 'package:lucky_draw_revamp/src/ui/login.dart';
-import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
-import 'package:lucky_draw_revamp/src/utils/common_function.dart';
-import 'package:lucky_draw_revamp/src/utils/config.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
+import 'package:youth_app/src/ui/home.dart';
+import 'package:youth_app/src/ui/login.dart';
+import 'package:youth_app/src/utils/app_settings.dart';
+import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/config.dart';
+import 'package:youth_app/src/utils/loading.dart';
 
 class AppSelection extends StatefulWidget {
   @override

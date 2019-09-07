@@ -1,4 +1,4 @@
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
+import 'package:youth_app/src/utils/constant.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 

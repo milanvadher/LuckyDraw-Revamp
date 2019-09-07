@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/utils/app_settings.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
+import 'package:youth_app/src/utils/app_settings.dart';
+import 'package:youth_app/src/utils/constant.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 

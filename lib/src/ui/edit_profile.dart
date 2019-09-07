@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lucky_draw_revamp/src/model/user.dart';
-import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/ui/home.dart';
-import 'package:lucky_draw_revamp/src/utils/cachedata.dart';
-import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
-import 'package:lucky_draw_revamp/src/utils/validation.dart';
+import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/repository/repository.dart';
+import 'package:youth_app/src/ui/home.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
+import 'package:youth_app/src/utils/loading.dart';
+import 'package:youth_app/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class EditProfilePage extends StatefulWidget {

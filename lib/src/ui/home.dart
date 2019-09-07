@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/ui/front_page.dart';
-import 'package:lucky_draw_revamp/src/ui/settings.dart';
-import 'package:lucky_draw_revamp/src/utils/common_function.dart';
+import 'package:youth_app/src/ui/front_page.dart';
+import 'package:youth_app/src/ui/settings.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 
 class HomePage extends StatefulWidget {
   @override

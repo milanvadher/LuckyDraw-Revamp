@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:lucky_draw_revamp/src/model/app_setting.dart';
-import 'package:lucky_draw_revamp/src/model/question.dart';
-import 'package:lucky_draw_revamp/src/model/user.dart';
-import 'package:lucky_draw_revamp/src/repository/app_settings_api_provider.dart';
-import 'package:lucky_draw_revamp/src/repository/coupons_api_provider.dart';
-import 'package:lucky_draw_revamp/src/repository/question_api_provider.dart';
-import 'package:lucky_draw_revamp/src/utils/config.dart';
-import 'package:lucky_draw_revamp/src/utils/constant.dart';
+import 'package:youth_app/src/model/app_setting.dart';
+import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/repository/app_settings_api_provider.dart';
+import 'package:youth_app/src/repository/coupons_api_provider.dart';
+import 'package:youth_app/src/repository/question_api_provider.dart';
+import 'package:youth_app/src/utils/config.dart';
+import 'package:youth_app/src/utils/constant.dart';
 import 'auth_api_provider.dart';
 
 class Repository {

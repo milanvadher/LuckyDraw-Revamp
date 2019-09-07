@@ -1,92 +1,34 @@
 {
   "project_info": {
-    "project_number": "482563909236",
-    "firebase_url": "https://flutter-notification-68b83.firebaseio.com",
-    "project_id": "flutter-notification-68b83",
-    "storage_bucket": "flutter-notification-68b83.appspot.com"
+    "project_number": "199084792675",
+    "firebase_url": "https://youthapp-df759.firebaseio.com",
+    "project_id": "youthapp-df759",
+    "storage_bucket": "youthapp-df759.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:482563909236:android:1e7f2391fdfb1a71",
+        "mobilesdk_app_id": "1:199084792675:android:91ced074865867a08c1156",
         "android_client_info": {
-          "package_name": "com.example.gnang_revamp"
+          "package_name": "org.dadabhagwan.youth"
         }
       },
       "oauth_client": [
         {
-          "client_id": "482563909236-2tq4g8msp8b7be358t9ip6v093vjf20c.apps.googleusercontent.com",
+          "client_id": "199084792675-eugt4q4p3ethfrkk5r4gmf5pva1pnitp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDZXW-h1xtGvA3Wgip8cQY7YBEsvdIFjUg"
+          "current_key": "AIzaSyAk6M5yGuKM5Ya0mP8kASYmDqIzeCmo-m8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "482563909236-2tq4g8msp8b7be358t9ip6v093vjf20c.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:482563909236:android:a96969936657f5c9",
-        "android_client_info": {
-          "package_name": "com.example.notification"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "482563909236-2tq4g8msp8b7be358t9ip6v093vjf20c.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDZXW-h1xtGvA3Wgip8cQY7YBEsvdIFjUg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "482563909236-2tq4g8msp8b7be358t9ip6v093vjf20c.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:482563909236:android:861ead55ea56526b",
-        "android_client_info": {
-          "package_name": "org.jj.luckydraw.lucky_draw_revamp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "482563909236-2tq4g8msp8b7be358t9ip6v093vjf20c.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDZXW-h1xtGvA3Wgip8cQY7YBEsvdIFjUg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "482563909236-2tq4g8msp8b7be358t9ip6v093vjf20c.apps.googleusercontent.com",
+              "client_id": "199084792675-eugt4q4p3ethfrkk5r4gmf5pva1pnitp.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

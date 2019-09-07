@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:lucky_draw_revamp/src/model/coupon.dart';
-import 'package:lucky_draw_revamp/src/model/question.dart';
-import 'package:lucky_draw_revamp/src/repository/repository.dart';
+import 'package:youth_app/src/model/coupon.dart';
+import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Bloc {

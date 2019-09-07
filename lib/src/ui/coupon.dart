@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lucky_draw_revamp/src/bloc/bloc.dart';
-import 'package:lucky_draw_revamp/src/model/coupon.dart';
-import 'package:lucky_draw_revamp/src/repository/repository.dart';
-import 'package:lucky_draw_revamp/src/ui/assign_coupon.dart';
-import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
-import 'package:lucky_draw_revamp/src/utils/loading.dart';
+import 'package:youth_app/src/bloc/bloc.dart';
+import 'package:youth_app/src/model/coupon.dart';
+import 'package:youth_app/src/repository/repository.dart';
+import 'package:youth_app/src/ui/assign_coupon.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
+import 'package:youth_app/src/utils/loading.dart';
 
 class CouponPage extends StatefulWidget {
   @override

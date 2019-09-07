@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucky_draw_revamp/src/utils/common_widget.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
 
 class NoInternet extends StatefulWidget {
   @override
