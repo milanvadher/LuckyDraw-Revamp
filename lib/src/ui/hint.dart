@@ -142,9 +142,10 @@ class Hint {
                 margin: EdgeInsets.only(top: 20, left: 15, right: 15),
                 child: Text(
                   '$title',
-                  style: Theme.of(context).textTheme.headline.copyWith(
+                  style: Theme.of(context).textTheme.headline,
+                  /*style: Theme.of(context).textTheme.headline.copyWith(
                         color: Colors.white,
-                      ),
+                      ),*/
                   textAlign: TextAlign.center,
                 ),
               ),

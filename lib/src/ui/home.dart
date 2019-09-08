@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return CommonFunction.onWillPop(context: context);
+        return CommonFunction.onWillPop(context: context, msg: 'Do you want to exit the Lucky Draw ?');
       },
       child: Scaffold(
         appBar: AppBar(
