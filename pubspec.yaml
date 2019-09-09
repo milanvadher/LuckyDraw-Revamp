@@ -60,6 +60,7 @@ flutter:
   assets:
    - images/logo.png
    - images/youth_logo.png
+   - images/youth_logo1.png
    - images/animation/right-ans.flr
    - images/animation/wrong-ans.flr
    - images/chilling.png

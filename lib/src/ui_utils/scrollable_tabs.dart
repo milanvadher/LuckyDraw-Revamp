@@ -9,13 +9,13 @@ enum TabsStyle { iconsAndText, iconsOnly, textOnly }
 class TabPage {
   const TabPage({this.content, this.icon, this.text});
 
-  final IconData icon;
+  final Widget icon;
   final String text;
   final Widget content;
 }
 
 class ScrollableTabs extends StatefulWidget {
-  final List<TabPage> pages;
+  List<TabPage> pages;
   final TabsStyle tabsDemoStyle;
   final String title;
   final List<Widget> actions;
@@ -43,6 +43,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
   @override
   void initState() {
     super.initState();
+    widget.pages = widget.pages.where((page) => page != null).toList(growable: true);
     _controller = TabController(vsync: this, length: widget.pages.length);
   }
 
@@ -83,15 +84,15 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
   Widget getTabBar() {
     return TabBar(
       controller: _controller,
-      isScrollable: true,
+      isScrollable: widget.pages.length > 2 ? true : false,
       indicator: UnderlineTabIndicator(),
       tabs: widget.pages.map<Tab>((TabPage page) {
         assert(widget.tabsDemoStyle != null);
         switch (widget.tabsDemoStyle) {
           case TabsStyle.iconsAndText:
-            return Tab(text: page.text, icon: Icon(page.icon));
+            return Tab(text: page.text, icon: page.icon);
           case TabsStyle.iconsOnly:
-            return Tab(icon: Icon(page.icon));
+            return Tab(icon: page.icon);
           case TabsStyle.textOnly:
             return Tab(text: page.text);
         }

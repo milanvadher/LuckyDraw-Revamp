@@ -46,9 +46,10 @@ class CommonWidget {
     return Container(
       child: Text(
         '$title',
-        style: Theme.of(context).textTheme.subtitle.copyWith(
+        style: Theme.of(context).textTheme.subtitle,
+        /*style: Theme.of(context).textTheme.subtitle.copyWith(
               color: Colors.black,
-            ),
+            ),*/
       ),
       padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
     );

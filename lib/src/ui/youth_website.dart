@@ -15,18 +15,45 @@ class AppWebView extends StatefulWidget {
 
 class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMixin<AppWebView> {
   final Completer<WebViewController> _controller = Completer<WebViewController>();
+  WebViewController _webViewController;
+  num _stackToView = 1;
+  void _handleLoad(String value) {
+    setState(() {
+      _stackToView = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: '$youthWebsiteURL',
-      javascriptMode: JavascriptMode.unrestricted,
-      initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
-      onWebViewCreated: (WebViewController webViewController) {
-        _controller.complete(webViewController);
-      },
-      onPageFinished: (String url) {
-        print('Page finished loading: $url');
-      },
+    return Scaffold(
+      body: IndexedStack(index: _stackToView, children: [
+        WebView(
+          initialUrl: '$youthWebsiteURL',
+          javascriptMode: JavascriptMode.unrestricted,
+          initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller.complete(webViewController);
+            _webViewController = webViewController;
+          },
+          onPageFinished: (String url) {
+            print('Page finished loading: $url');
+            _handleLoad(url);
+          },
+        ),
+        Container(
+          color: Colors.white,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(Icons.refresh),
+        onPressed: () => _webViewController.reload(),
+        tooltip: 'Settings',
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
     /*return WillPopScope(
       onWillPop: () {

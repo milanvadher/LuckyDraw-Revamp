@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:youth_app/src/ui/app_selection.dart';
-import 'package:youth_app/src/ui/no_internet.dart';
-import 'package:youth_app/src/ui/youth_website.dart';
-import 'package:youth_app/src/utils/app_settings.dart';
-import 'package:youth_app/src/utils/cachedata.dart';
-import 'package:youth_app/src/utils/common_widget.dart';
+
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
+import 'package:youth_app/src/ui/no_internet.dart';
+import 'package:youth_app/src/utils/app_settings.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
+
+import 'app_main_page.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,25 +14,35 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   StreamSubscription<ConnectivityResult> subscription;
   static bool isConnectivityFirst = true;
   Future<bool> checkConnectivity() async {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult connectivityResult) {
-       if(!isConnectivityFirst) {
-         if (connectivityResult != ConnectivityResult.none) {
-           processAhead();
-         }
-       }
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult connectivityResult) {
+      if (!isConnectivityFirst) {
+        if (connectivityResult != ConnectivityResult.none) {
+          processAhead();
+        }
+      }
       isConnectivityFirst = false;
     });
-    ConnectivityResult connectivityResult =
-        await (Connectivity().checkConnectivity());
+    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       return false;
     }
     return true;
+  }
+
+  @override
+  void initState() {
+    initData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   initData() async {
@@ -48,6 +58,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   processAhead() async {
+    await AppSettings.getAppSettings();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => AppMainPage()),
+      (_) => false,
+    );
+  }
+
+  /*processAhead() async {
     await AppSettings.getAppSettings();
     if (CacheData.isLuckyDrawActive) {
       Navigator.pushAndRemoveUntil(
@@ -66,19 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
         (_) => false,
       );
     }
-  }
-
-  @override
-  void initState() {
-    initData();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    subscription.cancel();
-    super.dispose();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +100,12 @@ class _SplashScreenState extends State<SplashScreen> {
                     minHeight: MediaQuery.of(context).size.height - 25,
                   ),
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(30,30,30,70),
+                    padding: EdgeInsets.fromLTRB(30, 30, 30, 70),
                     child: Center(
-                      child: Image.asset('images/youth_logo.png', scale: 0.05,),
+                      child: Image.asset(
+                        'images/youth_logo.png',
+                        scale: 0.05,
+                      ),
                     ),
                   ),
                 ),

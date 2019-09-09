@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:youth_app/src/ui/home.dart';
-import 'package:youth_app/src/ui/login.dart';
 import 'package:youth_app/src/ui/luckydraw/start_page.dart';
 import 'package:youth_app/src/ui/youth_website.dart';
 import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
-import 'package:youth_app/src/utils/common_function.dart';
-import 'package:youth_app/src/utils/config.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/constant.dart';
-import 'package:youth_app/src/utils/loading.dart';
 
-class AppSelection extends StatefulWidget {
+class AppMainPage extends StatefulWidget {
   @override
-  _AppSelectionState createState() => _AppSelectionState();
+  _AppMainPageState createState() => _AppMainPageState();
 }
 
-class _AppSelectionState extends State<AppSelection> {
-  goToLuckyDraw() async {
+class _AppMainPageState extends State<AppMainPage> {
+
+  /*goToLuckyDraw() async {
     Loading.show(context);
     Widget homepage = LoginPage();
     bool isLogin = await Config.isLogin();
@@ -36,7 +33,7 @@ class _AppSelectionState extends State<AppSelection> {
 
   navigateToYouthWebsite() {
     CommonFunction.openYouthWebsite(context: context);
-  }
+  }*/
 
   checkAppUpdate() async {
     bool result = await AppSettings.isUpdateAvailable;
@@ -52,12 +49,18 @@ class _AppSelectionState extends State<AppSelection> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScrollableTabs(
+      tabsDemoStyle: TabsStyle.iconsAndText,
       pages: [
-        TabPage(text: 'Lucky Draw', content: LuckyDrawStartPage()),
-        TabPage(text: 'Youth WebSite', content: AppWebView(url: youthWebsiteURL)),
-        TabPage(text: 'Akram Youth', content: AppWebView(url: akramYouthURL)),
+        CacheData.isLuckyDrawActive ? TabPage(text: 'Lucky Draw', content: LuckyDrawStartPage(), icon: ImageIcon(AssetImage('images/logo.png'))) : null,
+        TabPage(text: 'Youth WebSite', content: AppWebView(url: youthWebsiteURL), icon: ImageIcon(AssetImage('images/youth_logo.png'))),
+        TabPage(text: 'Akram Youth', content: AppWebView(url: akramYouthURL), icon: ImageIcon(AssetImage('images/youth_logo.png'))),
       ],
     );
   }
@@ -144,7 +147,7 @@ class _AppSelectionState extends State<AppSelection> {
   }
 }*/
 
-Widget selectionCard({
+/*Widget selectionCard({
   @required BuildContext context,
   @required Widget image,
   @required String title,
@@ -183,4 +186,4 @@ Widget selectionCard({
       ),
     ),
   );
-}
+}*/

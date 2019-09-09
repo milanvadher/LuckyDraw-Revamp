@@ -84,15 +84,38 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  @override
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FrontPage(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(Icons.settings),
+        onPressed: goToSettingPage,
+        tooltip: 'Settings',
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+
+  goToSettingPage() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Settings(),
+      ),
+    );
+  }
+
+  /*@override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
         return CommonFunction.onWillPop(context: context, msg: 'Do you want to exit the Lucky Draw ?');
       },
       child: Scaffold(
-        /*appBar: AppBar(
-          title: Text('Lucky Draw'),
+        appBar: AppBar(
+          //title: Text('Lucky Draw'),
           elevation: 0,
           actions: <Widget>[
             IconButton(
@@ -105,10 +128,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               },
             )
           ],
-        ),*/
+        ),
         body: LayoutBuilder(builder: buildStack),
-        bottomNavigationBar:
-            /*BottomAppBar(
+        *//*bottomNavigationBar:
+            *//**//*BottomAppBar(
           child: IconButton(
             icon: const Icon(Icons.menu, semanticLabel: 'Setting'),
             onPressed: () {
@@ -118,7 +141,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               );
             },
           ),
-        ),*/
+        ),*//**//*
             IconButton(
           icon: AnimatedIcon(
             icon: AnimatedIcons.close_menu,
@@ -127,9 +150,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           onPressed: () {
             _controller.fling(velocity: _isPanelVisible ? -1.0 : 1.0);
           },
-        ),
+        ),*//*
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
     );
-  }
+  }*/
 }

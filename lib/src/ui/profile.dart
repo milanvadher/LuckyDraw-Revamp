@@ -1,11 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:youth_app/src/ui/app_selection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/ui/edit_username.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/constant.dart';
 import 'package:youth_app/src/utils/loading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'app_main_page.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -58,7 +59,7 @@ class _ProfileState extends State<Profile> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AppSelection(),
+                  builder: (context) => AppMainPage(),
                 ),
                 (_) => false,
               );
