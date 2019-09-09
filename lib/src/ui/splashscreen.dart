@@ -15,14 +15,17 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   StreamSubscription<ConnectivityResult> subscription;
-
+  static bool isConnectivityFirst = true;
   Future<bool> checkConnectivity() async {
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult connectivityResult) {
-      if (connectivityResult != ConnectivityResult.none) {
-        processAhead();
-      }
+       if(!isConnectivityFirst) {
+         if (connectivityResult != ConnectivityResult.none) {
+           processAhead();
+         }
+       }
+      isConnectivityFirst = false;
     });
     ConnectivityResult connectivityResult =
         await (Connectivity().checkConnectivity());
@@ -58,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => YouthWebsite(),
+          builder: (context) => AppWebView(),
         ),
         (_) => false,
       );
@@ -90,9 +93,9 @@ class _SplashScreenState extends State<SplashScreen> {
                     minHeight: MediaQuery.of(context).size.height - 25,
                   ),
                   child: Container(
-                    padding: EdgeInsets.only(bottom: 40),
+                    padding: EdgeInsets.fromLTRB(30,30,30,70),
                     child: Center(
-                      child: Image.asset('images/logo.png'),
+                      child: Image.asset('images/youth_logo.png', scale: 0.05,),
                     ),
                   ),
                 ),
@@ -111,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 400),
                         child: Text(
-                          'LuckyDraw',
+                          'Today\'s Youth',
                           style: Theme.of(context).textTheme.display1,
                         ),
                       ),

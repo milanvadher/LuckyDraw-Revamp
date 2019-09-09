@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youth_app/src/ui/home.dart';
 import 'package:youth_app/src/ui/login.dart';
+import 'package:youth_app/src/ui/luckydraw/start_page.dart';
+import 'package:youth_app/src/ui/youth_website.dart';
+import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/config.dart';
+import 'package:youth_app/src/utils/constant.dart';
 import 'package:youth_app/src/utils/loading.dart';
 
 class AppSelection extends StatefulWidget {
@@ -46,6 +51,28 @@ class _AppSelectionState extends State<AppSelection> {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return ScrollableTabs(
+      pages: [
+        TabPage(text: 'Lucky Draw', content: LuckyDrawStartPage()),
+        TabPage(text: 'Youth WebSite', content: AppWebView(url: youthWebsiteURL)),
+        TabPage(text: 'Akram Youth', content: AppWebView(url: akramYouthURL)),
+      ],
+    );
+  }
+
+  Widget buildWebView(String url) {
+    return WebView(
+      initialUrl: '$akramYouthURL',
+      javascriptMode: JavascriptMode.unrestricted,
+      initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+    );
+  }
+}
+
+
+/*
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height - 50;
@@ -115,7 +142,7 @@ class _AppSelectionState extends State<AppSelection> {
       ),
     );
   }
-}
+}*/
 
 Widget selectionCard({
   @required BuildContext context,

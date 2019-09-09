@@ -30,7 +30,6 @@ dependencies:
   flare_flutter: ^1.5.4
   connectivity: ^0.4.3+7
   webview_flutter: ^0.3.13
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -38,6 +37,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.3
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/icon/ic_launcher.png"
 
 
 # For information on the generic Dart part of this file, see the

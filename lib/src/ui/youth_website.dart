@@ -1,21 +1,34 @@
-import 'package:flutter/material.dart';
-import 'package:youth_app/src/utils/app_settings.dart';
-import 'package:youth_app/src/utils/common_function.dart';
-import 'package:youth_app/src/utils/constant.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
 
-class YouthWebsite extends StatelessWidget {
-  checkAppUpdate(BuildContext context) async {
-    bool result = await AppSettings.isUpdateAvailable;
-    if (result) {
-      AppSettings.showUpdateDialog(context: context);
-    }
-  }
+import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:youth_app/src/utils/constant.dart';
+
+class AppWebView extends StatefulWidget {
+  final String url;
+
+  const AppWebView({Key key, this.url}) : super(key: key);
 
   @override
+  _AppWebViewState createState() => _AppWebViewState();
+}
+
+class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMixin<AppWebView> {
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  @override
   Widget build(BuildContext context) {
-    checkAppUpdate(context);
-    return WillPopScope(
+    return WebView(
+      initialUrl: '$youthWebsiteURL',
+      javascriptMode: JavascriptMode.unrestricted,
+      initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+      onWebViewCreated: (WebViewController webViewController) {
+        _controller.complete(webViewController);
+      },
+      onPageFinished: (String url) {
+        print('Page finished loading: $url');
+      },
+    );
+    /*return WillPopScope(
       onWillPop: () {
         return CommonFunction.onWillPop(
           context: context,
@@ -57,6 +70,10 @@ class YouthWebsite extends StatelessWidget {
           initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
         ),
       ),
-    );
+    );*/
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

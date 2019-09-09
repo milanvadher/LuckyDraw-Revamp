@@ -121,6 +121,7 @@ class Repository {
     User user = await _authApiProvider.saveUserData(
       points: points,
       questionState: questionState,
+      firebaseToken: firebaseToken,
     );
     await Config.saveObjectJson('$userDataKey', user);
     return user;

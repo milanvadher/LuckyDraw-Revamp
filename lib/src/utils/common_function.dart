@@ -31,7 +31,7 @@ class CommonFunction {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => YouthWebsite(),
+        builder: (context) => AppWebView(),
       ),
     );
   }

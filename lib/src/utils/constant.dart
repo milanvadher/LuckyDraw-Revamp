@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // API END-POINT
-// const String apiUrl = 'http://3.16.51.94:60371'; // Node URL
-// const String apiUrl = 'http://3.16.51.94:3000'; // Python URL
-const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000/'; // Live URL
+//const String apiUrl = 'http://3.16.51.94:60371'; // Node URL
+ const String apiUrl = 'http://3.16.51.94:3000'; // Python URL
+//const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000/'; // Live URL
 
 // Fix-Headers
 const Map<String, String> headers = {'content-type': 'application/json'};
@@ -14,6 +14,7 @@ const String playStoreBaseURL =
     'https://play.google.com/store/apps/details?id=';
 const String appStoreURL = 'https://itunes.apple.com/app/id1457589389';
 const String youthWebsiteURL = 'https://youth.dadabhagwan.org/';
+const String akramYouthURL = 'https://youth.dadabhagwan.org/gallery/akram-youth/';
 
 // Contact Details
 const String contactEmailId = 'gncapps@googlegroups.com';

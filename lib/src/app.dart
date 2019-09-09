@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
       stream: isDarkThemeStream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return MaterialApp(
-          title: 'Lucky Draw JJ112',
+          title: 'Today\'s Youth',
           theme: snapshot.data ? darkTheme : lightTheme,
           home: widget.homepage,
         );

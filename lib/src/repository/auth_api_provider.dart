@@ -87,11 +87,13 @@ class AuthApiProvider {
   Future<User> saveUserData({
     @required int points,
     @required int questionState,
+    String firebaseToken
   }) async {
     Map<String, dynamic> reqData = {
       'contactNumber': CacheData.userInfo?.contactNumber,
       'points': points,
       'questionState': questionState,
+      'firebasetoken': firebaseToken
     };
     return await AppApi.postApiWithParseRes(
       fromJson: (json) => User.fromJson(json),

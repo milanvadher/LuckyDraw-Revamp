@@ -8,8 +8,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   static const PANEL_HEADER_HEIGHT = 32.0;
 
@@ -66,8 +65,7 @@ class _HomePageState extends State<HomePage>
 
   bool get _isPanelVisible {
     final AnimationStatus status = _controller.status;
-    return status == AnimationStatus.completed ||
-        status == AnimationStatus.forward;
+    return status == AnimationStatus.completed || status == AnimationStatus.forward;
   }
 
   @override
@@ -93,7 +91,7 @@ class _HomePageState extends State<HomePage>
         return CommonFunction.onWillPop(context: context, msg: 'Do you want to exit the Lucky Draw ?');
       },
       child: Scaffold(
-        appBar: AppBar(
+        /*appBar: AppBar(
           title: Text('Lucky Draw'),
           elevation: 0,
           actions: <Widget>[
@@ -107,10 +105,30 @@ class _HomePageState extends State<HomePage>
               },
             )
           ],
+        ),*/
+        body: LayoutBuilder(builder: buildStack),
+        bottomNavigationBar:
+            /*BottomAppBar(
+          child: IconButton(
+            icon: const Icon(Icons.menu, semanticLabel: 'Setting'),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) => Settings(),
+              );
+            },
+          ),
+        ),*/
+            IconButton(
+          icon: AnimatedIcon(
+            icon: AnimatedIcons.close_menu,
+            progress: _controller.view,
+          ),
+          onPressed: () {
+            _controller.fling(velocity: _isPanelVisible ? -1.0 : 1.0);
+          },
         ),
-        body: LayoutBuilder(
-          builder: buildStack,
-        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
     );
   }
