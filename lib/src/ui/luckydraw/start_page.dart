@@ -40,10 +40,14 @@ class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with Automatic
           stream: isLogIn,
           initialData: false,
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            return snapshot.data ? HomePage() : LoginPage();
+            return snapshot.data ? HomePage() : LoginPage(onLogin: onLogin);
           },
         ),
     );
+  }
+
+  void onLogin() {
+    isLogIn.sink.add(true);
   }
 
   @override

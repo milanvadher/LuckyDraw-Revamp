@@ -12,7 +12,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   AnimationController _controller;
   static const PANEL_HEADER_HEIGHT = 32.0;
 
-  Animation<RelativeRect> _getPanelAnimation(BoxConstraints constraints) {
+/*  Animation<RelativeRect> _getPanelAnimation(BoxConstraints constraints) {
     final double height = constraints.biggest.height;
     final double top = height - PANEL_HEADER_HEIGHT;
     final double bottom = -PANEL_HEADER_HEIGHT;
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   bool get _isPanelVisible {
     final AnimationStatus status = _controller.status;
     return status == AnimationStatus.completed || status == AnimationStatus.forward;
-  }
+  }*/
 
   @override
   void initState() {
@@ -93,6 +93,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         child: Icon(Icons.settings),
         onPressed: goToSettingPage,
         tooltip: 'Settings',
+        heroTag: 'settings',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

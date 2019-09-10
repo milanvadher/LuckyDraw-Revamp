@@ -28,7 +28,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
     return Scaffold(
       body: IndexedStack(index: _stackToView, children: [
         WebView(
-          initialUrl: '$youthWebsiteURL',
+          initialUrl: widget.url,
           javascriptMode: JavascriptMode.unrestricted,
           initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
           onWebViewCreated: (WebViewController webViewController) {

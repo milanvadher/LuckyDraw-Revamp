@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:youth_app/src/model/app_setting.dart';
 import 'package:youth_app/src/model/version.dart';
 import 'package:youth_app/src/repository/repository.dart';
+import 'package:youth_app/src/utils/appsharedprefutil.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/constant.dart';
 import 'package:package_info/package_info.dart';
@@ -36,7 +37,10 @@ class AppSettings {
     try {
       Repository repository = Repository();
       AppSetting appSetting = await repository.getAppSettings();
-      CacheData.appSetting = appSetting;
+      if(appSetting != null) {
+        CacheData.appSetting = appSetting;
+        await AppSharedPrefUtil.saveIsLuckyDrawActive(appSetting.isLuckyDrawActive);
+      }
     } catch (e) {
       debugPrint('Error To Get AppSettings $e');
     }

@@ -13,7 +13,6 @@ class AppMainPage extends StatefulWidget {
 }
 
 class _AppMainPageState extends State<AppMainPage> {
-
   /*goToLuckyDraw() async {
     Loading.show(context);
     Widget homepage = LoginPage();
@@ -58,9 +57,23 @@ class _AppMainPageState extends State<AppMainPage> {
     return ScrollableTabs(
       tabsDemoStyle: TabsStyle.iconsAndText,
       pages: [
-        CacheData.isLuckyDrawActive ? TabPage(text: 'Lucky Draw', content: LuckyDrawStartPage(), icon: ImageIcon(AssetImage('images/logo.png'))) : null,
-        TabPage(text: 'Youth WebSite', content: AppWebView(url: youthWebsiteURL), icon: ImageIcon(AssetImage('images/youth_logo.png'))),
-        TabPage(text: 'Akram Youth', content: AppWebView(url: akramYouthURL), icon: ImageIcon(AssetImage('images/youth_logo.png'))),
+        CacheData.isLuckyDrawActive
+            ? TabPage(
+                text: 'Lucky Draw',
+                content: LuckyDrawStartPage(),
+                icon: ImageIcon(AssetImage('images/logo.png')),
+              )
+            : null,
+        TabPage(
+          text: 'Youth WebSite',
+          content: AppWebView(url: youthWebsiteURL),
+          icon: ImageIcon(AssetImage('images/youth_logo.png')),
+        ),
+        TabPage(
+          text: 'Akram Youth',
+          content: AppWebView(url: akramYouthURL),
+          icon: ImageIcon(AssetImage('images/akram_youth.png')),
+        ),
       ],
     );
   }
@@ -73,7 +86,6 @@ class _AppMainPageState extends State<AppMainPage> {
     );
   }
 }
-
 
 /*
   @override

@@ -35,7 +35,7 @@ class ScrollableTabs extends StatefulWidget {
   }
 }
 
-class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin {
+class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
 
   ScrollableTabsState();
@@ -63,8 +63,8 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
   Widget build(BuildContext context) {
     widget.state = this;
     return DefaultTabController(
-        length: widget.pages.length,
-        child: Scaffold(
+      length: widget.pages.length,
+      child: Scaffold(
         appBar: AppBar(
           title: getTabBar(),
           //elevation: 0,
@@ -78,8 +78,38 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
             return page.content;
           }).toList(),
         ),
-    ),);
+      ),);
   }
+/*  @override
+  Widget build(BuildContext context) {
+    widget.state = this;
+    return DefaultTabController(
+      length: widget.pages.length,
+      child: Scaffold(
+        body: new NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              new SliverAppBar(
+                title: getTabBar(),
+                floating: true,
+                pinned: true,
+                snap: true,
+                automaticallyImplyLeading: false,
+                titleSpacing: 0,
+              ),
+            ];
+          },
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _controller,
+            children: widget.pages.map<Widget>((TabPage page) {
+              return page.content;
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }*/
 
   Widget getTabBar() {
     return TabBar(

@@ -12,6 +12,9 @@ import 'package:youth_app/src/utils/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginPage extends StatefulWidget {
+  final Function onLogin;
+
+  const LoginPage({Key key, this.onLogin}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -50,12 +53,13 @@ class _LoginPageState extends State<LoginPage> {
           await saveFirebaseToken(token);
         }
         Loading.hide(context);
-        Navigator.pushReplacement(
+        widget.onLogin();
+        /*Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => HomePage(),
           ),
-        );
+        );*/
       } catch (e) {
         print('e');
         print(e);
