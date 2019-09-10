@@ -67,8 +67,6 @@ class AppSharedPrefUtil {
 
   static Future<void> saveIsLuckyDrawActive(bool isLuckyDrawActive) async {
     await saveBoolean("is_lucky_draw_active", isLuckyDrawActive);
-    print('saved isluckydraw $isLuckyDrawActive');
-    print('got ${await AppSharedPrefUtil.isLuckyDrawActive()}');
   }
 
   static Future<bool> isLuckyDrawActive() async {

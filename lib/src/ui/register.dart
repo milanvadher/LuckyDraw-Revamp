@@ -129,6 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: ListView(
           padding: EdgeInsets.all(10),
           children: <Widget>[
+            Container(padding: EdgeInsets.only(top: 30)),
             CommonWidget.authTopPortion(
               context: context,
               title: widget.isResetPassword ? 'Forgot Password' : 'Register',

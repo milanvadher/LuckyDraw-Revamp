@@ -1,8 +1,9 @@
-import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:youth_app/src/utils/constant.dart';
+import 'package:youth_app/src/utils/common_widget.dart';
 
 class AppWebView extends StatefulWidget {
   final String url;
@@ -14,44 +15,21 @@ class AppWebView extends StatefulWidget {
 }
 
 class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMixin<AppWebView> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
-  WebViewController _webViewController;
-  num _stackToView = 1;
-  void _handleLoad(String value) {
-    setState(() {
-      _stackToView = 0;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _stackToView, children: [
-        WebView(
-          initialUrl: widget.url,
-          javascriptMode: JavascriptMode.unrestricted,
-          initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-            _webViewController = webViewController;
-          },
-          onPageFinished: (String url) {
-            print('Page finished loading: $url');
-            _handleLoad(url);
-          },
-        ),
-        Container(
-          color: Colors.white,
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      ]),
+      body: WebView(
+        initialUrl: widget.url,
+        javascriptMode: JavascriptMode.unrestricted,
+        initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.refresh),
-        onPressed: () => _webViewController.reload(),
-        tooltip: 'Settings',
+        child: Icon(Icons.open_in_browser),
+        onPressed: _launchURL,
+        tooltip: 'Lauch in browser',
+        heroTag: Random().nextDouble().toString(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -98,6 +76,14 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
         ),
       ),
     );*/
+  }
+
+  _launchURL() async {
+    if (await canLaunch(widget.url)) {
+      await launch(widget.url);
+    } else {
+      CommonWidget.displayDialog(context: context, title: 'Can\'t launch', msg: '${widget.url} cant launch');
+    }
   }
 
   @override

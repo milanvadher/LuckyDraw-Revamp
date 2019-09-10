@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             loginForm(),
             Container(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
+              //padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
               alignment: Alignment.center,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

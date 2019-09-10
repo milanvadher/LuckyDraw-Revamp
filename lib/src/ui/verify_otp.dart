@@ -124,6 +124,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
         child: ListView(
           padding: EdgeInsets.all(10),
           children: <Widget>[
+            Container(padding: EdgeInsets.only(top: 30)),
             CommonWidget.authTopPortion(
               context: context,
               title: 'Verify OTP',

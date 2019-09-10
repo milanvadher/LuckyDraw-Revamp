@@ -33,6 +33,7 @@ class _AboutState extends State<About> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height - 25;
     return Scaffold(
+      appBar: AppBar(title: Text('About')),
       body: SafeArea(
         child: ListView(
           children: <Widget>[

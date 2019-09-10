@@ -18,7 +18,6 @@ class Config {
         return true;
       }
     }
-    await clearStorage();
     return false;
   }
 

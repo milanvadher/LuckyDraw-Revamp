@@ -51,8 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   initData() async {
-    bool tmpisLuckyDrawActive = await AppSharedPrefUtil.isLuckyDrawActive();
-    print ('isActive: $tmpisLuckyDrawActive');
     isLuckyDrawActive.sink.add(await AppSharedPrefUtil.isLuckyDrawActive());
     bool isNetworkConnected = await checkConnectivity();
     if (isNetworkConnected) {
