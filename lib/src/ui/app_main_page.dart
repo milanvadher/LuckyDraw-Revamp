@@ -61,7 +61,7 @@ class _AppMainPageState extends State<AppMainPage> {
             ? TabPage(
                 text: 'Lucky Draw',
                 content: LuckyDrawStartPage(),
-                icon: ImageIcon(AssetImage('images/logo.png')),
+                icon: ImageIcon(AssetImage('images/luckydraw_logo.png')),
               )
             : null,
         TabPage(

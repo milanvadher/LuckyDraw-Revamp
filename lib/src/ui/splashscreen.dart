@@ -111,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           padding: EdgeInsets.only(bottom: 40),
                           child: Center(
                             child: Image.asset(
-                              isLuckyDrawActiveData.data ? 'images/logo.png' : 'images/youth_logo.png',
+                              isLuckyDrawActiveData.data ? 'images/luckydraw_logo.png' : 'images/youth_logo.png',
                               //scale: 0.05,
                             ),
                           ),

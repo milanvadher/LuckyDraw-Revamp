@@ -61,7 +61,7 @@ class _FrontPageState extends State<FrontPage> {
             child: Hero(
               tag: 'lucky_draw',
               child: Image.asset(
-                'images/logo.png',
+                'images/112_logo_white.png',
                 height: 150,
               ),
             ),

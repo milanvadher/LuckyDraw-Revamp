@@ -22,8 +22,8 @@ class CommonWidget {
           child: Hero(
             tag: 'lucky_draw',
             child: Image.asset(
-              'images/logo.png',
-              height: 120,
+              'images/luckydraw_logo.png',
+              height: 190,
             ),
           ),
         ),

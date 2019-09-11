@@ -71,7 +71,7 @@ class _AboutState extends State<About> {
                       padding: EdgeInsets.all(5),
                       child: Image(
                         height: 150,
-                        image: AssetImage('images/logo.png'),
+                        image: AssetImage('images/luckydraw_logo.png'),
                       ),
                     ),
                     Container(
