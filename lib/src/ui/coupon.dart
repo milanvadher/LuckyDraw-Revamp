@@ -80,7 +80,7 @@ class _CouponPageState extends State<CouponPage> {
                               child: Icon(Icons.confirmation_number),
                             ),
                             title: Text(
-                              '🎫 Coupon - $coupon',
+                              '🎫 Coupon No.- $coupon',
                               style: Theme.of(context).textTheme.title,
                             ),
                             trailing: OutlineButton(
@@ -111,7 +111,7 @@ class _CouponPageState extends State<CouponPage> {
                               child: Icon(Icons.confirmation_number),
                             ),
                             title: Text(
-                              '🎫 Coupon - ${coupon.ticketNo}',
+                              '🎫 Coupon No. -  ${coupon.ticketNo}',
                               style: Theme.of(context).textTheme.title,
                             ),
                             subtitle: Text(

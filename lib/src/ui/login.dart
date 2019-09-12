@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.only(bottom: 5),
                 child: TextFormField(
                   decoration: InputDecoration(
                     filled: true,
@@ -121,9 +121,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 child: ButtonBar(
-                  alignment: MainAxisAlignment.end,
+                  alignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    FlatButton(
+                    RaisedButton(
+                      onPressed: () {
+                        login();
+                      },
+                      child: Text('Login'),
+                    ),
+                    OutlineButton(
                       child: Text('Forgot Password ?'),
                       onPressed: () {
                         Navigator.push(
@@ -135,12 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       },
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        login();
-                      },
-                      child: Text('Login'),
                     ),
                   ],
                 ),
@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           children: <Widget>[
             CommonWidget.authTopPortion(
               context: context,
@@ -173,12 +173,13 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               //padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
               alignment: Alignment.center,
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text('New User ?\n'),
+                  Text('New User ?'),
+                  SizedBox(width: 10),
                   OutlineButton(
                     onPressed: () {
                       Navigator.push(

@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       ConstrainedBox(
                         constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 25),
                         child: Container(
-                          padding: EdgeInsets.only(bottom: 40),
+                          padding: isLuckyDrawActiveData.data ? EdgeInsets.fromLTRB(40,0,40,40) : EdgeInsets.only(bottom: 40),
                           child: Center(
                             child: Image.asset(
                               isLuckyDrawActiveData.data ? 'images/luckydraw_logo.png' : 'images/youth_logo.png',

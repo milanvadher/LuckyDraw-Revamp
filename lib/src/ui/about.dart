@@ -31,25 +31,26 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height - 25;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(title: Text('About')),
       body: SafeArea(
         child: ListView(
           children: <Widget>[
-            ConstrainedBox(
+            /*ConstrainedBox(
               constraints: BoxConstraints(minHeight: screenHeight),
-              child: Center(
+              child: */Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    SizedBox(height: 30),
                     Container(
                       padding: EdgeInsets.only(bottom: 3),
                       child: Text(
                         'Lucky Draw',
-                        style: Theme.of(context).textTheme.display2,
+                        style: Theme.of(context).textTheme.display1,
                       ),
                     ),
                     Container(
@@ -68,7 +69,7 @@ class _AboutState extends State<About> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(10),
                       child: Image(
                         height: 150,
                         image: AssetImage('images/luckydraw_logo.png'),
@@ -93,7 +94,7 @@ class _AboutState extends State<About> {
                       decoration: new BoxDecoration(
                         border: new Border(
                           bottom: new BorderSide(
-                              style: BorderStyle.solid, color: Colors.white),
+                              style: BorderStyle.solid, color: Colors.lightBlue),
                         ),
                       ),
                       child: InkWell(
@@ -109,7 +110,7 @@ class _AboutState extends State<About> {
                       ),
                     )
                   ],
-                ),
+                //),
               ),
             )
           ],

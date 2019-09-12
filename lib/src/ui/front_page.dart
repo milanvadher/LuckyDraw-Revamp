@@ -54,15 +54,15 @@ class _FrontPageState extends State<FrontPage> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
             child: Hero(
               tag: 'lucky_draw',
               child: Image.asset(
-                'images/112_logo_white.png',
-                height: 150,
+                'images/luckydraw_logo.png',
+                height: 120,
               ),
             ),
           ),
@@ -179,6 +179,7 @@ class _FrontPageState extends State<FrontPage> {
               },
             ),
           ),
+          SizedBox(height: 30),
         ],
       ),
     );

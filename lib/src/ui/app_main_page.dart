@@ -56,7 +56,7 @@ class _AppMainPageState extends State<AppMainPage> {
   Widget build(BuildContext context) {
     return ScrollableTabs(
       tabsDemoStyle: TabsStyle.iconsAndText,
-      pages: [
+      page: [
         CacheData.isLuckyDrawActive
             ? TabPage(
                 text: 'Lucky Draw',

@@ -37,10 +37,9 @@ class _SettingsState extends State<Settings> {
               child: isUsername
                   ? Text(
                       '${CacheData.userInfo?.username[0].toUpperCase()}',
-                      style: Theme.of(context).textTheme.headline,
-                      /*style: Theme.of(context).textTheme.headline.copyWith(
+                      style: Theme.of(context).textTheme.headline.copyWith(
                             color: Colors.black,
-                          ),*/
+                          ),
                     )
                   : !isYouthWebsite
                       ? Icon(
@@ -105,7 +104,7 @@ class _SettingsState extends State<Settings> {
               trailingWidget: IconButton(
                 icon: Icon(
                   Icons.edit,
-                  color: CacheData.isDarkTheme ? Colors.white : Colors.black,
+                  color: CacheData.isDarkTheme ? Theme.of(context).primaryColor : Colors.black,
                 ),
                 onPressed: navigateToProfile,
               ),

@@ -82,7 +82,7 @@ class _AssignCouponState extends State<AssignCoupon> {
           children: <Widget>[
             ListTile(
               title: Text(
-                'Coupon - ${widget.coupon} 🎫',
+                'Coupon No. - ${widget.coupon} 🎫',
                 style: Theme.of(context).textTheme.headline.copyWith(
                       fontSize: 30,
                       fontWeight: FontWeight.w100,

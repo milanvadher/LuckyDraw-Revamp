@@ -15,12 +15,12 @@ class TabPage {
 }
 
 class ScrollableTabs extends StatefulWidget {
-  List<TabPage> pages;
+  List<TabPage> page;
   final TabsStyle tabsDemoStyle;
   final String title;
   final List<Widget> actions;
 
-  ScrollableTabs({Key key, this.pages, this.tabsDemoStyle = TabsStyle.textOnly, this.title, this.actions}) : super(key: key);
+  ScrollableTabs({Key key, this.page, this.tabsDemoStyle = TabsStyle.textOnly, this.title, this.actions}) : super(key: key);
 
   int index() {
     return state._controller.index;
@@ -37,14 +37,13 @@ class ScrollableTabs extends StatefulWidget {
 
 class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
-
   ScrollableTabsState();
 
   @override
   void initState() {
     super.initState();
-    widget.pages = widget.pages.where((page) => page != null).toList(growable: true);
-    _controller = TabController(vsync: this, length: widget.pages.length);
+    widget.page = widget.page.where((page) => page != null).toList(growable: true);
+    _controller = TabController(vsync: this, length: widget.page.length);
   }
 
   @override
@@ -57,13 +56,15 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
   void didChangeDependencies() {
     super.didChangeDependencies();
     widget.state = this;
+    widget.page = widget.page.where((page) => page != null).toList(growable: true);
   }
 
   @override
   Widget build(BuildContext context) {
     widget.state = this;
+    widget.page = widget.page.where((page) => page != null).toList(growable: true);
     return DefaultTabController(
-      length: widget.pages.length,
+      length: widget.page.length,
       child: Scaffold(
         appBar: AppBar(
           title: getTabBar(),
@@ -74,7 +75,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           controller: _controller,
-          children: widget.pages.map<Widget>((TabPage page) {
+          children: widget.page.map<Widget>((TabPage page) {
             return page.content;
           }).toList(),
         ),
@@ -84,7 +85,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
   Widget build(BuildContext context) {
     widget.state = this;
     return DefaultTabController(
-      length: widget.pages.length,
+      length: widget.page.length,
       child: Scaffold(
         body: new NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -102,7 +103,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             controller: _controller,
-            children: widget.pages.map<Widget>((TabPage page) {
+            children: widget.page.map<Widget>((TabPage page) {
               return page.content;
             }).toList(),
           ),
@@ -114,9 +115,9 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
   Widget getTabBar() {
     return TabBar(
       controller: _controller,
-      isScrollable: widget.pages.length > 2 ? true : false,
+      isScrollable: widget.page.length > 2 ? true : false,
       indicator: UnderlineTabIndicator(),
-      tabs: widget.pages.map<Tab>((TabPage page) {
+      tabs: widget.page.map<Tab>((TabPage page) {
         assert(widget.tabsDemoStyle != null);
         switch (widget.tabsDemoStyle) {
           case TabsStyle.iconsAndText:

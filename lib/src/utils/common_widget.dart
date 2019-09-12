@@ -9,7 +9,7 @@ class CommonWidget {
     return Column(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(top: 5, bottom: 5),
           child: Center(
             child: Text(
               '$title',
@@ -18,18 +18,18 @@ class CommonWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(40, 0, 40, 10),
+          padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
           child: Hero(
             tag: 'lucky_draw',
             child: Image.asset(
               'images/luckydraw_logo.png',
-              height: 190,
+              height: 150,
             ),
           ),
         ),
         Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
+          padding: EdgeInsets.fromLTRB(10, 5, 10, 30),
           child: Text(
             'LUCKY DRAW',
             style: Theme.of(context).textTheme.title,
