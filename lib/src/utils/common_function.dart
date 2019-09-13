@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youth_app/src/ui/youth_website.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
 
 class CommonFunction {
   static Future<bool> onWillPop({
@@ -34,5 +35,9 @@ class CommonFunction {
         builder: (context) => AppWebView(),
       ),
     );
+  }
+
+  static String getLuckyDrawLogo() {
+    return CacheData.isDarkTheme ? 'images/luckydraw_logo_white.png' : 'images/luckydraw_logo.png';
   }
 }

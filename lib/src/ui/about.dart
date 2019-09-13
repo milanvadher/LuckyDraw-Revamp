@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/constant.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -72,7 +73,7 @@ class _AboutState extends State<About> {
                       padding: EdgeInsets.all(10),
                       child: Image(
                         height: 150,
-                        image: AssetImage('images/luckydraw_logo.png'),
+                        image: AssetImage(CommonFunction.getLuckyDrawLogo()),
                       ),
                     ),
                     Container(

@@ -5,6 +5,7 @@ import 'package:youth_app/src/ui/youth_website.dart';
 import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/constant.dart';
 
 class AppMainPage extends StatefulWidget {
@@ -54,6 +55,9 @@ class _AppMainPageState extends State<AppMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    String akramURL = akramYouthURL;
+    if(CacheData.appSetting != null && CacheData.appSetting.akram_youth_url != null && CacheData.appSetting.akram_youth_url.trim().isNotEmpty)
+      akramURL = CacheData.appSetting.akram_youth_url;
     return ScrollableTabs(
       tabsDemoStyle: TabsStyle.iconsAndText,
       page: [
@@ -61,7 +65,7 @@ class _AppMainPageState extends State<AppMainPage> {
             ? TabPage(
                 text: 'Lucky Draw',
                 content: LuckyDrawStartPage(),
-                icon: ImageIcon(AssetImage('images/luckydraw_logo.png')),
+                icon: ImageIcon(AssetImage(CommonFunction.getLuckyDrawLogo())),
               )
             : null,
         TabPage(
@@ -71,20 +75,20 @@ class _AppMainPageState extends State<AppMainPage> {
         ),
         TabPage(
           text: 'Akram Youth',
-          content: AppWebView(url: akramYouthURL),
+          content: AppWebView(url: akramURL),
           icon: ImageIcon(AssetImage('images/akram_youth.png')),
         ),
       ],
     );
   }
 
-  Widget buildWebView(String url) {
+  /*Widget buildWebView(String url) {
     return WebView(
       initialUrl: '$akramYouthURL',
       javascriptMode: JavascriptMode.unrestricted,
       initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
     );
-  }
+  }*/
 }
 
 /*

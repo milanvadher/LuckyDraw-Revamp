@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youth_app/src/bloc/bloc.dart';
 import 'package:youth_app/src/model/coupon.dart';
 import 'package:youth_app/src/ui/pikachar.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 
 class FrontPage extends StatefulWidget {
   @override
@@ -52,6 +53,7 @@ class _FrontPageState extends State<FrontPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: ListView(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -61,7 +63,7 @@ class _FrontPageState extends State<FrontPage> {
             child: Hero(
               tag: 'lucky_draw',
               child: Image.asset(
-                'images/luckydraw_logo.png',
+                CommonFunction.getLuckyDrawLogo(),
                 height: 120,
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/constant.dart';
 
 class CommonWidget {
@@ -22,7 +23,7 @@ class CommonWidget {
           child: Hero(
             tag: 'lucky_draw',
             child: Image.asset(
-              'images/luckydraw_logo.png',
+              CommonFunction.getLuckyDrawLogo(),
               height: 150,
             ),
           ),

@@ -28,18 +28,20 @@ class Coupon {
 class TicketMapping {
   int ticketNo;
   String assignDate;
-
+  String assignDateStr;
   TicketMapping({this.ticketNo, this.assignDate});
 
   TicketMapping.fromJson(Map<String, dynamic> json) {
     ticketNo = json['ticketNo'];
     assignDate = json['assignDate'];
+    assignDateStr = json['assignDateStr'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['ticketNo'] = this.ticketNo;
     data['assignDate'] = this.assignDate;
+    data['assignDateStr'] = this.assignDateStr;
     return data;
   }
 }

@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/ui/no_internet.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/appsharedprefutil.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/common_widget.dart';
 
 import 'app_main_page.dart';
@@ -111,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           padding: isLuckyDrawActiveData.data ? EdgeInsets.fromLTRB(40,0,40,40) : EdgeInsets.only(bottom: 40),
                           child: Center(
                             child: Image.asset(
-                              isLuckyDrawActiveData.data ? 'images/luckydraw_logo.png' : 'images/youth_logo.png',
+                              isLuckyDrawActiveData.data ? CommonFunction.getLuckyDrawLogo() : 'images/youth_logo.png',
                               //scale: 0.05,
                             ),
                           ),
