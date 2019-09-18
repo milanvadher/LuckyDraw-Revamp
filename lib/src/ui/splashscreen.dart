@@ -98,6 +98,44 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+          child: StreamBuilder<Object>(
+              stream: isLuckyDrawActive,
+              initialData: false,
+              builder: (context, isLuckyDrawActiveData) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.only(left: 30,right: 30,bottom: 30, top: 70),
+                          child: Image.asset(isLuckyDrawActiveData.data ? CommonFunction.getLuckyDrawLogo() : 'images/youth_logo.png')),
+                      Container(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              isLuckyDrawActiveData.data ? 'Lucky Draw' : 'Today\'s Youth',
+                              style: Theme.of(context).textTheme.display1,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Center(child: CommonWidget.progressIndicator()),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              })),
+    );
+  }
+
+/*  Widget build1(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
         child: StreamBuilder<Object>(
             stream: isLuckyDrawActive,
             initialData: false,
@@ -109,7 +147,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       ConstrainedBox(
                         constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 25),
                         child: Container(
-                          padding: isLuckyDrawActiveData.data ? EdgeInsets.fromLTRB(40,0,40,40) : EdgeInsets.only(bottom: 40),
+                          padding: isLuckyDrawActiveData.data ? EdgeInsets.fromLTRB(40, 0, 40, 40) : EdgeInsets.only(bottom: 40),
                           child: Center(
                             child: Image.asset(
                               isLuckyDrawActiveData.data ? CommonFunction.getLuckyDrawLogo() : 'images/youth_logo.png',
@@ -131,7 +169,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             Container(
                               margin: EdgeInsets.only(top: 300),
                               child: Text(
-                                isLuckyDrawActiveData.data ? 'Lucky Draw': 'Today\'s Youth',
+                                isLuckyDrawActiveData.data ? 'Lucky Draw' : 'Today\'s Youth',
                                 style: Theme.of(context).textTheme.display1,
                               ),
                             ),
@@ -149,5 +187,5 @@ class _SplashScreenState extends State<SplashScreen> {
             }),
       ),
     );
-  }
+  }*/
 }
