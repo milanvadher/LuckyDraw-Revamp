@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youth_app/src/utils/common_widget.dart';
@@ -15,9 +17,79 @@ class AppWebView extends StatefulWidget {
 }
 
 class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMixin<AppWebView> {
+  InAppWebViewController webView;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  String url = "";
+  double progress = 0;
+
+  Future<void> _handleRefresh() {
+    final Completer<void> completer = Completer<void>();
+    webView.reload();
+    return completer.future.then<void>((_) {
+      _scaffoldKey.currentState?.showSnackBar(SnackBar(
+        content: const Text('Refresh complete'),
+        action: SnackBarAction(
+          label: 'RETRY',
+          onPressed: () {
+            _refreshIndicatorKey.currentState.show();
+          },
+        ),
+      ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    url = widget.url;
+    return Scaffold(
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _handleRefresh,
+        child: Scrollbar(
+          child: Container(
+              child: Column(children: <Widget>[
+            progress < 1 ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(value: progress)) : Container(),
+            Expanded(
+              child: Container(
+                child: InAppWebView(
+                  initialUrl: url,
+                  onWebViewCreated: (InAppWebViewController controller) {
+                    webView = controller;
+                  },
+                  onProgressChanged: (InAppWebViewController controller, int progress) {
+                    setState(() {
+                      this.progress = progress / 100;
+                    });
+                  },
+                  onLoadStart: (InAppWebViewController controller, String url) {
+                    print("started $url");
+                    setState(() {
+                      this.url = url;
+                    });
+                  },
+                  shouldOverrideUrlLoading: (InAppWebViewController controller, String url) {
+                    controller.loadUrl(url);
+                  },
+                ),
+              ),
+            ),
+          ])),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(Icons.open_in_browser),
+        onPressed: _launchURL,
+        tooltip: 'Lauch in browser',
+        heroTag: Random().nextDouble().toString(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+
+  //@override
+  Widget build1(BuildContext context) {
     return Scaffold(
       body: WebView(
         initialUrl: widget.url,
