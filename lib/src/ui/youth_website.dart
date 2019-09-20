@@ -42,49 +42,57 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     url = widget.url;
-    return Scaffold(
-      body: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: _handleRefresh,
-        child: Scrollbar(
-          child: Container(
-              child: Column(children: <Widget>[
-            progress < 1 ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(value: progress)) : Container(),
-            Expanded(
-              child: Container(
-                child: InAppWebView(
-                  initialUrl: url,
-                  onWebViewCreated: (InAppWebViewController controller) {
-                    webView = controller;
-                  },
-                  onProgressChanged: (InAppWebViewController controller, int progress) {
-                    setState(() {
-                      this.progress = progress / 100;
-                    });
-                  },
-                  onLoadStart: (InAppWebViewController controller, String url) {
-                    print("started $url");
-                    setState(() {
-                      this.url = url;
-                    });
-                  },
-                  shouldOverrideUrlLoading: (InAppWebViewController controller, String url) {
-                    controller.loadUrl(url);
-                  },
+    return WillPopScope(
+      onWillPop: () async {
+        if (webView != null) {
+          webView.goBack();
+        }
+        return false;
+      },
+      child: Scaffold(
+        body: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: _handleRefresh,
+          child: Scrollbar(
+            child: Container(
+                child: Column(children: <Widget>[
+              progress < 1 ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(value: progress)) : Container(),
+              Expanded(
+                child: Container(
+                  child: InAppWebView(
+                    initialUrl: url,
+                    onWebViewCreated: (InAppWebViewController controller) {
+                      webView = controller;
+                    },
+                    onProgressChanged: (InAppWebViewController controller, int progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                    onLoadStart: (InAppWebViewController controller, String url) {
+                      print("started $url");
+                      setState(() {
+                        this.url = url;
+                      });
+                    },
+                    shouldOverrideUrlLoading: (InAppWebViewController controller, String url) {
+                      controller.loadUrl(url);
+                    },
+                  ),
                 ),
               ),
-            ),
-          ])),
+            ])),
+          ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Icon(Icons.open_in_browser),
+          onPressed: _launchURL,
+          tooltip: 'Lauch in browser',
+          heroTag: Random().nextDouble().toString(),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.open_in_browser),
-        onPressed: _launchURL,
-        tooltip: 'Lauch in browser',
-        heroTag: Random().nextDouble().toString(),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
