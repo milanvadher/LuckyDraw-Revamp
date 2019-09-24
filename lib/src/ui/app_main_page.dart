@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youth_app/src/ui/luckydraw/start_page.dart';
 import 'package:youth_app/src/ui/youth_website.dart';
 import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
@@ -58,7 +57,11 @@ class _AppMainPageState extends State<AppMainPage> {
     String akramURL = akramYouthURL;
     if(CacheData.appSetting != null && CacheData.appSetting.akram_youth_url != null && CacheData.appSetting.akram_youth_url.trim().isNotEmpty)
       akramURL = CacheData.appSetting.akram_youth_url;
+    String registrationURL = regURL;
+    if(CacheData.appSetting != null && CacheData.appSetting.reg_url != null && CacheData.appSetting.reg_url.trim().isNotEmpty)
+      registrationURL = CacheData.appSetting.reg_url;
     return ScrollableTabs(
+      withDrawer: true,
       tabsDemoStyle: TabsStyle.iconsAndText,
       page: [
         CacheData.isLuckyDrawActive
@@ -69,7 +72,7 @@ class _AppMainPageState extends State<AppMainPage> {
               )
             : null,
         TabPage(
-          text: 'Youth WebSite',
+          text: 'WebSite',
           content: AppWebView(url: youthWebsiteURL),
           icon: ImageIcon(AssetImage('images/youth_logo.png')),
         ),
@@ -77,6 +80,11 @@ class _AppMainPageState extends State<AppMainPage> {
           text: 'Akram Youth',
           content: AppWebView(url: akramURL),
           icon: ImageIcon(AssetImage('images/akram_youth.png')),
+        ),
+        TabPage(
+          text: 'Registration',
+          content: AppWebView(url: registrationURL),
+          icon: ImageIcon(AssetImage('images/registration_icon.png')),
         ),
       ],
     );

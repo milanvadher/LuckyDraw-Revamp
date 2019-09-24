@@ -15,7 +15,7 @@ const String playStoreBaseURL =
 const String appStoreURL = 'https://itunes.apple.com/app/id1457589389';
 const String youthWebsiteURL = 'https://youth.dadabhagwan.org/';
 const String akramYouthURL = 'https://youth.dadabhagwan.org/gallery/akram-youth/#app/';
-
+const String regURL = "https://www.google.com";
 // Contact Details
 const String contactEmailId = 'gncapps@googlegroups.com';
 

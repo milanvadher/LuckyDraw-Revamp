@@ -56,7 +56,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
           child: Scrollbar(
             child: Container(
                 child: Column(children: <Widget>[
-              progress < 1 ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(value: progress)) : Container(),
+              progress < 1 ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey,value: progress)) : Container(),
               Expanded(
                 child: Container(
                   child: InAppWebView(

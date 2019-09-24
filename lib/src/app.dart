@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: Colors.cyan,
+    accentColor: Colors.cyan[200],
     fontFamily: 'GoogleSans',
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.cyan,
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
   final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.orangeAccent,
+    accentColor: Colors.orangeAccent[100],
     fontFamily: 'GoogleSans',
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.orangeAccent,
