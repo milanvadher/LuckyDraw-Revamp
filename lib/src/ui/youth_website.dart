@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youth_app/src/utils/common_widget.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 class AppWebView extends StatefulWidget {
   final String url;
@@ -56,7 +60,10 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
           child: Scrollbar(
             child: Container(
                 child: Column(children: <Widget>[
-              progress < 1 ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey,value: progress)) : Container(),
+              progress < 1
+                  ? Container(
+                      padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey, value: progress))
+                  : Container(),
               Expanded(
                 child: Container(
                   child: InAppWebView(
@@ -87,7 +94,8 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
         floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.open_in_browser),
-          onPressed: _launchURL,
+          //onPressed: _launchURL,
+          onPressed: _downloadFileFromURL,
           tooltip: 'Lauch in browser',
           heroTag: Random().nextDouble().toString(),
         ),
@@ -107,7 +115,8 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(Icons.open_in_browser),
-        onPressed: _launchURL,
+        //onPressed: _launchURL,
+        onPressed: _downloadFileFromURL,
         tooltip: 'Lauch in browser',
         heroTag: Random().nextDouble().toString(),
       ),
@@ -156,6 +165,51 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
         ),
       ),
     );*/
+  }
+
+  String _localPath;
+  _downloadFileFromURL() async {
+    await _checkPermission();
+    _localPath = (await _findLocalPath()) + '/Download';
+
+    final savedDir = Directory(_localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+    print('$_localPath');
+    final taskId = await FlutterDownloader.enqueue(
+      url: 'https://download.dadabhagwan.org/Youth/AkramYouth/Eng/2019/PDF/Eng---June-2019-(1).pdf',
+      savedDir: _localPath,
+      showNotification: true, // show download progress in status bar (for Android)
+      openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+    );
+  }
+
+  Future<bool> _checkPermission() async {
+    if (platform == TargetPlatform.android) {
+      PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+      if (permission != PermissionStatus.granted) {
+        Map<PermissionGroup, PermissionStatus> permissions =
+            await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+        if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  var platform;
+  Future<String> _findLocalPath() async {
+    platform = Theme.of(context).platform;
+    final directory =
+        platform == TargetPlatform.android ? await getExternalStorageDirectory() : await getApplicationDocumentsDirectory();
+    return directory.path;
   }
 
   _launchURL() async {
