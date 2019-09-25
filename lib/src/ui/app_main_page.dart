@@ -55,11 +55,11 @@ class _AppMainPageState extends State<AppMainPage> {
   @override
   Widget build(BuildContext context) {
     String akramURL = akramYouthURL;
-    if(CacheData.appSetting != null && CacheData.appSetting.akram_youth_url != null && CacheData.appSetting.akram_youth_url.trim().isNotEmpty)
-      akramURL = CacheData.appSetting.akram_youth_url;
+    if(CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
+      akramURL = CacheData.appSetting.akramYouthURL;
     String registrationURL = regURL;
-    if(CacheData.appSetting != null && CacheData.appSetting.reg_url != null && CacheData.appSetting.reg_url.trim().isNotEmpty)
-      registrationURL = CacheData.appSetting.reg_url;
+    if(CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
+      registrationURL = CacheData.appSetting.regURL;
     return ScrollableTabs(
       withDrawer: true,
       tabsDemoStyle: TabsStyle.iconsAndText,

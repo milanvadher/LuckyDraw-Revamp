@@ -36,13 +36,18 @@ dependencies:
   flutter_inappbrowser: ^1.2.1
   font_awesome_flutter: ^8.5.0
   flutter_downloader: ^1.2.2
-  path_provider: ^1.3.0
+  #path_provider: ^1.3.0
+  path_provider: 1.1.0  #Not Upgrade as changing getExternalStorage to /Android/data/packagename/
   permission_handler: ^3.2.2
+  json_annotation: ^3.0.0
 
+#flutter pub run build_runner build --delete-conflicting-outputs/watch
 dev_dependencies:
+  flutter_launcher_icons: ^0.7.3
+  build_runner: ^1.6.1
+  json_serializable: ^3.2.2
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.3
 
 flutter_icons:
   android: "ic_launcher"

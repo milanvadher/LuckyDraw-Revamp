@@ -15,7 +15,7 @@ const String playStoreBaseURL =
 const String appStoreURL = 'https://itunes.apple.com/app/id1457589389';
 const String youthWebsiteURL = 'https://youth.dadabhagwan.org/';
 const String akramYouthURL = 'https://youth.dadabhagwan.org/gallery/akram-youth/#app/';
-const String regURL = "https://www.google.com";
+const String regURL = "http://gncevents.page.link/reg/";
 // Contact Details
 const String contactEmailId = 'gncapps@googlegroups.com';
 
@@ -47,3 +47,5 @@ const String darkModeKey = 'isDarkMode';
 
 // Custom Spashscreen ON/OFF
 const bool isCustomSpashScreen = true;
+
+const List<String> fileExtensions = [".pdf",".epub",".mobi"];

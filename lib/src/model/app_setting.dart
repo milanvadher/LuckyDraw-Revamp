@@ -1,32 +1,26 @@
 import 'dart:io' show Platform;
 
-import 'package:youth_app/src/utils/constant.dart';
+import 'package:youth_app/src/utils/constant.dart' as Constant;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'app_setting.g.dart';
+
+@JsonSerializable()
 class AppSetting {
-  String appversion;
-  String iosAppversion;
+  @JsonKey(name: 'appversion')
+  String appVersion;
+  @JsonKey(name: 'ios_appversion')
+  String iosAppVersion;
+  @JsonKey(name: 'is_luckydraw_active', defaultValue: false)
   bool isLuckyDrawActive;
-  String akram_youth_url;
-  String reg_url;
-  String get version => Platform.isIOS ? iosAppversion : appversion;
+  @JsonKey(name: 'akram_youth_url', defaultValue: Constant.akramYouthURL)
+  String akramYouthURL;
+  @JsonKey(name: 'reg_url', defaultValue: Constant.regURL)
+  String regURL;
+  String get version => Platform.isIOS ? iosAppVersion : appVersion;
 
-  AppSetting({this.appversion, this.iosAppversion, this.isLuckyDrawActive, this.akram_youth_url, this.reg_url});
+  AppSetting();
 
-  AppSetting.fromJson(Map<String, dynamic> json) {
-    if (json['appversion'] != null) appversion = json['appversion'];
-    if (json['ios_appversion'] != null) iosAppversion = json['ios_appversion'];
-    isLuckyDrawActive = json['is_luckydraw_active'] ?? false;
-    akram_youth_url = json['akram_youth_url'] ?? akramYouthURL;
-    reg_url = json['reg_url'] ?? regURL;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['appversion'] = this.appversion;
-    data['ios_appversion'] = this.iosAppversion;
-    data['is_luckydraw_active'] = this.isLuckyDrawActive;
-    data['akram_youth_url'] = this.akram_youth_url;
-    data['reg_url'] = reg_url;
-    return data;
-  }
+  factory AppSetting.fromJson(Map<String, dynamic> json) => _$AppSettingFromJson(json);
+  Map<String, dynamic> toJson() => _$AppSettingToJson(this);
 }

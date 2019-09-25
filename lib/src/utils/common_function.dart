@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:youth_app/src/ui/youth_website.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 
@@ -39,5 +40,17 @@ class CommonFunction {
 
   static String getLuckyDrawLogo() {
     return CacheData.isDarkTheme ? 'images/luckydraw_logo_white.png' : 'images/luckydraw_logo.png';
+  }
+
+  static bool isNullOrEmpty(String str) {
+    return str == null || str.trim().isEmpty;
+  }
+
+  static void showToast(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+    );
   }
 }
