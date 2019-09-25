@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:animated_floatactionbuttons/animated_floatactionbuttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
@@ -73,8 +74,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
             child: Container(
                 child: Column(children: <Widget>[
               progress < 1
-                  ? Container(
-                      padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey, value: progress))
+                  ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey, value: progress))
                   : Container(),
               Expanded(
                 child: Container(
@@ -105,27 +105,51 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
             ])),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          child: Icon(Icons.open_in_browser),
-          onPressed: _launchURL,
-          tooltip: 'Lauch in browser',
-          heroTag: Random().nextDouble().toString(),
-        ),
+        floatingActionButton: AnimatedFloatingActionButton(
+            fabButtons: <Widget>[
+              float2(),
+              float1(),
+            ],
+            colorStartAnimation: Theme.of(context).primaryColor,
+            colorEndAnimation: Theme.of(context).primaryColor,
+            animatedIconData: AnimatedIcons.menu_close //To principal button
+            ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 
+  Widget float1() {
+    return FloatingActionButton(
+      backgroundColor: Theme.of(context).primaryColor,
+      child: Icon(Icons.open_in_browser),
+      onPressed: _launchURL,
+      tooltip: 'Lauch in browser',
+      heroTag: Random().nextDouble().toString(),
+    );
+  }
+
+  Widget float2() {
+    return FloatingActionButton(
+      backgroundColor: Theme.of(context).primaryColor,
+      child: Icon(Icons.refresh),
+      onPressed: () {
+        webView.reload();
+      },
+      tooltip: 'Reload',
+      heroTag: Random().nextDouble().toString(),
+    );
+  }
+
   _checkForDownload(String url) {
     bool isFile = false;
-    for(String ext in fileExtensions) {
-      if(url.endsWith(ext)) {
+    for (String ext in fileExtensions) {
+      if (url.endsWith(ext)) {
         isFile = true;
         break;
       }
     }
-    if(isFile) {
+    if (isFile) {
       _downloadFileFromURL(url);
     }
   }

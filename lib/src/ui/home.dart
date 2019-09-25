@@ -87,7 +87,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FrontPage(),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: FrontPage(),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(Icons.settings),
