@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/luckydraw/start_page.dart';
 import 'package:youth_app/src/ui/youth_website.dart';
 import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
@@ -55,10 +56,10 @@ class _AppMainPageState extends State<AppMainPage> {
   @override
   Widget build(BuildContext context) {
     String akramURL = akramYouthURL;
-    if(CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
+    if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
       akramURL = CacheData.appSetting.akramYouthURL;
     String registrationURL = regURL;
-    if(CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
+    if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
       registrationURL = CacheData.appSetting.regURL;
     return ScrollableTabs(
       withDrawer: true,
@@ -85,6 +86,11 @@ class _AppMainPageState extends State<AppMainPage> {
           text: 'Registration',
           content: AppWebView(url: registrationURL),
           icon: ImageIcon(AssetImage('images/registration_icon.png')),
+        ),
+        TabPage(
+          text: 'About',
+          content: About(),
+          icon: Icon(Icons.info_outline)//ImageIcon(AssetImage('images/youth_logo.png')),
         ),
       ],
     );

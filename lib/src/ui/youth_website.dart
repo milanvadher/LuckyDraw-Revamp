@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:animated_floatactionbuttons/animated_floatactionbuttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youth_app/src/utils/app_file_utils.dart';
 import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/common_function.dart' as prefix0;
 import 'package:youth_app/src/utils/common_widget.dart';
 import 'package:youth_app/src/utils/constant.dart';
 
@@ -26,7 +27,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   String url = "";
   double progress = 0;
-
+  PublishSubject<bool> showRefreshBtn = PublishSubject<bool>();
   Future<void> _handleRefresh() {
     final Completer<void> completer = Completer<void>();
     webView.reload();
@@ -56,6 +57,12 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    showRefreshBtn.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     //url = widget.url;
@@ -74,16 +81,31 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
             child: Container(
                 child: Column(children: <Widget>[
               progress < 1
-                  ? Container(padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey, value: progress))
+                  ? Container(
+                      padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey, value: progress))
                   : Container(),
               Expanded(
                 child: Container(
                   child: InAppWebView(
+                    /*initialOptions: {
+                      "useOnLoadResource" : true
+                    },*/
                     initialUrl: widget.url,
                     onWebViewCreated: (InAppWebViewController controller) {
                       webView = controller;
                     },
+                    onLoadError: (InAppWebViewController controller, String url, int code, String message) {
+                      print("onLoadError $url");
+                      showRefreshBtn.sink.add(true);
+                    },
+                    onLoadResource:
+                        (InAppWebViewController controller, WebResourceResponse response, WebResourceRequest request) {
+                      showRefreshBtn.sink.add(false); // Needs to useOnLoadResource true
+                    },
                     onProgressChanged: (InAppWebViewController controller, int progress) {
+                      /*controller.getUrl().then((string) {
+                        print("onProgressChanged $progress $string");
+                      });*/
                       setState(() {
                         this.progress = progress / 100;
                       });
@@ -96,7 +118,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
                       });
                     },
                     shouldOverrideUrlLoading: (InAppWebViewController controller, String url) {
-                      //print("shouldOverrideUrlLoading $url");
+                      print("shouldOverrideUrlLoading $url");
                       controller.loadUrl(url);
                     },
                   ),
@@ -105,21 +127,39 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
             ])),
           ),
         ),
-        floatingActionButton: AnimatedFloatingActionButton(
+        floatingActionButton: Stack(
+          children: <Widget>[
+            StreamBuilder<bool>(
+                stream: showRefreshBtn,
+                builder: (context, snapshot) {
+                  return snapshot.hasData && snapshot.data
+                      ? Align(
+                          alignment: Alignment.bottomCenter,
+                          child: buildReloadFab(),
+                        )
+                      : Container();
+                }),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: buildLaunchFab(),
+            ),
+          ],
+        ) /*AnimatedFloatingActionButton(
             fabButtons: <Widget>[
-              float2(),
-              float1(),
+              buildReloadFab(),
+              buildLaunchFab(),
             ],
             colorStartAnimation: Theme.of(context).primaryColor,
             colorEndAnimation: Theme.of(context).primaryColor,
             animatedIconData: AnimatedIcons.menu_close //To principal button
-            ),
+            )*/
+        ,
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 
-  Widget float1() {
+  Widget buildLaunchFab() {
     return FloatingActionButton(
       backgroundColor: Theme.of(context).primaryColor,
       child: Icon(Icons.open_in_browser),
@@ -129,7 +169,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
     );
   }
 
-  Widget float2() {
+  Widget buildReloadFab() {
     return FloatingActionButton(
       backgroundColor: Theme.of(context).primaryColor,
       child: Icon(Icons.refresh),
@@ -155,7 +195,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
   }
 
   _downloadFileFromURL(String url) async {
-    if(await AppFileUtils.checkPermission()) {
+    if (await AppFileUtils.checkPermission()) {
       String downloadDir = await AppFileUtils.getDownloadDir();
       final taskId = await FlutterDownloader.enqueue(
         url: url,
@@ -163,9 +203,19 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
         showNotification: true,
         openFileFromNotification: true,
       );
-      CommonFunction.showToast('File Download started. Path: $downloadDir');
+      CommonFunction.alertDialog(
+        context: context,
+        title: 'Download Started',
+        msg: 'File Download started. Download Location: $downloadDir.',
+        type: 'info',
+      );
     } else {
-      CommonFunction.showToast('Please allow storage permission');
+      CommonFunction.alertDialog(
+        context: context,
+        title: 'Permission required',
+        msg: 'Please allow storage permission to download.',
+        type: 'error',
+      );
     }
   }
 

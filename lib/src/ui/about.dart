@@ -6,6 +6,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatefulWidget {
+  final bool forLuckyDraw;
+  About({this.forLuckyDraw = false});
   @override
   _AboutState createState() => _AboutState();
 }
@@ -34,7 +36,7 @@ class _AboutState extends State<About> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(title: Text('About')),
+      appBar: widget.forLuckyDraw ? AppBar(title: Text('About')) : null,
       body: SafeArea(
         child: ListView(
           children: <Widget>[
@@ -48,9 +50,22 @@ class _AboutState extends State<About> {
                   children: <Widget>[
                     SizedBox(height: 30),
                     Container(
-                      padding: EdgeInsets.only(bottom: 3),
+                      padding: EdgeInsets.all(10),
+                      child: Image(
+                        height: 150,
+                        image: widget.forLuckyDraw ? AssetImage(CommonFunction.getLuckyDrawLogo()) : AssetImage('images/youth_logo.png'),
+                      ),
+                    ),
+                    widget.forLuckyDraw ? Container(
                       child: Text(
-                        'Lucky Draw',
+                        '© 2019-2020 GNC',
+                        style: Theme.of(context).textTheme.subhead,
+                      ),
+                    ) : Container(),
+                    Container(
+                      padding: EdgeInsets.only(top: 20, bottom: 3),
+                      child: Text(
+                        widget.forLuckyDraw ? 'Lucky Draw' : 'Today\'s  Youth',
                         style: Theme.of(context).textTheme.display1,
                       ),
                     ),
@@ -67,19 +82,6 @@ class _AboutState extends State<About> {
                             style: Theme.of(context).textTheme.subhead,
                           );
                         },
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Image(
-                        height: 150,
-                        image: AssetImage(CommonFunction.getLuckyDrawLogo()),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        '© 2019-2020 GNC',
-                        style: Theme.of(context).textTheme.subhead,
                       ),
                     ),
                     Container(

@@ -159,7 +159,7 @@ class _SettingsState extends State<Settings> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => About(),
+                    builder: (context) => About(forLuckyDraw: true),
                   ),
                 );
               },

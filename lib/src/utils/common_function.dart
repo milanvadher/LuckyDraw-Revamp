@@ -53,4 +53,94 @@ class CommonFunction {
       gravity: ToastGravity.CENTER,
     );
   }
+
+  static alertDialog(
+      {@required BuildContext context,
+      String type = 'info', // 'success' || 'error'
+      String title = '',
+      @required String msg,
+      bool showDoneButton = true,
+      String doneButtonText = 'OK',
+      String cancelButtonText = 'Cancel',
+      Function doneButtonFn,
+      bool barrierDismissible = true,
+      bool showCancelButton = false,
+      Function doneCancelFn,
+      AlertDialog Function() builder,
+      Widget widget,
+      String errorHint,
+      bool closeable = true}) {
+    if (context != null) {
+      String newTitle = title != null ? title : type == 'error' ? 'Error' : type == 'success' ? title : 'Success';
+      showDialog(
+        context: context,
+        barrierDismissible: barrierDismissible,
+        builder: (_) {
+          return WillPopScope(
+              onWillPop: () async => closeable,
+              child: AlertDialog(
+                title: isNullOrEmpty(newTitle) ? null : Text(newTitle),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                shape: new RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                content: InkWell(
+                  onLongPress: errorHint == null
+                      ? () {}
+                      : () {
+                          alertDialog(context: context, msg: errorHint);
+                        },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      widget != null ? widget : Container(),
+                      SizedBox(height: 5),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(
+                          msg != null
+                              ? msg
+                              : type == 'error'
+                                  ? "Looks like your lack of \n Imagination ! "
+                                  : "Looks like today is your luckyday ... !!",
+                          style: TextStyle(color: Theme.of(context).textTheme.caption.color),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                            color: type == 'error' ? Colors.red : Colors.green[600],
+                            child: Text(doneButtonText = doneButtonText ?? "OK"),
+                            onPressed: doneButtonFn != null
+                                ? doneButtonFn
+                                : () {
+                                    Navigator.pop(context);
+                                  },
+                          ),
+                          showCancelButton ? SizedBox(width: 10) : new Container(),
+                          showCancelButton
+                              ? OutlineButton(
+                                  child: Text(
+                                    cancelButtonText ?? 'Cancel',
+                                  ),
+                                  onPressed: doneCancelFn != null
+                                      ? doneCancelFn
+                                      : () {
+                                          Navigator.pop(context);
+                                        },
+                                )
+                              : new Container(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ));
+        },
+      );
+    }
+  }
 }
