@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:youth_app/src/app.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/config.dart';
+import 'package:youth_app/src/utils/constant.dart';
 
 enum TabsStyle { iconsAndText, iconsOnly, textOnly }
 
@@ -41,6 +43,24 @@ class DrawerItem {
   DrawerItem(this.title, this.icon);
 }
 
+class MyChromeSafariBrowser extends ChromeSafariBrowser {
+  MyChromeSafariBrowser(browserFallback) : super(browserFallback);
+  @override
+  void onOpened() {
+    print("ChromeSafari browser opened");
+  }
+
+  @override
+  void onLoaded() {
+    print("ChromeSafari browser loaded");
+  }
+
+  @override
+  void onClosed() {
+    print("ChromeSafari browser closed");
+  }
+}
+
 class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
   ScrollableTabsState();
@@ -54,6 +74,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
     _controller = TabController(vsync: this, length: widget.page.length);
   }
 
+  final ChromeSafariBrowser browser = new MyChromeSafariBrowser(new InAppBrowser());
   @override
   void dispose() {
     _controller.dispose();
@@ -69,7 +90,12 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
 
   _onSelectItem(int index) {
     _controller.index = index;
-    setState(() => _selectedDrawerIndex = index);
+    setState(() {
+      _selectedDrawerIndex = index;
+      if(index == 2) {
+        browser.open(akramYouthURL);
+      }
+    });
     Navigator.of(context).pop(); // close the drawer
   }
 
