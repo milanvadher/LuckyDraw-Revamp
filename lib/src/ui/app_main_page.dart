@@ -52,7 +52,7 @@ class _AppMainPageState extends State<AppMainPage> {
   void dispose() {
     super.dispose();
   }
-
+  ScrollableTabs scrollableTabs;
   @override
   Widget build(BuildContext context) {
     String akramURL = akramYouthURL;
@@ -61,39 +61,45 @@ class _AppMainPageState extends State<AppMainPage> {
     String registrationURL = regURL;
     if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
       registrationURL = CacheData.appSetting.regURL;
-    return ScrollableTabs(
+    scrollableTabs = ScrollableTabs(
       withDrawer: true,
       tabsDemoStyle: TabsStyle.iconsAndText,
       page: [
         CacheData.isLuckyDrawActive
             ? TabPage(
-                text: 'Lucky Draw',
-                content: LuckyDrawStartPage(),
-                icon: ImageIcon(AssetImage(CommonFunction.getLuckyDrawLogo())),
-              )
+          text: 'Lucky Draw',
+          content: LuckyDrawStartPage(),
+          icon: ImageIcon(AssetImage(CommonFunction.getLuckyDrawLogo())),
+        )
             : null,
         TabPage(
           text: 'WebSite',
-          content: AppWebView(url: youthWebsiteURL),
+          content: AppWebView(url: youthWebsiteURL, showAppBar: showAppBar,),
           icon: ImageIcon(AssetImage('images/youth_logo.png')),
         ),
         TabPage(
           text: 'Akram Youth',
-          content: AppWebView(url: akramURL),
+          content: AppWebView(url: akramURL, showAppBar: showAppBar),
           icon: ImageIcon(AssetImage('images/akram_youth.png')),
         ),
         TabPage(
           text: 'Registration',
-          content: AppWebView(url: registrationURL),
+          content: AppWebView(url: registrationURL, showAppBar: showAppBar),
           icon: ImageIcon(AssetImage('images/registration_icon.png')),
         ),
         TabPage(
-          text: 'About',
-          content: About(),
-          icon: Icon(Icons.info_outline)//ImageIcon(AssetImage('images/youth_logo.png')),
+            text: 'About',
+            content: About(),
+            icon: Icon(Icons.info_outline)//ImageIcon(AssetImage('images/youth_logo.png')),
         ),
       ],
     );
+    return scrollableTabs;
+  }
+
+
+  void showAppBar(bool showAppBar) {
+    scrollableTabs.showAppBar(showAppBar);
   }
 
   /*Widget buildWebView(String url) {

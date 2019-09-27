@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/app.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/config.dart';
 
 enum TabsStyle { iconsAndText, iconsOnly, textOnly }
-
+bool bShowAppBar = true;
 class TabPage {
   const TabPage({this.content, this.icon, this.text});
 
@@ -24,6 +25,10 @@ class ScrollableTabs extends StatefulWidget {
 
   int index() {
     return state._controller.index;
+  }
+
+  void showAppBar(bool showAppBar) {
+    state.showAppBar(showAppBar);
   }
 
   ScrollableTabsState state;
@@ -73,6 +78,15 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
     Navigator.of(context).pop(); // close the drawer
   }
 
+
+  void showAppBar(bool showAppBar) {
+    if (bShowAppBar != showAppBar) {
+      setState(() {
+        bShowAppBar = showAppBar;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -107,34 +121,35 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
         ),
       );
     }
-
-    return DefaultTabController(
-      length: widget.page.length,
-      child: Scaffold(
-        key: _scaffoldKey,
-        endDrawer: displayDrawer ? _buildDrawer() : null,
-        appBar: AppBar(
-          title: getTabBar(),
-          //elevation: 0,
-          automaticallyImplyLeading: false,
-          titleSpacing: 0,
-          actions: displayDrawer
-              ? <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () {
-                      _scaffoldKey.currentState.openEndDrawer();
-                    },
-                  )
-                ]
-              : null,
-        ),
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _controller,
-          children: widget.page.map<Widget>((TabPage page) {
-            return page.content;
-          }).toList(),
+    return Container(
+      child: DefaultTabController(
+        length: widget.page.length,
+        child: Scaffold(
+          key: _scaffoldKey,
+          endDrawer: displayDrawer ? _buildDrawer() : null,
+          appBar: bShowAppBar ? AppBar(
+            title: getTabBar(),
+            //elevation: 0,
+            automaticallyImplyLeading: false,
+            titleSpacing: 0,
+            actions: displayDrawer
+                ? <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () {
+                        _scaffoldKey.currentState.openEndDrawer();
+                      },
+                    )
+                  ]
+                : null,
+          ) : null,
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _controller,
+            children: widget.page.map<Widget>((TabPage page) {
+              return page.content;
+            }).toList(),
+          ),
         ),
       ),
     );
@@ -163,6 +178,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
     }
     return drawerItems;
   }
+
   _buildDarkThemeWidget() {
     return ListTile(
       leading: CircleAvatar(backgroundColor: primaryColor, child: Icon(Icons.brightness_6), foregroundColor: Colors.black),

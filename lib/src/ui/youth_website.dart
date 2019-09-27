@@ -6,16 +6,17 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
 import 'package:youth_app/src/utils/app_file_utils.dart';
 import 'package:youth_app/src/utils/common_function.dart';
-import 'package:youth_app/src/utils/common_function.dart' as prefix0;
 import 'package:youth_app/src/utils/common_widget.dart';
 import 'package:youth_app/src/utils/constant.dart';
 
+
 class AppWebView extends StatefulWidget {
   final String url;
-
-  const AppWebView({Key key, this.url}) : super(key: key);
+  final Function(bool) showAppBar;
+  const AppWebView({Key key, this.url, this.showAppBar}) : super(key: key);
 
   @override
   _AppWebViewState createState() => _AppWebViewState();
@@ -109,6 +110,16 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
                       setState(() {
                         this.progress = progress / 100;
                       });
+                    },
+                    onScrollChanged: (InAppWebViewController controller, int x, int y) {
+                      print('######## onScrollChanged $x $y');
+                      if(bShowAppBar && y > 20) {
+                        print('####### hide');
+                        widget.showAppBar(false);
+                      } else if (!bShowAppBar && y < 71) {
+                        print('####### show');
+                        widget.showAppBar(true);
+                      }
                     },
                     onLoadStart: (InAppWebViewController controller, String url) {
                       print("started $url");
