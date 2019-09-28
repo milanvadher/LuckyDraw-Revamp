@@ -100,10 +100,7 @@ class _AppMainPageState extends State<AppMainPage> {
         ),
         TabPage(
           text: 'Akram Youth',
-          content: AppWebView(
-            url: akramURL,
-            openBrowser: true,
-          ),
+          content: AppWebView(url: akramURL),
           icon: ImageIcon(AssetImage('images/akram_youth.png')),
         ),
         TabPage(
@@ -111,11 +108,8 @@ class _AppMainPageState extends State<AppMainPage> {
           content: AppWebView(url: registrationURL),
           icon: ImageIcon(AssetImage('images/registration_icon.png')),
         ),
-        TabPage(
-          text: 'About',
-          content: About(),
-          icon: Icon(Icons.info_outline)//ImageIcon(AssetImage('images/youth_logo.png')),
-        ),
+        TabPage(text: 'About', content: About(), icon: Icon(Icons.info_outline) //ImageIcon(AssetImage('images/youth_logo.png')),
+            ),
       ],
     );
   }
