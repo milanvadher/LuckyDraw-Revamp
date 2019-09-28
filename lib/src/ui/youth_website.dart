@@ -7,8 +7,8 @@ import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youth_app/src/utils/app_file_utils.dart';
+import 'package:youth_app/src/utils/appsharedprefutil.dart';
 import 'package:youth_app/src/utils/common_function.dart';
-import 'package:youth_app/src/utils/common_function.dart' as prefix0;
 import 'package:youth_app/src/utils/common_widget.dart';
 import 'package:youth_app/src/utils/constant.dart';
 
@@ -209,6 +209,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
         msg: 'File Download started. Download Location: $downloadDir.',
         type: 'info',
       );
+      AppSharedPrefUtil.saveIsAVDownloaded(true);
     } else {
       CommonFunction.alertDialog(
         context: context,

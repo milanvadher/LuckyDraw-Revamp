@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/luckydraw/start_page.dart';
 import 'package:youth_app/src/ui/youth_website.dart';
 import 'package:youth_app/src/ui_utils/scrollable_tabs.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
+import 'package:youth_app/src/utils/appsharedprefutil.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/constant.dart';
+import 'package:youth_app/src/utils/webview/my_chrome_safari_browser.dart';
 
 class AppMainPage extends StatefulWidget {
   @override
@@ -53,6 +58,8 @@ class _AppMainPageState extends State<AppMainPage> {
     super.dispose();
   }
 
+  final ChromeSafariBrowser chromeSafariBrowser = new MyChromeSafariBrowser(new InAppBrowser());
+
   @override
   Widget build(BuildContext context) {
     String akramURL = akramYouthURL;
@@ -61,9 +68,23 @@ class _AppMainPageState extends State<AppMainPage> {
     String registrationURL = regURL;
     if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
       registrationURL = CacheData.appSetting.regURL;
+
+    void onTabTap(int index) async {
+      int akramYouthIndex = 1;
+      if (CacheData.isLuckyDrawActive) {
+        akramYouthIndex = 2;
+      }
+      if (index == akramYouthIndex) {
+        if (!await AppSharedPrefUtil.isAVDownloaded()) {
+          chromeSafariBrowser.open(akramURL);
+        }
+      }
+    }
+
     return ScrollableTabs(
       withDrawer: true,
       tabsDemoStyle: TabsStyle.iconsAndText,
+      onTap: onTabTap,
       page: [
         CacheData.isLuckyDrawActive
             ? TabPage(
@@ -79,7 +100,10 @@ class _AppMainPageState extends State<AppMainPage> {
         ),
         TabPage(
           text: 'Akram Youth',
-          content: AppWebView(url: akramURL),
+          content: AppWebView(
+            url: akramURL,
+            openBrowser: true,
+          ),
           icon: ImageIcon(AssetImage('images/akram_youth.png')),
         ),
         TabPage(
@@ -96,7 +120,7 @@ class _AppMainPageState extends State<AppMainPage> {
     );
   }
 
-  /*Widget buildWebView(String url) {
+/*Widget buildWebView(String url) {
     return WebView(
       initialUrl: '$akramYouthURL',
       javascriptMode: JavascriptMode.unrestricted,

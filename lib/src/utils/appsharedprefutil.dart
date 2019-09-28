@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const String b_AY_DOWNLOADED = "b_AY_downloaded";
 class AppSharedPrefUtil {
   static SharedPreferences _pref;
   static final DateFormat prefDateFormat = DateFormat('dd-MM-yyyy');
@@ -72,4 +73,14 @@ class AppSharedPrefUtil {
   static Future<bool> isLuckyDrawActive() async {
     return await getBool("is_lucky_draw_active", defaultValue: false);
   }
+
+  static Future<void> saveIsAVDownloaded(bool isAVDownloaded) async {
+    await saveBoolean(b_AY_DOWNLOADED, isAVDownloaded);
+  }
+
+  static Future<bool> isAVDownloaded() async {
+    return await getBool(b_AY_DOWNLOADED, defaultValue: false);
+  }
+
+
 }
