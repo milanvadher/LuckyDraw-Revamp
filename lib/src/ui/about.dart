@@ -87,7 +87,7 @@ class _AboutState extends State<About> {
                     Container(
                       padding: EdgeInsets.fromLTRB(50, 50, 50, 10),
                       child: Text(
-                        'For any query OR Send Bug Report to us with screenshots Email us',
+                        'For any query OR To send Bug Report email us with screenshots',
                         style: Theme.of(context).textTheme.caption,
                         textAlign: TextAlign.center,
                       ),
