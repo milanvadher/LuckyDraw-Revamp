@@ -39,7 +39,12 @@ class AppSettings {
       AppSetting appSetting = await repository.getAppSettings();
       if(appSetting != null) {
         CacheData.appSetting = appSetting;
-        await AppSharedPrefUtil.saveIsLuckyDrawActive(appSetting.isLuckyDrawActive);
+        bool isLuckyDrawActive = false;
+        if(Platform.isIOS)
+          isLuckyDrawActive = appSetting.iosIsLuckyDrawActive;
+        else
+          isLuckyDrawActive = appSetting.isLuckyDrawActive;
+        await AppSharedPrefUtil.saveIsLuckyDrawActive(isLuckyDrawActive);
       }
     } catch (e) {
       debugPrint('Error To Get AppSettings $e');

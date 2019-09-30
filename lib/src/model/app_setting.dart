@@ -13,6 +13,8 @@ class AppSetting {
   String iosAppVersion;
   @JsonKey(name: 'is_luckydraw_active', defaultValue: false)
   bool isLuckyDrawActive;
+  @JsonKey(name: 'ios_is_luckydraw_active', defaultValue: false)
+  bool iosIsLuckyDrawActive;
   @JsonKey(name: 'akram_youth_url', defaultValue: Constant.akramYouthURL)
   String akramYouthURL;
   @JsonKey(name: 'reg_url', defaultValue: Constant.regURL)

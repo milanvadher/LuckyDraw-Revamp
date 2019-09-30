@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:youth_app/src/model/app_setting.dart';
 import 'package:youth_app/src/model/user.dart';
 
@@ -8,7 +10,10 @@ class CacheData {
 
   static bool get isLuckyDrawActive {
     if (appSetting != null) {
-      return appSetting.isLuckyDrawActive;
+      if(Platform.isIOS)
+        return appSetting.iosIsLuckyDrawActive;
+      else
+        return appSetting.isLuckyDrawActive;
     }
     return false;
   }
