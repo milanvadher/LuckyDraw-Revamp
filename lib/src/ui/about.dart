@@ -104,8 +104,7 @@ class _AboutState extends State<About> {
                         onTap: () {
                           launch(
                               widget.forLuckyDraw ? 'mailto:$contactEmailId?subject=Feedback/Bug Report of LuckyDraw':
-                              'mailto:$contactEmailId?subject=Feedback/Bug Report of Youth App',
-                              forceSafariVC: false);
+                              'mailto:$contactEmailId?subject=Feedback/Bug Report of Youth App');
                         },
                         child: Text(
                           'to: $contactEmailId',
