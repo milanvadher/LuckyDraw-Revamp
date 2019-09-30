@@ -103,8 +103,8 @@ class _AboutState extends State<About> {
                       child: InkWell(
                         onTap: () {
                           launch(
-                              widget.forLuckyDraw ? 'mailto:$contactEmailId?subject=Feedback/Bug Report of LuckyDraw':
-                              'mailto:$contactEmailId?subject=Feedback/Bug Report of Youth App');
+                              widget.forLuckyDraw ? 'mailto:$contactEmailId?subject=Feedback/Bug%20Report%20of%20LuckyDraw':
+                              'mailto:$contactEmailId?subject=Feedback/Bug%20Report%20of%20Youth%20App');
                         },
                         child: Text(
                           'to: $contactEmailId',
