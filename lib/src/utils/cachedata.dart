@@ -10,7 +10,7 @@ class CacheData {
 
   static bool get isLuckyDrawActive {
     if (appSetting != null) {
-      if(Platform.isIOS)
+      if(Platform.isIOS && appSetting.iosIsLuckyDrawActive != null)
         return appSetting.iosIsLuckyDrawActive;
       else
         return appSetting.isLuckyDrawActive;
