@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:youth_app/src/app.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/config.dart';
-import 'package:youth_app/src/utils/constant.dart';
 import 'package:youth_app/src/utils/webview/app_chromeinbrowser.dart';
 
 enum TabsStyle { iconsAndText, iconsOnly, textOnly }
@@ -23,7 +21,9 @@ class ScrollableTabs extends StatefulWidget {
   final List<Widget> actions;
   final bool withDrawer;
   final Function(int) onTap;
-  ScrollableTabs({Key key, this.page, this.tabsDemoStyle = TabsStyle.textOnly, this.title, this.actions, this.withDrawer = false, this.onTap})
+
+  ScrollableTabs(
+      {Key key, this.page, this.tabsDemoStyle = TabsStyle.textOnly, this.title, this.actions, this.withDrawer = false, this.onTap})
       : super(key: key);
 
   int index() {
@@ -42,17 +42,19 @@ class ScrollableTabs extends StatefulWidget {
 class DrawerItem {
   String title;
   IconData icon;
+
   DrawerItem(this.title, this.icon);
 }
 
-
-
 class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
+
   ScrollableTabsState();
+
   int _selectedDrawerIndex = 0;
   var primaryColor;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +64,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
 
   //final ChromeSafariBrowser browser = new MyChromeSafariBrowser(new InAppBrowser());
   final AppInappBrowser browser = new AppInappBrowser();
+
   @override
   void dispose() {
     _controller.dispose();
@@ -174,6 +177,7 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
     }
     return drawerItems;
   }
+
   _buildDarkThemeWidget() {
     return ListTile(
       leading: CircleAvatar(backgroundColor: primaryColor, child: Icon(Icons.brightness_6), foregroundColor: Colors.black),
@@ -201,7 +205,12 @@ class ScrollableTabsState extends State<ScrollableTabs> with SingleTickerProvide
       controller: _controller,
       isScrollable: widget.page.length > 3 ? true : false,
       indicator: UnderlineTabIndicator(),
-      onTap: widget.onTap,
+      onTap: (index) {
+        setState(() {
+          _selectedDrawerIndex = index;
+        });
+        widget.onTap(index);
+      },
       tabs: widget.page.map<Tab>((TabPage page) {
         assert(widget.tabsDemoStyle != null);
         switch (widget.tabsDemoStyle) {

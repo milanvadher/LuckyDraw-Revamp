@@ -29,17 +29,14 @@ dependencies:
   intl: ^0.15.8
   flare_flutter: ^1.5.4
   connectivity: ^0.4.3+7
-  webview_flutter: ^0.3.13
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_inappbrowser: ^1.2.1
-  font_awesome_flutter: ^8.5.0
   flutter_downloader: ^1.2.2
   #path_provider: ^1.3.0
   path_provider: 1.1.0  #Not Upgrade as changing getExternalStorage to /Android/data/packagename/
   permission_handler: ^3.2.2
-  animated_floatactionbuttons: ^0.1.0
   json_annotation: ^3.0.0
   analyzer: 0.38.2
 #flutter pub run build_runner build --delete-conflicting-outputs/watch
@@ -50,10 +47,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+#flutter_icons:
+#  android: "ic_launcher"
+#  ios: false
+#  image_path: "assets/icon/ic_launcher.png"
+
+# For iOS
+# flutter pub run flutter_launcher_icons:main
 flutter_icons:
-  android: "ic_launcher"
+  android: false
   ios: true
-  image_path: "assets/icon/ic_launcher.png"
+  image_path: "assets/icon/ios_launcher.png"
 
 
 # For information on the generic Dart part of this file, see the
