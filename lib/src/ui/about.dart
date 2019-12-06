@@ -40,9 +40,9 @@ class _AboutState extends State<About> {
       body: SafeArea(
         child: ListView(
           children: <Widget>[
-            /*ConstrainedBox(
-              constraints: BoxConstraints(minHeight: screenHeight),
-              child: */Center(
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: screenHeight - 50),
+              child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -53,15 +53,19 @@ class _AboutState extends State<About> {
                       padding: EdgeInsets.all(10),
                       child: Image(
                         height: 150,
-                        image: widget.forLuckyDraw ? AssetImage(CommonFunction.getLuckyDrawLogo()) : AssetImage('images/youth_logo.png'),
+                        image: widget.forLuckyDraw
+                            ? AssetImage(CommonFunction.getLuckyDrawLogo())
+                            : AssetImage('images/youth_logo.png'),
                       ),
                     ),
-                    widget.forLuckyDraw ? Container(
-                      child: Text(
-                        '© 2019-2020 GNC',
-                        style: Theme.of(context).textTheme.subhead,
-                      ),
-                    ) : Container(),
+                    widget.forLuckyDraw
+                        ? Container(
+                            child: Text(
+                              '© 2019-2020 GNC',
+                              style: Theme.of(context).textTheme.subhead,
+                            ),
+                          )
+                        : Container(),
                     Container(
                       padding: EdgeInsets.only(top: 20, bottom: 3),
                       child: Text(
@@ -97,14 +101,16 @@ class _AboutState extends State<About> {
                       decoration: new BoxDecoration(
                         border: new Border(
                           bottom: new BorderSide(
-                              style: BorderStyle.solid, color: Colors.lightBlue),
+                              style: BorderStyle.solid,
+                              color: Colors.lightBlue),
                         ),
                       ),
                       child: InkWell(
                         onTap: () {
                           launch(
-                              widget.forLuckyDraw ? 'mailto:$contactEmailId?subject=Feedback/Bug Report of LuckyDraw':
-                              'mailto:$contactEmailId?subject=Feedback/Bug Report of Youth App',
+                              widget.forLuckyDraw
+                                  ? 'mailto:$contactEmailId?subject=Feedback/Bug Report of LuckyDraw'
+                                  : 'mailto:$contactEmailId?subject=Feedback/Bug Report of Youth App',
                               forceSafariVC: false);
                         },
                         child: Text(
@@ -114,7 +120,7 @@ class _AboutState extends State<About> {
                       ),
                     )
                   ],
-                //),
+                ),
               ),
             )
           ],

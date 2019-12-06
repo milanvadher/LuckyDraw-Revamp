@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:youth_app/src/ui/main_page_revamp.dart';
 import 'package:youth_app/src/ui/no_internet.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/appsharedprefutil.dart';
@@ -68,7 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await AppSettings.getAppSettings();
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => AppMainPage()),
+      // MaterialPageRoute(builder: (context) => AppMainPage()),
+      MaterialPageRoute(builder: (context) => MainPageRevamp()),
       (_) => false,
     );
   }
