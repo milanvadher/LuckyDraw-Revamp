@@ -15,11 +15,13 @@ class AppApi {
     @required Function fromJson,
     Map<String, String> headers = headers,
     bool throwError = true,
+    bool isAYApi = false,
   }) async {
     try {
       Response response = await AppApi.postApi(
         apiEndPoint: apiEndPoint,
         reqData: reqData,
+        isAYapi: isAYApi,
       );
       if (response.statusCode == 200) {
         return fromJson(json.decode(response.body));
@@ -42,10 +44,12 @@ class AppApi {
     @required Function fromJson,
     Map<String, String> headers = headers,
     bool throwError = true,
+    bool isAYApi = false,
   }) async {
     try {
       Response response = await AppApi.getApi(
         apiEndPoint: apiEndPoint,
+        isAYapi: isAYApi,
       );
       if (response.statusCode == 200) {
         return fromJson(json.decode(response.body));
@@ -67,10 +71,13 @@ class AppApi {
     @required String apiEndPoint,
     @required Map<String, dynamic> reqData,
     Map<String, String> headers = headers,
+    bool isAYapi = false,
   }) async {
     print('reqData fo $apiEndPoint ${reqData.toString()}');
+    String postURL =
+        isAYapi ? '$ayApiUrl/$apiEndPoint' : '$apiUrl/$apiEndPoint';
     final response = await client.post(
-      '$apiUrl/$apiEndPoint',
+      postURL,
       body: json.encode(reqData),
       headers: headers,
     );
@@ -81,10 +88,13 @@ class AppApi {
   static Future<Response> getApi({
     @required String apiEndPoint,
     Map<String, String> headers = headers,
+    bool isAYapi = false,
   }) async {
     print('Start calling ... /$apiEndPoint');
+    String postURL =
+        isAYapi ? '$ayApiUrl/$apiEndPoint' : '$apiUrl/$apiEndPoint';
     final response = await client.get(
-      '$apiUrl/$apiEndPoint',
+      postURL,
       headers: headers,
     );
     print(

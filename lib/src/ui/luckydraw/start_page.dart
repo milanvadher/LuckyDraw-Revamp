@@ -3,7 +3,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/ui/home.dart';
 import 'package:youth_app/src/ui/login.dart';
 import 'package:youth_app/src/utils/config.dart';
-import 'package:youth_app/src/utils/loading.dart';
 
 class LuckyDrawStartPage extends StatefulWidget {
   @override
@@ -51,6 +50,5 @@ class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with Automatic
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

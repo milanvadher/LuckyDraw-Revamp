@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
+import '../utils/constant.dart';
 import 'app_api.dart';
 
 class AuthApiProvider {
@@ -10,6 +15,7 @@ class AuthApiProvider {
   Future<User> login({
     @required String mobileNo,
     @required String password,
+    bool isAYApi = false,
   }) async {
     Map<String, dynamic> reqData = {
       'contactNumber': mobileNo,
@@ -19,7 +25,37 @@ class AuthApiProvider {
       fromJson: (json) => User.fromJson(json),
       reqData: reqData,
       apiEndPoint: 'login',
+      isAYApi: isAYApi,
     );
+  }
+
+  Future<UserState> loadUserState({
+    @required String mobileNo,
+    bool isAYApi = true,
+  }) async {
+    try {
+      Map<String, dynamic> reqData = {
+        'mht_id': mobileNo,
+      };
+      Response response = await AppApi.postApi(
+        apiEndPoint: 'user_state',
+        reqData: reqData,
+        isAYapi: isAYApi,
+      );
+      if (response.statusCode == 200) {
+        return UserState.fromJson(
+            json.decode(response.body)['data']['results']);
+      } else {
+        var decodedJson = tryDecode(response.body);
+        throw decodedJson != null
+            ? (decodedJson['err'] ?? '$defaultError')
+            : '$defaultError';
+      }
+    } on SocketException {
+      throw 'Please connect Internet';
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<User> editUser({
@@ -84,11 +120,10 @@ class AuthApiProvider {
     );
   }
 
-  Future<User> saveUserData({
-    @required int points,
-    @required int questionState,
-    String firebaseToken
-  }) async {
+  Future<User> saveUserData(
+      {@required int points,
+      @required int questionState,
+      String firebaseToken}) async {
     Map<String, dynamic> reqData = {
       'contactNumber': CacheData.userInfo?.contactNumber,
       'points': points,
@@ -100,5 +135,13 @@ class AuthApiProvider {
       reqData: reqData,
       apiEndPoint: 'saveUserData',
     );
+  }
+
+  static dynamic tryDecode(String jsonStr) {
+    try {
+      return json.decode(jsonStr);
+    } catch (e) {
+      return null;
+    }
   }
 }

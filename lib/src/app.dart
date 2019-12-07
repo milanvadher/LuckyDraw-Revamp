@@ -81,6 +81,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           title: 'Today\'s Youth',
           theme: snapshot.data ? darkTheme : lightTheme,
+          darkTheme: darkTheme,
           home: widget.homepage,
         );
       },

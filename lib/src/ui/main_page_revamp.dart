@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:youth_app/src/ui/about.dart';
-import 'package:youth_app/src/ui/settings.dart';
-
+import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
 import '../utils/constant.dart';
 import 'youth_website.dart';
 
@@ -72,10 +71,12 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               color: Colors.deepOrangeAccent,
               title: 'AY Quiz',
               onClick: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Level()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AYQuizStartPage(),
+                  ),
+                );
               },
               icon: Icon(
                 Icons.gamepad,
@@ -84,54 +85,61 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               ),
             ),
             createMenu(
-              color: Colors.yellowAccent,
+              color: Colors.amber.shade700,
               title: 'Website',
               icon: ImageIcon(
                 AssetImage('images/youth_logo.png'),
                 size: 60,
-                color: Colors.yellowAccent,
+                color: Colors.amber.shade700,
               ),
               onClick: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AppWebView(url: youthWebsiteURL, title: 'Website',),
+                    builder: (context) => AppWebView(
+                      url: youthWebsiteURL,
+                      title: 'Website',
+                    ),
                   ),
                 );
               },
             ),
             createMenu(
-              color: Colors.lightBlueAccent,
+              color: Colors.lightBlue.shade300,
               title: 'Akram Youth',
               onClick: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  AppWebView(url: akramYouthURL,title: 'Akram Youth')),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AppWebView(url: akramYouthURL, title: 'Akram Youth')),
                 );
               },
               icon: ImageIcon(
                 AssetImage('images/akram_youth.png'),
                 size: 50,
-                color: Colors.lightBlueAccent,
+                color: Colors.lightBlue.shade300,
               ),
             ),
             createMenu(
-              color: Colors.tealAccent,
+              color: Colors.teal.shade300,
               title: 'Registration',
               onClick: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AppWebView(url: regURL, title: 'Registration')),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AppWebView(url: regURL, title: 'Registration')),
                 );
               },
               icon: ImageIcon(
                 AssetImage('images/registration_icon.png'),
                 size: 50,
-                color: Colors.tealAccent,
+                color: Colors.teal.shade300,
               ),
             ),
             createMenu(
-              color: Colors.redAccent,
+              color: Colors.red.shade300,
               title: 'About',
               onClick: () {
                 Navigator.push(
@@ -142,7 +150,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               icon: Icon(
                 Icons.info_outline,
                 size: 50,
-                color: Colors.redAccent,
+                color: Colors.red.shade300,
               ),
             ),
             // createMenu(

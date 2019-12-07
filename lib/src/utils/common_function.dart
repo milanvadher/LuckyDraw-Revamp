@@ -39,7 +39,8 @@ class CommonFunction {
   }
 
   static String getLuckyDrawLogo() {
-    return CacheData.isDarkTheme ? 'images/luckydraw_logo_white.png' : 'images/luckydraw_logo.png';
+    // return CacheData.isDarkTheme ? 'images/luckydraw_logo_white.png' : 'images/luckydraw_logo.png';
+    return CacheData.isDarkTheme ? 'images/youth_logo.png' : 'images/youth_logo.png';
   }
 
   static bool isNullOrEmpty(String str) {
@@ -52,6 +53,10 @@ class CommonFunction {
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.CENTER,
     );
+  }
+
+  static getOrdinalOfNumber(int rank) {
+    
   }
 
   static alertDialog(

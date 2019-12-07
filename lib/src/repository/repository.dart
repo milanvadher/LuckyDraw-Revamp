@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:youth_app/src/model/app_setting.dart';
+import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/model/question.dart';
 import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/repository/app_settings_api_provider.dart';
 import 'package:youth_app/src/repository/coupons_api_provider.dart';
+import 'package:youth_app/src/repository/leaders_api_provider.dart';
 import 'package:youth_app/src/repository/question_api_provider.dart';
 import 'package:youth_app/src/utils/config.dart';
 import 'package:youth_app/src/utils/constant.dart';
@@ -14,18 +17,32 @@ class Repository {
   final CouponsApiProvider _couponApiProvider = CouponsApiProvider();
   final QuestionApiProvider _questionApiProvider = QuestionApiProvider();
   final AppSettingApiProvider _appSettingApiProvider = AppSettingApiProvider();
+  final LeadersApiProvider _leadersApiProvider = LeadersApiProvider();
+
+  Future<LeaderList> getLeaders() => _leadersApiProvider.getLeaders();
 
   // Login User
   Future<User> login({
     @required String mobileNo,
     @required String password,
+    bool isAYapi = false,
   }) async {
     User user = await _authApiProvider.login(
-      mobileNo: mobileNo,
-      password: password,
-    );
+        mobileNo: mobileNo, password: password, isAYApi: isAYapi);
     await Config.saveObjectJson('$userDataKey', user);
     return user;
+  }
+
+  // UserState User
+  Future<UserState> loadUserState({
+    @required String mobileNo,
+    bool isAYapi = true,
+  }) async {
+    UserState userstate = await _authApiProvider.loadUserState(
+      mobileNo: mobileNo,
+      isAYApi: isAYapi,
+    );
+    return userstate;
   }
 
   // Edit User
@@ -113,11 +130,10 @@ class Repository {
   }
 
   // Save Userdata
-  Future<User> saveUserData({
-    @required int points,
-    @required int questionState,
-    String firebaseToken
-  }) async {
+  Future<User> saveUserData(
+      {@required int points,
+      @required int questionState,
+      String firebaseToken}) async {
     User user = await _authApiProvider.saveUserData(
       points: points,
       questionState: questionState,
