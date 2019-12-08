@@ -24,6 +24,9 @@ class AppApi {
         isAYapi: isAYApi,
       );
       if (response.statusCode == 200) {
+        if (isAYApi) {
+          return fromJson(json.decode(response.body)['data']['results']);
+        }
         return fromJson(json.decode(response.body));
       }
       if (throwError) {
@@ -52,6 +55,9 @@ class AppApi {
         isAYapi: isAYApi,
       );
       if (response.statusCode == 200) {
+        if (isAYApi) {
+          return fromJson(json.decode(response.body)['data']['results']);
+        }
         return fromJson(json.decode(response.body));
       }
       if (throwError) {
