@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/setup.dart';
 import '../bloc/bloc.dart';
 import '../utils/cachedata.dart';
 
@@ -11,7 +12,9 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard> {
-
+  // ProfilePicService profilePicService = ProfilePicService();
+  // PublishSubject<ImageProvider> userProfilePic =
+  //     PublishSubject<ImageProvider>();
   PublishSubject<int> userRank = PublishSubject<int>();
 
   @override
@@ -31,6 +34,36 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
+    Widget leader(data, index) {
+      return ListTile(
+        leading: Container(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                '${index}',
+                style: Theme.of(context).textTheme.headline,
+              ),
+              Text('${Setup.getOrdinalOfNumber(int.parse(index))}'),
+            ],
+          ),
+        ),
+        title: data.rank != '1'
+            ? Text('${data.name}')
+            : Text('${data.name}', style: Theme.of(context).textTheme.title),
+        trailing: Container(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+            child: Text(
+              ' ${data.totalscoreMonth}',
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget leaderList() {
       return Container(
         child: StreamBuilder(
@@ -70,27 +103,18 @@ class _LeaderboardState extends State<Leaderboard> {
                   ],
                 );
               }
-              // widget.setUserPosition(snapshot.data);
-              // return ListView.separated(
-              //   separatorBuilder: (BuildContext context, int index) => Divider(
-              //     height: 0,
-              //     indent: 80,
-              //     color: Colors.grey.shade600,
-              //   ),
-              //   itemCount: snapshot.data.leaders.length,
-              //   itemBuilder: (BuildContext context, int index) {
-              //     return Leader(
-              //       name: '${snapshot.data.leaders[index].name}',
-              //       points: '${snapshot.data.leaders[index].totalscoreMonth}',
-              //       rank: '${index + 1}',
-              //       profilePic:
-              //           '${snapshot.data.leaders[index].profilePic ?? ""}',
-              //       mhtId: snapshot.data.leaders[index].mhtId,
-              //       profilePicVersion:
-              //           snapshot.data.leaders[index].profilePicVersion,
-              //     );
-              //   },
-              // );
+              setUserPosition(snapshot.data);
+              return ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  height: 0,
+                  indent: 80,
+                  color: Colors.grey.shade600,
+                ),
+                itemCount: snapshot.data.leaders.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return leader(snapshot.data.leaders[index], index);
+                },
+              );
             }
             if (snapshot.hasError) {
               return Container(
@@ -124,17 +148,18 @@ class _LeaderboardState extends State<Leaderboard> {
                   child: Card(
                     child: ListTile(
                       leading: CircleAvatar(
+                        backgroundImage: AssetImage('images/leaderboard.png'),
                         radius: 27,
                         backgroundColor: Theme.of(context).accentColor,
-                        child: Icon(Icons.portrait),
+                        child: Text(
+                          '15th',
+                          // '${snapshot.data}',`     When we get the data from api
+                          style: Theme.of(context).textTheme.headline,
+                        ),
                       ),
                       title: Text(
                         '${CacheData.userInfo?.username}',
                         style: Theme.of(context).textTheme.headline,
-                      ),
-                      subtitle: Text(
-                        'Points : ${CacheData.userState?.totalscore}',
-                        style: Theme.of(context).textTheme.subtitle,
                       ),
                       selected: true,
                       trailing: Container(

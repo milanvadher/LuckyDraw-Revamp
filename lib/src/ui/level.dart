@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/quizlevel.dart';
 import 'package:youth_app/src/model/user_state.dart';
+import 'package:youth_app/src/ui/leaderboard.dart';
 
 import '../utils/cachedata.dart';
 
@@ -209,7 +210,11 @@ class _LevelState extends State<Level> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.amber,
         onPressed: () {
-          Fluttertoast.showToast(msg: 'Leaderboard !! Work in progress !!!');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Leaderboard()),
+          );
+          // Fluttertoast.showToast(msg: 'Leaderboard !! Work in progress !!!');
         },
         child: Image(
           image: AssetImage('images/leaderboard.png'),
