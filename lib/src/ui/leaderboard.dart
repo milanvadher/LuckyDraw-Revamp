@@ -19,6 +19,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   void initState() {
+    bloc.getLeaderboard();
     super.initState();
   }
 
