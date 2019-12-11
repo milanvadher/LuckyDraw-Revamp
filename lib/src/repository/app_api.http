@@ -1,0 +1,7 @@
+GET http://3.16.51.94:3001/leaders
+content-type: application/json
+
+{
+    "contactNumber": 7777901836
+}
+
