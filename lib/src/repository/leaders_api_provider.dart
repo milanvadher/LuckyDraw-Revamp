@@ -9,8 +9,8 @@ class LeadersApiProvider {
   Client client = Client();
 
   Future<LeaderList> getLeaders() async {
-    Map<String, Map<String, dynamic>> reqData = {
-      'params': {'contactNumber': CacheData.userInfo?.contactNumber}
+    Map<String, String> reqData = {
+      'mht_id': CacheData.userInfo?.contactNumber
     };
     return await AppApi.getApiWithParseRes(
         fromJson: (json) => LeaderList.fromJson(json),

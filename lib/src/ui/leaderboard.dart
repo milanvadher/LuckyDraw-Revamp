@@ -42,11 +42,11 @@ class _LeaderboardState extends State<Leaderboard> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(
-                '${index}',
-                style: Theme.of(context).textTheme.headline,
-              ),
-              Text('${Setup.getOrdinalOfNumber(int.parse(index))}'),
+              // Text(
+              //   '${index}',
+              //   style: Theme.of(context).textTheme.headline,
+              // ),
+              // Text('${Setup.getOrdinalOfNumber(int.parse(index))}'),
             ],
           ),
         ),

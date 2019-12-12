@@ -48,14 +48,14 @@ class AppApi {
     Map<String, String> headers = headers,
     bool throwError = true,
     bool isAYApi = false,
-    Map<String, Map<String, dynamic>> params,
+    Map<String, String> params,
   }) async {
     try {
       Response response = await AppApi.getApi(
           apiEndPoint: apiEndPoint, isAYapi: isAYApi, params: params);
       if (response.statusCode == 200) {
         if (isAYApi) {
-          return fromJson(json.decode(response.body)['data']['results']);
+          return fromJson(json.decode(response.body)['data']);
         }
         return fromJson(json.decode(response.body));
       }
@@ -94,26 +94,20 @@ class AppApi {
     @required String apiEndPoint,
     Map<String, String> headers = headers,
     bool isAYapi = false,
-    Map<String, Map<String, dynamic>> params,
+    Map<String, String> params,
   }) async {
     print('Start calling ... /$apiEndPoint');
 
-    var allHeader = {}..addAll(headers)..addAll(params);
+    Map<String, String> allHeader = {}..addAll(headers)..addAll(params);
 
     print('This is All Headers ... $allHeader');
     String postURL =
         isAYapi ? '$ayApiUrl/$apiEndPoint' : '$apiUrl/$apiEndPoint';
 
-    final response = await client
-        .get(
+    final response = await client.get(
       postURL,
       headers: allHeader,
     );
-    // .then((onValue) {
-    //   print(onValue);
-    // }).catchError((onError) {
-    //   print(onError);
-    // });
     print(response);
     print(
         'Response from $apiEndPoint :: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
