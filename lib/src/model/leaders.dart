@@ -62,8 +62,8 @@ class Leaders {
   Leaders.fromJson(Map<String, dynamic> json) {
     lives = json['lives'];
     isactive = json['isactive'];
-    mobile = json['mobile'];
-    name = json['name'];
+    mobile = json['contactNumber'];
+    name = json['username'];
     email = json['email'];
     mhtId = json['mht_id'];
     center = json['center'];

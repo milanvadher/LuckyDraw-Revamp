@@ -35,22 +35,22 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
-    Widget leader(data, index) {
+    Widget leader(data, rank,index) {
       return ListTile(
         leading: Container(
           child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(
-                '${index}',
-                style: Theme.of(context).textTheme.headline,
-              ),
-              Text('${Setup.getOrdinalOfNumber(int.parse(index))}'),
+              // Text(
+              //   '${index}',
+              //   style: Theme.of(context).textTheme.headline,
+              // ),
+              // Text('${Setup.getOrdinalOfNumber(int.parse(index))}'),
             ],
           ),
         ),
-        title: data.rank != '1'
+        title: rank != '1'
             ? Text('${data.name}')
             : Text('${data.name}', style: Theme.of(context).textTheme.title),
         trailing: Container(
@@ -71,40 +71,7 @@ class _LeaderboardState extends State<Leaderboard> {
           stream: bloc.leadersList,
           builder: (BuildContext context, AsyncSnapshot<LeaderList> snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data.leaders.length == 0) {
-                return ListView(
-                  children: <Widget>[
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height - 160,
-                      ),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              Icons.sentiment_very_dissatisfied,
-                              color: Theme.of(context).accentColor,
-                              size: 80,
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 70, vertical: 20),
-                              child: Text(
-                                'No Leaders Available of this Month',
-                                style: Theme.of(context).textTheme.headline,
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }
-              setUserPosition(snapshot.data);
+              // setUserPosition(snapshot.data);
               return ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => Divider(
                   height: 0,
@@ -113,7 +80,7 @@ class _LeaderboardState extends State<Leaderboard> {
                 ),
                 itemCount: snapshot.data.leaders.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return leader(snapshot.data.leaders[index], index);
+                  return leader(snapshot.data.leaders[index],snapshot.data.userRank, index);
                 },
               );
             }
