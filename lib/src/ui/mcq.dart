@@ -138,7 +138,7 @@ class _MCQState extends State<MCQ> with TickerProviderStateMixin {
     selectedIndex = index;
     isTapOption.sink.add(true);
     bool result = await widget.validateAnswer(
-      level: widget.level.levelIndex,
+      question_st: widget.level.levelIndex,
       answer: widget.options[selectedIndex].option,
       questionId: widget.questionId,
     );

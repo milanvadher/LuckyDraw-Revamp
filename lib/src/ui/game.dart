@@ -157,16 +157,17 @@ class _GameState extends State<Game> {
   }
 
   loadQuestions() async {
-    int curruntLevelQuestionIndex = await getCurruntLevelQuestionIndex();
     try {
       questions = await questionApiProvider.getAllQuestions(
-        levelIndex: userLevel.level,
-        from: curruntLevelQuestionIndex,
+        levelIndex: widget.level.levelIndex,
+        from: CacheData
+            .userState.currentLevels[widget.level.levelIndex - 1].questionSt,
       );
     } catch (e) {
       question.sink.addError(e);
     }
     print('Questions ::: $questions');
+    // print('Questions ::: ${CacheData.userState.currentLevels[widget.level.levelIndex].questionSt}');
     if (questions != null && questions.length > 0) {
       AYQuestion que = questions.getRange(0, 1).first;
       question.sink.add(que);

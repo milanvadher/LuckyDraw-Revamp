@@ -2,6 +2,7 @@ import 'package:youth_app/src/model/quizlevel.dart';
 
 class UserState {
   List<QuizLevel> quizLevels;
+  List<Current> currentLevels;
   List<CompletedLevel> completed;
   int totalscore;
   int totalscoreMonth;
@@ -25,6 +26,12 @@ class UserState {
       completed = new List<CompletedLevel>();
       json['completed'].forEach((v) {
         completed.add(new CompletedLevel.fromJson(v));
+      });
+    }
+    if (json['current'] != null) {
+      currentLevels = new List<Current>();
+      json['current'].forEach((v) {
+        currentLevels.add(new Current.fromJson(v));
       });
     }
     totalscore = json['totalscore'];
@@ -68,5 +75,29 @@ class CompletedLevel {
   @override
   String toString() {
     return 'CompletedLevel{level: $level, score: $score}';
+  }
+}
+
+class Current {
+  int level;
+  int questionSt;
+
+  Current({this.level, this.questionSt});
+
+  Current.fromJson(Map<String, dynamic> json) {
+    level = json['level'];
+    questionSt = json['question_st'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['level'] = this.level;
+    data['question_st'] = this.questionSt;
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'Current{level: $level, score: $questionSt}';
   }
 }
