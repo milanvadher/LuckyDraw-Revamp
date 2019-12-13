@@ -35,7 +35,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
-    Widget leader(data, index) {
+    Widget leader(data, rank,index) {
       return ListTile(
         leading: Container(
           child: Row(
@@ -50,7 +50,7 @@ class _LeaderboardState extends State<Leaderboard> {
             ],
           ),
         ),
-        title: data.rank != '1'
+        title: rank != '1'
             ? Text('${data.name}')
             : Text('${data.name}', style: Theme.of(context).textTheme.title),
         trailing: Container(
@@ -80,7 +80,7 @@ class _LeaderboardState extends State<Leaderboard> {
                 ),
                 itemCount: snapshot.data.leaders.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return leader(snapshot.data.leaders[index], index);
+                  return leader(snapshot.data.leaders[index],snapshot.data.userRank, index);
                 },
               );
             }
