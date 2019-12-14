@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/setup.dart';
 import '../bloc/bloc.dart';
 import '../utils/cachedata.dart';
 
@@ -29,23 +30,23 @@ class _LeaderboardState extends State<Leaderboard> {
   }
 
   setUserPosition(LeaderList leaderList) {
-    userRank.sink.add(leaderList.userRank + 1);
+    userRank.sink.add(leaderList.userRank);
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget leader(data, rank,index) {
+    Widget leader(data, rank, index) {
       return ListTile(
         leading: Container(
           child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              // Text(
-              //   '${index}',
-              //   style: Theme.of(context).textTheme.headline,
-              // ),
-              // Text('${Setup.getOrdinalOfNumber(int.parse(index))}'),
+              Text(
+                '${index + 1}',
+                style: Theme.of(context).textTheme.headline,
+              ),
+              Text('${Setup.getOrdinalOfNumber(index + 1)}'),
             ],
           ),
         ),
@@ -56,7 +57,7 @@ class _LeaderboardState extends State<Leaderboard> {
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
             child: Text(
-              ' ${data.totalscoreMonth}',
+              ' ${data.totalscore}',
               style: Theme.of(context).textTheme.body2,
             ),
           ),
@@ -70,7 +71,7 @@ class _LeaderboardState extends State<Leaderboard> {
           stream: bloc.leadersList,
           builder: (BuildContext context, AsyncSnapshot<LeaderList> snapshot) {
             if (snapshot.hasData) {
-              // setUserPosition(snapshot.data);
+              setUserPosition(snapshot.data);
               return ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => Divider(
                   height: 0,
@@ -79,7 +80,8 @@ class _LeaderboardState extends State<Leaderboard> {
                 ),
                 itemCount: snapshot.data.leaders.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return leader(snapshot.data.leaders[index],snapshot.data.userRank, index);
+                  return leader(snapshot.data.leaders[index],
+                      snapshot.data.userRank, index);
                 },
               );
             }
@@ -105,7 +107,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(135),
+        preferredSize: Size.fromHeight(70),
         child: SafeArea(
           child: Container(
             child: Column(
@@ -115,13 +117,25 @@ class _LeaderboardState extends State<Leaderboard> {
                   child: Card(
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage('images/leaderboard.png'),
-                        radius: 27,
-                        backgroundColor: Theme.of(context).accentColor,
-                        child: Text(
-                          '15th',
-                          // '${snapshot.data}',`     When we get the data from api
-                          style: Theme.of(context).textTheme.headline,
+                        // backgroundImage: AssetImage('images/leaderboard.png'),
+                        radius: 22,
+                        // backgroundColor: Theme.of(context).accentColor,
+                        child: StreamBuilder(
+                          initialData: 0,
+                          stream: userRank,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<int> snapshot) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(
+                                  '${snapshot.data}',
+                                  style: Theme.of(context).textTheme.headline,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                       title: Text(
@@ -143,8 +157,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   '${snapshot.data}',
                                   style: Theme.of(context).textTheme.headline,
                                 ),
-                                Text(
-                                    '${CommonFunction.getOrdinalOfNumber(snapshot.data)}')
+                                Text('${Setup.getOrdinalOfNumber(snapshot.data)}'),
                               ],
                             );
                           },
