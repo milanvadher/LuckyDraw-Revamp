@@ -225,21 +225,18 @@ class _GameState extends State<Game> {
       level: level,
       questionId: questionId,
     );
-    validateAnswer.updateSessionScore();
+    print('Validate ANS ===> ');
+    print(validateAnswer.answerStatus);
     Loading.hide(context);
-    if (widget.isBonusLevel) {
-      await loadNextQuestion();
-      return true;
+    if (validateAnswer.answerStatus) {
+      CacheData.userInfo.points += 100;
+      validateAnswer.updateSessionScore();
+      await AnsResultAnimation.rightAns(context, false);
     } else {
-      if (validateAnswer.answerStatus) {
-        await AnsResultAnimation.rightAns(context, false);
-        await loadNextQuestion();
-        return true;
-      } else {
-        await AnsResultAnimation.wrongAns(context);
-      }
+      await AnsResultAnimation.wrongAns(context);
     }
-    return false;
+    await loadNextQuestion();
+    return validateAnswer.answerStatus;
   }
 
   @override
@@ -344,12 +341,6 @@ class _GameState extends State<Game> {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          timesUp(true);
-        },
-        child: Icon(Icons.timer),
       ),
     );
   }

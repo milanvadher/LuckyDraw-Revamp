@@ -10,6 +10,8 @@ class ValidateAnswer {
   ValidateAnswer({this.answerStatus});
 
   ValidateAnswer.fromJson(Map<String, dynamic> json) {
+    json = json['data'];
+    print(json);
     answerStatus = json['answer_status'];
     totalscoreMonth = json['totalscore_month'];
     questionSt = json['question_st'];
