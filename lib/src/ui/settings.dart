@@ -4,7 +4,6 @@ import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/coupon.dart';
 import 'package:youth_app/src/ui/profile.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
-import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/common_widget.dart';
 import 'package:youth_app/src/utils/config.dart';
 

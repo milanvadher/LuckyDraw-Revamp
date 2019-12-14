@@ -6,7 +6,7 @@ class Setup {
   Map<String, String> headers = {'content-type': 'application/json'};
 
   Future<bool> isLogin() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    await SharedPreferences.getInstance();
     bool isLogin = await Config.isLogin();
     return isLogin;
   }

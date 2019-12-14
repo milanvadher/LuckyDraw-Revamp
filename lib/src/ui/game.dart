@@ -8,8 +8,6 @@ import 'package:youth_app/src/model/user_level.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/model/validate_answer.dart';
 import 'package:youth_app/src/utils/points.dart';
-
-import '../model/question.dart';
 import '../repository/auth_api_provider.dart';
 import '../repository/question_api_provider.dart';
 import '../utils/ans_result.dart';
