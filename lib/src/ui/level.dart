@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/quizlevel.dart';
 import 'package:youth_app/src/model/user_state.dart';
+import 'package:youth_app/src/ui/ay_profile.dart';
 import 'package:youth_app/src/ui/leaderboard.dart';
 
 import '../utils/cachedata.dart';
@@ -155,6 +156,22 @@ class _LevelState extends State<Level> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Levels'),
+        actions: <Widget>[
+          IconButton(
+            icon: Hero(
+              tag: 'profile',
+              child: Icon(Icons.account_circle),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AYProfile(),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: SafeArea(
         child: StreamBuilder(

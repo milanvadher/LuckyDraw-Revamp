@@ -156,10 +156,19 @@ class _GameState extends State<Game> {
 
   loadQuestions() async {
     try {
+      int fromQuestion = CacheData.userState.currentLevels
+                  .where((level) => level.level == widget.level.levelIndex)
+                  .toList()
+                  .length >
+              0
+          ? CacheData.userState.currentLevels
+              .where((level) => level.level == widget.level.levelIndex)
+              .toList()[0]
+              .questionSt
+          : 0;
       questions = await questionApiProvider.getAllQuestions(
         levelIndex: widget.level.levelIndex,
-        from: CacheData
-            .userState.currentLevels[widget.level.levelIndex - 1].questionSt,
+        from: fromQuestion,
       );
     } catch (e) {
       question.sink.addError(e);
@@ -223,6 +232,10 @@ class _GameState extends State<Game> {
       level: level,
       questionId: questionId,
     );
+    (CacheData.userState.currentLevels
+            .where((level) => level.level == widget.level.levelIndex))
+        .first
+        .questionSt = validateAnswer.questionSt;
     print('Validate ANS ===> ');
     print(validateAnswer.answerStatus);
     Loading.hide(context);

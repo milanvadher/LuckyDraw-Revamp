@@ -37,7 +37,7 @@ class _AppMainPageState extends State<AppMainPage> {
 
   checkAppUpdate() async {
     bool result = await AppSettings.isUpdateAvailable;
-    if (result) {
+    if (result != null && result) {
       AppSettings.showUpdateDialog(context: context);
     }
   }
