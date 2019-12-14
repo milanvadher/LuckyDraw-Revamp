@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/utils/common_function.dart';
-import 'package:youth_app/src/utils/setup.dart';
 import '../bloc/bloc.dart';
 import '../utils/cachedata.dart';
 

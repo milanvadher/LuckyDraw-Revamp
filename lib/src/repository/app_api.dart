@@ -16,6 +16,7 @@ class AppApi {
     Map<String, String> headers = headers,
     bool throwError = true,
     bool isAYApi = false,
+    bool isFromResult = true,
   }) async {
     try {
       Response response = await AppApi.postApi(
@@ -25,7 +26,10 @@ class AppApi {
       );
       if (response.statusCode == 200) {
         if (isAYApi) {
-          return fromJson(json.decode(response.body)['data']['results']);
+          if (isFromResult) {
+            return fromJson(json.decode(response.body)['data']['results']);
+          }
+          return fromJson(json.decode(response.body));
         }
         return fromJson(json.decode(response.body));
       }

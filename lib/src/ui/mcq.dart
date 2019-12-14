@@ -142,11 +142,13 @@ class _MCQState extends State<MCQ> with TickerProviderStateMixin {
       answer: widget.options[selectedIndex].option,
       questionId: widget.questionId,
     );
-    if (result) {
+    print('OnOptionClick ====>');
+    print(result);
       await easyOut();
       await initData();
       isTapOption.sink.add(false);
-    }
+    // if (result) {
+    // }
   }
 
   @override
@@ -178,6 +180,7 @@ class _MCQState extends State<MCQ> with TickerProviderStateMixin {
                             : Theme.of(context).cardColor,
                     child: ListTile(
                       onTap: () {
+                        print(index);
                         onOptionClick(index);
                       },
                       leading: getIconOnOptionSelect(snapshot.data, index),

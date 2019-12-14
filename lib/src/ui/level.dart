@@ -6,6 +6,7 @@ import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/ui/leaderboard.dart';
 
 import '../utils/cachedata.dart';
+import 'game.dart';
 
 class Level extends StatefulWidget {
   @override
@@ -73,16 +74,15 @@ class _LevelState extends State<Level> {
                       textColor: Colors.black);
                 }
               : () async {
-                  // await Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => Game(
-                  //       isBonusLevel: false,
-                  //       level: level,
-                  //       isTimeBased: isTimeBased,
-                  //     ),
-                  //   ),
-                  // );
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Game(
+                        isBonusLevel: false,
+                        level: level,
+                      ),
+                    ),
+                  );
                   refreshUi.sink.add(true);
                 },
           trailing: isCompleted

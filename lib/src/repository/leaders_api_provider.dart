@@ -3,7 +3,6 @@ import 'package:http/http.dart' show Client;
 import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/repository/app_api.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
-import 'package:youth_app/src/utils/constant.dart';
 
 class LeadersApiProvider {
   Client client = Client();

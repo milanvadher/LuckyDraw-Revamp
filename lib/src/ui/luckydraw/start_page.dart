@@ -9,7 +9,7 @@ class LuckyDrawStartPage extends StatefulWidget {
   _LuckyDrawStartPageState createState() => _LuckyDrawStartPageState();
 }
 
-class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with AutomaticKeepAliveClientMixin<LuckyDrawStartPage> {
+class _LuckyDrawStartPageState extends State<LuckyDrawStartPage> with AutomaticKeepAliveClientMixin<LuckyDrawStartPage> {
   PublishSubject<bool> isLogIn = PublishSubject<bool>();
 
   @override
@@ -32,7 +32,7 @@ class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with Automatic
     isLogIn.close();
   }
 
-  @override
+  @mustCallSuper
   Widget build(BuildContext context) {
     return Container(
       child: StreamBuilder(

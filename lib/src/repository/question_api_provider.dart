@@ -42,10 +42,11 @@ class QuestionApiProvider {
       'QuestionFrom': from,
     };
     return await AppApi.postApiWithParseRes(
-      fromJson: (json) => AYQuestion.fromJsonArray(json),
+      fromJson: (json) => AYQuestion.fromJsonArray(json['data']),
       reqData: reqData,
       apiEndPoint: 'questions',
       isAYApi: true,
+      isFromResult: false,
     );
   }
 
@@ -65,6 +66,7 @@ class QuestionApiProvider {
       reqData: reqData,
       apiEndPoint: 'validate_answer',
       isAYApi: true,
+      isFromResult: false,
     );
   }
 }

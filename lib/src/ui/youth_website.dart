@@ -216,7 +216,7 @@ class _AppWebViewState extends State<AppWebView>
   _downloadFileFromURL(String url) async {
     if (await AppFileUtils.checkPermission()) {
       String downloadDir = await AppFileUtils.getDownloadDir();
-      final taskId = await FlutterDownloader.enqueue(
+      await FlutterDownloader.enqueue(
         url: url,
         savedDir: downloadDir,
         showNotification: true,
@@ -243,11 +243,10 @@ class _AppWebViewState extends State<AppWebView>
       await launch(url);
     } else {
       CommonWidget.displayDialog(
-          context: context, title: 'Can\'t launch', msg: '${url} cant launch');
+          context: context, title: 'Can\'t launch', msg: '$url cant launch');
     }
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

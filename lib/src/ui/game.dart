@@ -8,8 +8,6 @@ import 'package:youth_app/src/model/user_level.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/model/validate_answer.dart';
 import 'package:youth_app/src/utils/points.dart';
-
-import '../model/question.dart';
 import '../repository/auth_api_provider.dart';
 import '../repository/question_api_provider.dart';
 import '../utils/ans_result.dart';
@@ -157,16 +155,17 @@ class _GameState extends State<Game> {
   }
 
   loadQuestions() async {
-    int curruntLevelQuestionIndex = await getCurruntLevelQuestionIndex();
     try {
       questions = await questionApiProvider.getAllQuestions(
-        levelIndex: userLevel.level,
-        from: curruntLevelQuestionIndex,
+        levelIndex: widget.level.levelIndex,
+        from: CacheData
+            .userState.currentLevels[widget.level.levelIndex - 1].questionSt,
       );
     } catch (e) {
       question.sink.addError(e);
     }
     print('Questions ::: $questions');
+    // print('Questions ::: ${CacheData.userState.currentLevels[widget.level.levelIndex].questionSt}');
     if (questions != null && questions.length > 0) {
       AYQuestion que = questions.getRange(0, 1).first;
       question.sink.add(que);
@@ -224,21 +223,18 @@ class _GameState extends State<Game> {
       level: level,
       questionId: questionId,
     );
-    validateAnswer.updateSessionScore();
+    print('Validate ANS ===> ');
+    print(validateAnswer.answerStatus);
     Loading.hide(context);
-    if (widget.isBonusLevel) {
-      await loadNextQuestion();
-      return true;
+    if (validateAnswer.answerStatus) {
+      CacheData.userInfo.points += 100;
+      validateAnswer.updateSessionScore();
+      await AnsResultAnimation.rightAns(context, false);
     } else {
-      if (validateAnswer.answerStatus) {
-        await AnsResultAnimation.rightAns(context, false);
-        await loadNextQuestion();
-        return true;
-      } else {
-        await AnsResultAnimation.wrongAns(context);
-      }
+      await AnsResultAnimation.wrongAns(context);
     }
-    return false;
+    await loadNextQuestion();
+    return validateAnswer.answerStatus;
   }
 
   @override
@@ -343,12 +339,6 @@ class _GameState extends State<Game> {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          timesUp(true);
-        },
-        child: Icon(Icons.timer),
       ),
     );
   }
