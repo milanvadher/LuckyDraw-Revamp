@@ -35,7 +35,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
-    Widget leader(data, rank, index) {
+    Widget leader(Leaders data, rank, index) {
       return ListTile(
         leading: Container(
           child: Row(
@@ -57,7 +57,7 @@ class _LeaderboardState extends State<Leaderboard> {
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
             child: Text(
-              ' ${data.totalscore}',
+              ' ${data?.totalscoreMonth ?? 0}',
               style: Theme.of(context).textTheme.body2,
             ),
           ),

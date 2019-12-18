@@ -225,7 +225,8 @@ class _GameState extends State<Game> {
     int questionId,
   }) async {
     print('Validate Ans');
-    Loading.show(context);
+    try {
+      Loading.show(context);
     QuestionApiProvider questionApiProvider = new QuestionApiProvider();
     ValidateAnswer validateAnswer = await questionApiProvider.validateAnswer(
       answer: answer,
@@ -237,10 +238,12 @@ class _GameState extends State<Game> {
         .first
         .questionSt = validateAnswer.questionSt;
     print('Validate ANS ===> ');
+    CacheData.userState.totalscoreMonth = validateAnswer.totalscoreMonth;
+    CacheData.userInfo.questionState = validateAnswer.questionSt;
+    Point.updatePoint();
     print(validateAnswer.answerStatus);
     Loading.hide(context);
     if (validateAnswer.answerStatus) {
-      CacheData.userInfo.points += 100;
       validateAnswer.updateSessionScore();
       await AnsResultAnimation.rightAns(context, false);
     } else {
@@ -248,6 +251,16 @@ class _GameState extends State<Game> {
     }
     await loadNextQuestion();
     return validateAnswer.answerStatus;
+    } catch (e) {
+      Loading.hide(context);
+      Fluttertoast.showToast(
+        msg: '$e',
+        backgroundColor: Colors.red,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+      return null;
+    }
   }
 
   @override

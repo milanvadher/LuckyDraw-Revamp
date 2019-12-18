@@ -144,11 +144,13 @@ class _MCQState extends State<MCQ> with TickerProviderStateMixin {
     );
     print('OnOptionClick ====>');
     print(result);
+    if (result == null) {
+      print('Something error in validate ans ... ');
+    } else {
       await easyOut();
       await initData();
       isTapOption.sink.add(false);
-    // if (result) {
-    // }
+    }
   }
 
   @override

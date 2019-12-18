@@ -35,7 +35,7 @@ class Point {
               padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
               child: StreamBuilder(
                 stream: points,
-                initialData: CacheData.userInfo?.points ?? 0,
+                initialData: CacheData.userState?.totalscoreMonth ?? 0,
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   return Text(
                     '${snapshot.hasData ? snapshot.data : 0}',
@@ -51,7 +51,7 @@ class Point {
   }
 
   static updatePoint() {
-    points.sink.add(CacheData.userInfo?.points);
+    points.sink.add(CacheData.userState?.totalscoreMonth);
   }
 
   static dispose() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
+import 'package:youth_app/src/utils/app_settings.dart';
 import '../utils/constant.dart';
 import 'youth_website.dart';
 
@@ -11,6 +12,13 @@ class MainPageRevamp extends StatefulWidget {
 }
 
 class _MainPageRevampState extends State<MainPageRevamp> {
+  checkAppUpdate() async {
+    bool result = await AppSettings.isUpdateAvailable;
+    if (result != null && result) {
+      AppSettings.showUpdateDialog(context: context);
+    }
+  }
+
   onClickMenu(String text) {
     Fluttertoast.showToast(
       msg: text,
@@ -53,6 +61,12 @@ class _MainPageRevampState extends State<MainPageRevamp> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    checkAppUpdate();
+    super.initState();
   }
 
   @override

@@ -102,11 +102,18 @@ class AppApi {
   }) async {
     print('Start calling ... /$apiEndPoint');
 
-    Map<String, String> allHeader = {}..addAll(headers)..addAll(params);
-
+    Map<String, String> allHeader;
+    if (params == null) {
+      allHeader = {}..addAll(headers);
+    } else {
+      allHeader = {}..addAll(headers)..addAll(params);
+    }
     print('This is All Headers ... $allHeader');
+
     String postURL =
         isAYapi ? '$ayApiUrl/$apiEndPoint' : '$apiUrl/$apiEndPoint';
+
+    print('This is the URL ... $postURL');
 
     final response = await client.get(
       postURL,
