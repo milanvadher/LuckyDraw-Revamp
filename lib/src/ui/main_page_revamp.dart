@@ -83,7 +83,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
           children: <Widget>[
             createMenu(
               color: Colors.deepOrangeAccent,
-              title: 'AY Quiz',
+              title: 'Power of 9',
               onClick: () {
                 Navigator.push(
                   context,

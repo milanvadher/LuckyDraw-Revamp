@@ -117,6 +117,7 @@ class _AYProfileState extends State<AYProfile> with TickerProviderStateMixin {
               await _fcm.deleteInstanceID();
               Loading.hide(context);
               Navigator.pop(context);
+              Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

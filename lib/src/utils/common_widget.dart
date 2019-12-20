@@ -33,7 +33,7 @@ class CommonWidget {
           alignment: Alignment.center,
           padding: EdgeInsets.fromLTRB(10, 10, 10, 30),
           child: Text(
-            'AY QUIZ',
+            'POWER OF 9',
             style: Theme.of(context).textTheme.title,
           ),
         ),

@@ -80,7 +80,8 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return MaterialApp(
           title: 'Today\'s Youth',
-          theme: snapshot.data ? darkTheme : lightTheme,
+          // theme: snapshot.data ? darkTheme : lightTheme,
+          theme: darkTheme,
           darkTheme: darkTheme,
           home: widget.homepage,
         );
