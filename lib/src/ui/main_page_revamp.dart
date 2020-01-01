@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
+import 'package:youth_app/src/utils/cachedata.dart';
+import 'package:youth_app/src/utils/common_function.dart';
 import '../utils/constant.dart';
 import 'youth_website.dart';
 
@@ -71,6 +73,12 @@ class _MainPageRevampState extends State<MainPageRevamp> {
 
   @override
   Widget build(BuildContext context) {
+    String akramURL = akramYouthURL;
+    if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
+      akramURL = CacheData.appSetting.akramYouthURL;
+    String registrationURL = regURL;
+    if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
+      registrationURL = CacheData.appSetting.regURL;
     return Scaffold(
       appBar: AppBar(
         title: Text('Today\'s Youth'),
@@ -126,7 +134,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          AppWebView(url: akramYouthURL, title: 'Akram Youth')),
+                          AppWebView(url: akramURL, title: 'Akram Youth')),
                 );
               },
               icon: ImageIcon(
@@ -143,7 +151,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          AppWebView(url: regURL, title: 'Registration')),
+                          AppWebView(url: registrationURL, title: 'Registration')),
                 );
               },
               icon: ImageIcon(
