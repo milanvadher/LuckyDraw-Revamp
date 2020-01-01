@@ -24,15 +24,16 @@ class CommonWidget {
             tag: 'lucky_draw',
             child: Image.asset(
               CommonFunction.getLuckyDrawLogo(),
-              height: 150,
+              height: 100,
+              // color: Colors.amber,
             ),
           ),
         ),
         Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(10, 5, 10, 30),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 30),
           child: Text(
-            'LUCKY DRAW',
+            'POWER OF 9',
             style: Theme.of(context).textTheme.title,
           ),
         ),

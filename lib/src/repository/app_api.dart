@@ -15,13 +15,22 @@ class AppApi {
     @required Function fromJson,
     Map<String, String> headers = headers,
     bool throwError = true,
+    bool isAYApi = false,
+    bool isFromResult = true,
   }) async {
     try {
       Response response = await AppApi.postApi(
         apiEndPoint: apiEndPoint,
         reqData: reqData,
+        isAYapi: isAYApi,
       );
       if (response.statusCode == 200) {
+        if (isAYApi) {
+          if (isFromResult) {
+            return fromJson(json.decode(response.body)['data']['results']);
+          }
+          return fromJson(json.decode(response.body));
+        }
         return fromJson(json.decode(response.body));
       }
       if (throwError) {
@@ -42,12 +51,16 @@ class AppApi {
     @required Function fromJson,
     Map<String, String> headers = headers,
     bool throwError = true,
+    bool isAYApi = false,
+    Map<String, String> params,
   }) async {
     try {
       Response response = await AppApi.getApi(
-        apiEndPoint: apiEndPoint,
-      );
+          apiEndPoint: apiEndPoint, isAYapi: isAYApi, params: params);
       if (response.statusCode == 200) {
+        if (isAYApi) {
+          return fromJson(json.decode(response.body)['data']);
+        }
         return fromJson(json.decode(response.body));
       }
       if (throwError) {
@@ -67,10 +80,13 @@ class AppApi {
     @required String apiEndPoint,
     @required Map<String, dynamic> reqData,
     Map<String, String> headers = headers,
+    bool isAYapi = false,
   }) async {
     print('reqData fo $apiEndPoint ${reqData.toString()}');
+    String postURL =
+        isAYapi ? '$ayApiUrl/$apiEndPoint' : '$apiUrl/$apiEndPoint';
     final response = await client.post(
-      '$apiUrl/$apiEndPoint',
+      postURL,
       body: json.encode(reqData),
       headers: headers,
     );
@@ -81,12 +97,29 @@ class AppApi {
   static Future<Response> getApi({
     @required String apiEndPoint,
     Map<String, String> headers = headers,
+    bool isAYapi = false,
+    Map<String, String> params,
   }) async {
     print('Start calling ... /$apiEndPoint');
+
+    Map<String, String> allHeader;
+    if (params == null) {
+      allHeader = {}..addAll(headers);
+    } else {
+      allHeader = {}..addAll(headers)..addAll(params);
+    }
+    print('This is All Headers ... $allHeader');
+
+    String postURL =
+        isAYapi ? '$ayApiUrl/$apiEndPoint' : '$apiUrl/$apiEndPoint';
+
+    print('This is the URL ... $postURL');
+
     final response = await client.get(
-      '$apiUrl/$apiEndPoint',
-      headers: headers,
+      postURL,
+      headers: allHeader,
     );
+    print(response);
     print(
         'Response from $apiEndPoint :: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
     return response;

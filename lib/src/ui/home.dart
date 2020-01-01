@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youth_app/src/ui/front_page.dart';
 import 'package:youth_app/src/ui/settings.dart';
-import 'package:youth_app/src/utils/common_function.dart';
 
 class HomePage extends StatefulWidget {
   @override

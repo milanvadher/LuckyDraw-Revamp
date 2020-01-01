@@ -14,20 +14,24 @@ import 'package:youth_app/src/utils/constant.dart';
 
 class AppWebView extends StatefulWidget {
   final String url;
+  final String title;
 
-  const AppWebView({Key key, this.url}) : super(key: key);
+  const AppWebView({Key key, this.url, this.title = ''}) : super(key: key);
 
   @override
   _AppWebViewState createState() => _AppWebViewState();
 }
 
-class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMixin<AppWebView> {
+class _AppWebViewState extends State<AppWebView>
+    with AutomaticKeepAliveClientMixin<AppWebView> {
   InAppWebViewController webView;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   String url = "";
   double progress = 0;
   PublishSubject<bool> showRefreshBtn = PublishSubject<bool>();
+
   Future<void> _handleRefresh() {
     final Completer<void> completer = Completer<void>();
     webView.reload();
@@ -65,7 +69,6 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    //url = widget.url;
     return WillPopScope(
       onWillPop: () async {
         if (webView != null) {
@@ -74,6 +77,15 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
         return false;
       },
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(widget.title),
+        ),
         body: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _handleRefresh,
@@ -82,7 +94,9 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
                 child: Column(children: <Widget>[
               progress < 1
                   ? Container(
-                      padding: EdgeInsets.all(5), child: LinearProgressIndicator(backgroundColor: Colors.grey, value: progress))
+                      padding: EdgeInsets.all(5),
+                      child: LinearProgressIndicator(
+                          backgroundColor: Colors.grey, value: progress))
                   : Container(),
               Expanded(
                 child: Container(
@@ -94,15 +108,19 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
                     onWebViewCreated: (InAppWebViewController controller) {
                       webView = controller;
                     },
-                    onLoadError: (InAppWebViewController controller, String url, int code, String message) {
+                    onLoadError: (InAppWebViewController controller, String url,
+                        int code, String message) {
                       print("onLoadError $url");
                       showRefreshBtn.sink.add(true);
                     },
-                    onLoadResource:
-                        (InAppWebViewController controller, WebResourceResponse response, WebResourceRequest request) {
-                      showRefreshBtn.sink.add(false); // Needs to useOnLoadResource true
+                    onLoadResource: (InAppWebViewController controller,
+                        WebResourceResponse response,
+                        WebResourceRequest request) {
+                      showRefreshBtn.sink
+                          .add(false); // Needs to useOnLoadResource true
                     },
-                    onProgressChanged: (InAppWebViewController controller, int progress) {
+                    onProgressChanged:
+                        (InAppWebViewController controller, int progress) {
                       /*controller.getUrl().then((string) {
                         print("onProgressChanged $progress $string");
                       });*/
@@ -110,14 +128,16 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
                         this.progress = progress / 100;
                       });
                     },
-                    onLoadStart: (InAppWebViewController controller, String url) {
+                    onLoadStart:
+                        (InAppWebViewController controller, String url) {
                       print("started $url");
                       _checkForDownload(url);
                       setState(() {
                         this.url = url;
                       });
                     },
-                    shouldOverrideUrlLoading: (InAppWebViewController controller, String url) {
+                    shouldOverrideUrlLoading:
+                        (InAppWebViewController controller, String url) {
                       print("shouldOverrideUrlLoading $url");
                       controller.loadUrl(url);
                     },
@@ -197,7 +217,7 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
   _downloadFileFromURL(String url) async {
     if (await AppFileUtils.checkPermission()) {
       String downloadDir = await AppFileUtils.getDownloadDir();
-      final taskId = await FlutterDownloader.enqueue(
+      await FlutterDownloader.enqueue(
         url: url,
         savedDir: downloadDir,
         showNotification: true,
@@ -224,11 +244,11 @@ class _AppWebViewState extends State<AppWebView> with AutomaticKeepAliveClientMi
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      CommonWidget.displayDialog(context: context, title: 'Can\'t launch', msg: '${url} cant launch');
+      CommonWidget.displayDialog(
+          context: context, title: 'Can\'t launch', msg: '$url cant launch');
     }
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

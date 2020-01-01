@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/repository/repository.dart';
-import 'package:youth_app/src/ui/home.dart';
 import 'package:youth_app/src/ui/register.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/common_widget.dart';
@@ -52,6 +52,9 @@ class _LoginPageState extends State<LoginPage> {
         if (token != null) {
           await saveFirebaseToken(token);
         }
+        UserState userState =
+            await repository.loadUserState(mobileNo: mobileNo);
+        CacheData.userState = userState;
         Loading.hide(context);
         widget.onLogin();
         /*Navigator.pushReplacement(

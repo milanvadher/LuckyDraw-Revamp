@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/ui/edit_username.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
@@ -56,6 +57,7 @@ class _ProfileState extends State<Profile> {
               await pref.remove('$userDataKey');
               await _fcm.deleteInstanceID();
               Loading.hide(context);
+              prefix0.Navigator.pop(context);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

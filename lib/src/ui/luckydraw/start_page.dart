@@ -3,14 +3,13 @@ import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/ui/home.dart';
 import 'package:youth_app/src/ui/login.dart';
 import 'package:youth_app/src/utils/config.dart';
-import 'package:youth_app/src/utils/loading.dart';
 
 class LuckyDrawStartPage extends StatefulWidget {
   @override
   _LuckyDrawStartPageState createState() => _LuckyDrawStartPageState();
 }
 
-class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with AutomaticKeepAliveClientMixin<LuckyDrawStartPage> {
+class _LuckyDrawStartPageState extends State<LuckyDrawStartPage> with AutomaticKeepAliveClientMixin<LuckyDrawStartPage> {
   PublishSubject<bool> isLogIn = PublishSubject<bool>();
 
   @override
@@ -33,7 +32,7 @@ class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with Automatic
     isLogIn.close();
   }
 
-  @override
+  @mustCallSuper
   Widget build(BuildContext context) {
     return Container(
       child: StreamBuilder(
@@ -51,6 +50,5 @@ class _LuckyDrawStartPageState extends State<LuckyDrawStartPage>  with Automatic
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
