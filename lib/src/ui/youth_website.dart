@@ -131,7 +131,7 @@ class _AppWebViewState extends State<AppWebView>
                     onLoadStart:
                         (InAppWebViewController controller, String url) {
                       print("started $url");
-                      _checkForDownload(url);
+                      // _checkForDownload(url);
                       setState(() {
                         this.url = url;
                       });

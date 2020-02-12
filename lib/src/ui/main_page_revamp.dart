@@ -77,8 +77,8 @@ class _MainPageRevampState extends State<MainPageRevamp> {
     if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
       akramURL = CacheData.appSetting.akramYouthURL;
     String registrationURL = regURL;
-    if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
-      registrationURL = CacheData.appSetting.regURL;
+    // if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
+    //   registrationURL = CacheData.appSetting.regURL;
     return Scaffold(
       appBar: AppBar(
         title: Text('Today\'s Youth'),
@@ -147,6 +147,8 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               color: Colors.teal.shade300,
               title: 'Registration',
               onClick: () {
+                print('REG LINK ==>');
+                print(registrationURL);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

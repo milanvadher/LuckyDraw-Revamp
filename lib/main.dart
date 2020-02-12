@@ -5,6 +5,7 @@ import 'package:youth_app/src/utils/config.dart';
 import 'src/app.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Widget homepage = SplashScreen();
   CacheData.isDarkTheme = await Config.isDarkMode();
   runApp(MyApp(

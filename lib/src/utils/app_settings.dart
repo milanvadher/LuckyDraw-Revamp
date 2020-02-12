@@ -38,6 +38,9 @@ class AppSettings {
       Repository repository = Repository();
       AppSetting appSetting = await repository.getAppSettings();
       if(appSetting != null) {
+        print('APP SETTINGS');
+        print(appSetting.toString());
+
         CacheData.appSetting = appSetting;
         await AppSharedPrefUtil.saveIsLuckyDrawActive(appSetting.isLuckyDrawActive);
       }
