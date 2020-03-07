@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         CacheData.userInfo = user;
         String token = await FirebaseNotification.setupNotification();
         if (token != null) {
+          CacheData.firebaseToken = token;
           await saveFirebaseToken(token);
         }
         UserState userState =

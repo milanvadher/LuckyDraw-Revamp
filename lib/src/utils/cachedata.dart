@@ -7,6 +7,7 @@ class CacheData {
   static bool isDarkTheme;
   static AppSetting appSetting;
   static UserState userState;
+  static String firebaseToken;
 
   static bool get isLuckyDrawActive {
     if (appSetting != null) {

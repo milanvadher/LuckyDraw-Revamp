@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/bloc/bloc.dart';
+import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
 import 'package:youth_app/src/ui/game.dart';
+import 'package:youth_app/src/ui/login.dart';
 import 'package:youth_app/src/ui/subscription.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
@@ -30,6 +32,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
   bool isNumberSubscribed = false;
   bool isEmailSubscribed = false;
   Timer periodicTimer;
+  User userData = CacheData.userInfo;
 
   checkAppUpdate() async {
     bool result = await AppSettings.isUpdateAvailable;
@@ -248,6 +251,14 @@ class _MainPageRevampState extends State<MainPageRevamp> {
           }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+    );
+  }
+
+  void onLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Subscription(), fullscreenDialog: true),
     );
   }
 

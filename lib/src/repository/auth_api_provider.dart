@@ -129,18 +129,25 @@ class AuthApiProvider {
     }
   }
 
-  Future<SubscriptionModel> subscription({
-    @required String contactNumber,
-    String email,
-  }) async {
+  Future<SubscriptionModel> subscription(
+      {@required String contactNumber,
+      String email,
+      String username,
+      bool isEmail,
+      bool isSMS,
+      String firebasetoken}) async {
     Map<String, dynamic> reqData = {
+      'username': username,
+      'isEmail': isEmail,
+      'isSMS': isSMS,
+      'firebasetoken': firebasetoken,
       'contactNumber': contactNumber,
       'email': email
     };
     return await AppApi.postApiWithParseRes(
       fromJson: (json) => SubscriptionModel.fromJson(json),
       reqData: reqData,
-      apiEndPoint: 'subscribeUser',
+      apiEndPoint: 'subscription',
     );
   }
 }

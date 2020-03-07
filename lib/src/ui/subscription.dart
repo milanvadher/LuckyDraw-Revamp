@@ -25,7 +25,8 @@ class _SubscriptionState extends State<Subscription>
     with AutomaticKeepAliveClientMixin<Subscription> {
   bool isNumberSubscribed = false;
   bool isEmailSubscribed = false;
-  String mobileNo, email;
+  String mobileNo = CacheData.userInfo.contactNumber;
+  String email;
   final loginFormKey = GlobalKey<FormState>();
   bool isLogIn = false;
   User user;
@@ -123,10 +124,13 @@ class _SubscriptionState extends State<Subscription>
     if (loginFormKey.currentState.validate()) {
       try {
         loginFormKey.currentState.save();
-        print(mobileNo);
-        print(email);
         SubscriptionModel subscribe = await repository.subscription(
-            contactNumber: mobileNo, email: email);
+            contactNumber: mobileNo,
+            email: email,
+            username: user.username,
+            isEmail: isEmailSubscribed,
+            isSMS: isNumberSubscribed,
+            firebasetoken: CacheData.firebaseToken);
         print(subscribe);
       } catch (error) {
         print(error);
@@ -140,28 +144,6 @@ class _SubscriptionState extends State<Subscription>
       autovalidate: true,
       child: Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-            child: isNumberSubscribed
-                ? TextFormField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: 'Mobile Number',
-                      hintText: 'Enter your Mobile Number',
-                      prefixIcon: Icon(Icons.call),
-                    ),
-                    initialValue: user?.contactNumber ?? mobileNo,
-                    maxLength: 10,
-                    validator: Validation.mobileNo,
-                    onSaved: (value) {
-                      setState(() {
-                        mobileNo = value;
-                      });
-                    },
-                    keyboardType: TextInputType.phone,
-                  )
-                : Container(),
-          ),
           Container(
             padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
             child: isEmailSubscribed
@@ -209,14 +191,44 @@ class _SubscriptionState extends State<Subscription>
         ),
         SizedBox(height: 40),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Your Mobile : ",
+              style: Theme.of(context).textTheme.body2,
+            ),
+            Text(
+              user?.contactNumber ?? "-",
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ],
+        ),
+        // Container(
+        //   padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+        //   child: TextFormField(
+        //     decoration: InputDecoration(
+        //       filled: true,
+        //       labelText: 'Mobile Number',
+        //       hintText: 'Enter your Mobile Number',
+        //       prefixIcon: Icon(Icons.call),
+        //     ),
+        //     initialValue: user?.contactNumber ?? "-",
+        //     maxLength: 10,
+        //     validator: Validation.mobileNo,
+        //     enabled: false,
+        //     keyboardType: TextInputType.phone,
+        //   ),
+        // ),
+        SizedBox(height: 40),
+        Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            customCheckbox("Mobile Number", isNumberSubscribed, (val) {
+            customCheckbox("Suscribe me on SMS", isNumberSubscribed, (val) {
               setState(() {
                 isNumberSubscribed = val;
               });
             }),
-            customCheckbox("Email Address", isEmailSubscribed, (val) {
+            customCheckbox("Suscribe me on EMAIL", isEmailSubscribed, (val) {
               setState(() {
                 isEmailSubscribed = val;
               });
@@ -233,11 +245,13 @@ class _SubscriptionState extends State<Subscription>
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.done),
-              onPressed: () {
-                _submitSubscription();
-              })
+          isEmailSubscribed || isNumberSubscribed
+              ? IconButton(
+                  icon: Icon(Icons.done),
+                  onPressed: () {
+                    _submitSubscription();
+                  })
+              : Container()
         ],
       ),
       body: _subscriptionBody(),

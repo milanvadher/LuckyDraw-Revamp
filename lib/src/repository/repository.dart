@@ -148,12 +148,20 @@ class Repository {
     return _appSettingApiProvider.getAppSettings();
   }
 
-  Future<SubscriptionModel> subscription({
-    @required String contactNumber,
-    String email,
-  }) async {
+  Future<SubscriptionModel> subscription(
+      {@required String contactNumber,
+      String email,
+      String username,
+      bool isEmail,
+      bool isSMS,
+      String firebasetoken}) async {
     SubscriptionModel subscribe = await _authApiProvider.subscription(
-        email: email, contactNumber: contactNumber);
+        email: email,
+        contactNumber: contactNumber,
+        username: username,
+        isEmail: isEmail,
+        isSMS: isSMS,
+        firebasetoken: firebasetoken);
     return subscribe;
   }
 }
