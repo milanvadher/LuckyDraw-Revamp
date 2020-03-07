@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:youth_app/src/model/subscription.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/repository/repository.dart';
@@ -118,10 +119,19 @@ class _SubscriptionState extends State<Subscription>
     );
   }
 
-  _submitSubscription() {
-    loginFormKey.currentState.save();
-    print(mobileNo);
-    print(email);
+  _submitSubscription() async {
+    if (loginFormKey.currentState.validate()) {
+      try {
+        loginFormKey.currentState.save();
+        print(mobileNo);
+        print(email);
+        SubscriptionModel subscribe = await repository.subscription(
+            contactNumber: mobileNo, email: email);
+        print(subscribe);
+      } catch (error) {
+        print(error);
+      }
+    }
   }
 
   _subscriptionForm() {

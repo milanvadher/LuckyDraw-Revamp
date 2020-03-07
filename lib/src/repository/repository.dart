@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:youth_app/src/model/app_setting.dart';
 import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/model/subscription.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/repository/app_settings_api_provider.dart';
@@ -145,5 +146,14 @@ class Repository {
 
   Future<AppSetting> getAppSettings() {
     return _appSettingApiProvider.getAppSettings();
+  }
+
+  Future<SubscriptionModel> subscription({
+    @required String contactNumber,
+    String email,
+  }) async {
+    SubscriptionModel subscribe = await _authApiProvider.subscription(
+        email: email, contactNumber: contactNumber);
+    return subscribe;
   }
 }
