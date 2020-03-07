@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:youth_app/src/bloc/bloc.dart';
 import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
+import 'package:youth_app/src/ui/game.dart';
+import 'package:youth_app/src/ui/subscription.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/common_function.dart';
+import 'package:youth_app/src/utils/config.dart';
 import '../utils/constant.dart';
 import 'youth_website.dart';
 
@@ -14,11 +21,21 @@ class MainPageRevamp extends StatefulWidget {
 }
 
 class _MainPageRevampState extends State<MainPageRevamp> {
+  double radientVal = 100;
+  PublishSubject<Color> isTransforming = PublishSubject<Color>();
+  // PublishSubject<bool> showSubscribtion = PublishSubject<bool>();
+  Color defalutColors = Color.fromRGBO(150, 200, 255, 1);
+  PersistentBottomSheetController _bottomController;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isNumberSubscribed = false;
+  bool isEmailSubscribed = false;
+  Timer periodicTimer;
+
   checkAppUpdate() async {
     bool result = await AppSettings.isUpdateAvailable;
-    if (result != null && result) {
-      AppSettings.showUpdateDialog(context: context);
-    }
+    // if (result != null && result) {
+    //   AppSettings.showUpdateDialog(context: context);
+    // }
   }
 
   onClickMenu(String text) {
@@ -68,13 +85,26 @@ class _MainPageRevampState extends State<MainPageRevamp> {
   @override
   void initState() {
     checkAppUpdate();
+    // showSubscribtion.sink.add(false);
+    isTransforming.sink.add(defalutColors);
     super.initState();
+  }
+
+  gradientRotationInterval(val) {
+    periodicTimer = Timer.periodic((Duration(seconds: 3)), (value) {
+      isTransforming.sink.add(Color.fromRGBO(
+          val.red > 200 ? 100 : val.red + 5,
+          val.green < 100 ? 255 : val.green - 10,
+          val.blue > 255 ? 50 : val.blue + 8,
+          1));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     String akramURL = akramYouthURL;
-    if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
+    if (CacheData.appSetting != null &&
+        !CommonFunction.isNullOrEmpty(CacheData.appSetting.akramYouthURL))
       akramURL = CacheData.appSetting.akramYouthURL;
     String registrationURL = regURL;
     // if (CacheData.appSetting != null && !CommonFunction.isNullOrEmpty(CacheData.appSetting.regURL))
@@ -152,8 +182,8 @@ class _MainPageRevampState extends State<MainPageRevamp> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AppWebView(url: registrationURL, title: 'Registration')),
+                      builder: (context) => AppWebView(
+                          url: registrationURL, title: 'Registration')),
                 );
               },
               icon: ImageIcon(
@@ -195,6 +225,37 @@ class _MainPageRevampState extends State<MainPageRevamp> {
           ],
         ),
       ),
+      floatingActionButton: StreamBuilder(
+          initialData: defalutColors,
+          stream: isTransforming,
+          builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
+            // !showSubscribtion.shareValue().value &&
+            // gradientRotationInterval(snapshot?.data ?? defalutColors);
+            return FloatingActionButton.extended(
+                icon: Icon(Icons.subscriptions),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Subscription(),
+                        fullscreenDialog: true),
+                  );
+                  // _bottomSheet(context);
+                  // showSubscribtion.sink.add(true);
+                },
+                backgroundColor: snapshot?.data,
+                label: Text('Subscribe'));
+          }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    periodicTimer.cancel();
+    isTransforming.drain();
+    super.dispose();
   }
 }
