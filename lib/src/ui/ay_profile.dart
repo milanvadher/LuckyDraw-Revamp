@@ -114,6 +114,8 @@ class _AYProfileState extends State<AYProfile> with TickerProviderStateMixin {
               Loading.show(context);
               SharedPreferences pref = await SharedPreferences.getInstance();
               await pref.remove('$userDataKey');
+              await pref.remove('userRole');
+              await pref.remove('firebaseToken');
               await _fcm.deleteInstanceID();
               Loading.hide(context);
               Navigator.pop(context);

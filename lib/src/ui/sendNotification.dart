@@ -48,12 +48,14 @@ class _SendNotificationState extends State<SendNotification>
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.greenAccent,
           textColor: Colors.black);
+      Navigator.pop(context);
     } else {
       Fluttertoast.showToast(
           msg: 'Please Fill the Text Area with Valid data !!!',
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
           textColor: Colors.black);
+          Navigator.pop(context);
     }
   }
 

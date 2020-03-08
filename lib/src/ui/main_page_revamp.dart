@@ -111,7 +111,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
 
   getToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String firebaseToken = await pref.getString('firebaseToken');
+    String firebaseToken = pref.getString('firebaseToken');
     if (firebaseToken == null) {
       String token = await FirebaseNotification.setupNotification();
       await pref.setString('firebaseToken', token);
@@ -151,13 +151,14 @@ class _MainPageRevampState extends State<MainPageRevamp> {
             createMenu(
               color: Colors.deepOrangeAccent,
               title: 'Power of 9',
-              onClick: () {
-                Navigator.push(
+              onClick: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AYQuizStartPage(),
                   ),
                 );
+                getUserRole();
               },
               icon: Icon(
                 Icons.gamepad,
