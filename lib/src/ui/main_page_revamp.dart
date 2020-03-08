@@ -3,17 +3,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/bloc/bloc.dart';
 import 'package:youth_app/src/model/user.dart';
+import 'package:youth_app/src/repository/repository.dart';
 import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
 import 'package:youth_app/src/ui/game.dart';
 import 'package:youth_app/src/ui/login.dart';
+import 'package:youth_app/src/ui/sendNotification.dart';
 import 'package:youth_app/src/ui/subscription.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
 import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/config.dart';
+import 'package:youth_app/src/utils/firebase_notification.dart';
+import 'package:youth_app/src/utils/loading.dart';
 import '../utils/constant.dart';
 import 'youth_website.dart';
 
@@ -28,11 +33,13 @@ class _MainPageRevampState extends State<MainPageRevamp> {
   // PublishSubject<bool> showSubscribtion = PublishSubject<bool>();
   Color defalutColors = Color.fromRGBO(150, 200, 255, 1);
   PersistentBottomSheetController _bottomController;
+  Repository repository = Repository();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isNumberSubscribed = false;
   bool isEmailSubscribed = false;
   Timer periodicTimer;
-  User userData = CacheData.userInfo;
+  User userData;
+  int userRole;
 
   checkAppUpdate() async {
     bool result = await AppSettings.isUpdateAvailable;
@@ -90,7 +97,26 @@ class _MainPageRevampState extends State<MainPageRevamp> {
     checkAppUpdate();
     // showSubscribtion.sink.add(false);
     isTransforming.sink.add(defalutColors);
+    getToken();
+    getUserRole();
     super.initState();
+  }
+
+  getUserRole() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      userRole = pref.getInt('userRole');
+    });
+  }
+
+  getToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String firebaseToken = await pref.getString('firebaseToken');
+    if (firebaseToken == null) {
+      String token = await FirebaseNotification.setupNotification();
+      await pref.setString('firebaseToken', token);
+      CacheData.firebaseToken = token;
+    }
   }
 
   gradientRotationInterval(val) {
@@ -210,6 +236,24 @@ class _MainPageRevampState extends State<MainPageRevamp> {
                 color: Colors.red.shade300,
               ),
             ),
+            userRole == 1
+                ? createMenu(
+                    color: Colors.amber.shade700,
+                    title: 'Notification',
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SendNotification()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.notifications_active,
+                      size: 50,
+                      color: Colors.amber.shade700,
+                    ),
+                  )
+                : Container(),
             // createMenu(
             //   color: Colors.amberAccent,
             //   title: 'Settings',

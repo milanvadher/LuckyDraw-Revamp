@@ -51,4 +51,11 @@ class Validation {
     }
     return null;
   }
+
+  static String notificationtext(String value) {
+    if (value.isEmpty) {
+      return 'Email is required';
+    }
+    return null;
+  }
 }

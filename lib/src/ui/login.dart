@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/repository/repository.dart';
@@ -48,9 +49,12 @@ class _LoginPageState extends State<LoginPage> {
           password: password,
         );
         CacheData.userInfo = user;
-        String token = await FirebaseNotification.setupNotification();
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        String token = await pref.getString('firebaseToken');
+        if (user?.role == 1) {
+          await pref.setInt('userRole', user?.role);
+        }
         if (token != null) {
-          CacheData.firebaseToken = token;
           await saveFirebaseToken(token);
         }
         UserState userState =

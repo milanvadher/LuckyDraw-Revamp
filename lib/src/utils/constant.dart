@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 //const String apiUrl = 'http://3.16.51.94:60371'; // Node URL
 // const String apiUrl = 'http://3.16.51.94:3000'; // Python URL
 // const String ayApiUrl = 'http://3.16.51.94:3001'; // Python URL GNANG
-const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000'; // Live URL
+// const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000'; // Live URL
 const String ayApiUrl = 'http://luckydrawapi.dbf.ooo:3001'; // Live URL GNANG
+const String apiUrl = 'http://192.168.43.135:3000'; // Live URL
+// const String ayApiUrl = 'http://192.168.43.135:3000'; // Live URL GNANG
 
 // Fix-Headers
 const Map<String, String> headers = {'content-type': 'application/json'};
@@ -16,8 +18,10 @@ const String playStoreBaseURL =
     'https://play.google.com/store/apps/details?id=';
 const String appStoreURL = 'https://itunes.apple.com/app/id1457589389';
 const String youthWebsiteURL = 'https://youth.dadabhagwan.org/';
-const String akramYouthURL = 'https://youth.dadabhagwan.org/gallery/akram-youth/#app/';
-const String regURL = "https://youth.dadabhagwan.org/events/event-registration/";
+const String akramYouthURL =
+    'https://youth.dadabhagwan.org/gallery/akram-youth/#app/';
+const String regURL =
+    "https://youth.dadabhagwan.org/events/event-registration/";
 // const String regURL = "https://gncevents.page.link/reg/";
 // Contact Details
 const String contactEmailId = 'gncapps@googlegroups.com';
@@ -51,4 +55,4 @@ const String darkModeKey = 'isDarkMode';
 // Custom Spashscreen ON/OFF
 const bool isCustomSpashScreen = true;
 
-const List<String> fileExtensions = [".pdf",".epub",".mobi"];
+const List<String> fileExtensions = [".pdf", ".epub", ".mobi"];

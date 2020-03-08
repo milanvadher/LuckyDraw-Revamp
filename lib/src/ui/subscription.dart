@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/model/subscription.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/model/user_state.dart';
@@ -25,11 +26,12 @@ class _SubscriptionState extends State<Subscription>
     with AutomaticKeepAliveClientMixin<Subscription> {
   bool isNumberSubscribed = false;
   bool isEmailSubscribed = false;
-  String mobileNo = CacheData.userInfo.contactNumber;
+  String mobileNo = CacheData.userInfo?.contactNumber ?? null;
   String email;
   final loginFormKey = GlobalKey<FormState>();
   bool isLogIn = false;
   User user;
+  String firebaseToken;
   Repository repository = Repository();
 
   loadLoginStatus() async {
@@ -59,12 +61,18 @@ class _SubscriptionState extends State<Subscription>
   void initState() {
     getUserData();
     loadLoginStatus();
+    getToken();
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  getToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    firebaseToken = await pref.getString('firebaseToken');
   }
 
   getUserData() {
@@ -130,10 +138,22 @@ class _SubscriptionState extends State<Subscription>
             username: user.username,
             isEmail: isEmailSubscribed,
             isSMS: isNumberSubscribed,
-            firebasetoken: CacheData.firebaseToken);
+            firebasetoken: firebaseToken);
         print(subscribe);
+        Fluttertoast.showToast(
+            msg: 'Thank You! we have successfully got your Subscription.',
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.greenAccent,
+            textColor: Colors.black);
+        Navigator.pop(context);
       } catch (error) {
         print(error);
+        Fluttertoast.showToast(
+            msg: 'Sorry! Something went wrong.',
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.greenAccent,
+            textColor: Colors.black);
+        Navigator.pop(context);
       }
     }
   }
@@ -144,6 +164,24 @@ class _SubscriptionState extends State<Subscription>
       autovalidate: true,
       child: Column(
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+            child: isNumberSubscribed
+                ? TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'Mobile Number',
+                      hintText: 'Enter your Mobile Number',
+                      prefixIcon: Icon(Icons.call),
+                    ),
+                    initialValue: user?.contactNumber ?? "",
+                    maxLength: 10,
+                    validator: Validation.mobileNo,
+                    enabled: user?.contactNumber != null ? false : true,
+                    keyboardType: TextInputType.phone,
+                  )
+                : Container(),
+          ),
           Container(
             padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
             child: isEmailSubscribed
@@ -190,35 +228,21 @@ class _SubscriptionState extends State<Subscription>
           ],
         ),
         SizedBox(height: 40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Your Mobile : ",
-              style: Theme.of(context).textTheme.body2,
-            ),
-            Text(
-              user?.contactNumber ?? "-",
-              style: Theme.of(context).textTheme.body2,
-            ),
-          ],
-        ),
-        // Container(
-        //   padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-        //   child: TextFormField(
-        //     decoration: InputDecoration(
-        //       filled: true,
-        //       labelText: 'Mobile Number',
-        //       hintText: 'Enter your Mobile Number',
-        //       prefixIcon: Icon(Icons.call),
-        //     ),
-        //     initialValue: user?.contactNumber ?? "-",
-        //     maxLength: 10,
-        //     validator: Validation.mobileNo,
-        //     enabled: false,
-        //     keyboardType: TextInputType.phone,
-        //   ),
-        // ),
+        user?.contactNumber != null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Your Mobile : ",
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                  Text(
+                    mobileNo,
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                ],
+              )
+            : Container(),
         SizedBox(height: 40),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
