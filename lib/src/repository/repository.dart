@@ -37,11 +37,13 @@ class Repository {
   // UserState User
   Future<UserState> loadUserState({
     @required String mobileNo,
+    @required int category,
     bool isAYapi = true,
   }) async {
     UserState userstate = await _authApiProvider.loadUserState(
       mobileNo: mobileNo,
       isAYApi: isAYapi,
+      category: category,
     );
     return userstate;
   }

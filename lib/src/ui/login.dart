@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           await saveFirebaseToken(token);
         }
         UserState userState =
-            await repository.loadUserState(mobileNo: mobileNo);
+            await repository.loadUserState(mobileNo: mobileNo, category: 1);
         CacheData.userState = userState;
         Loading.hide(context);
         widget.onLogin();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/user_state.dart';
+import 'package:youth_app/src/ui/gnani_purush/level.dart';
 import 'package:youth_app/src/ui/level.dart';
 import 'package:youth_app/src/ui/login.dart';
 import 'package:youth_app/src/utils/config.dart';
@@ -10,13 +11,13 @@ import '../../repository/repository.dart';
 import '../../utils/cachedata.dart';
 import '../../utils/loading.dart';
 
-class AYQuizStartPage extends StatefulWidget {
+class GnaniPurushStartPage extends StatefulWidget {
   @override
-  _AYQuizStartPageState createState() => _AYQuizStartPageState();
+  _GnaniPurushStartPageState createState() => _GnaniPurushStartPageState();
 }
 
-class _AYQuizStartPageState extends State<AYQuizStartPage>
-    with AutomaticKeepAliveClientMixin<AYQuizStartPage> {
+class _GnaniPurushStartPageState extends State<GnaniPurushStartPage>
+    with AutomaticKeepAliveClientMixin<GnaniPurushStartPage> {
   PublishSubject<bool> isLogIn = PublishSubject<bool>();
   Repository repository = Repository();
 
@@ -42,7 +43,7 @@ class _AYQuizStartPageState extends State<AYQuizStartPage>
       Loading.show(context);
       UserState userState = await repository.loadUserState(
         mobileNo: CacheData.userInfo.contactNumber,
-        category: 1,
+        category: 2,
       );
       CacheData.userState = userState;
       Loading.hide(context);
@@ -72,7 +73,9 @@ class _AYQuizStartPageState extends State<AYQuizStartPage>
           if (snapshot.data == null) {
             return Container();
           }
-          return snapshot.data ? Level() : LoginPage(onLogin: onLogin);
+          return snapshot.data
+              ? GnaniPurushLevel()
+              : LoginPage(onLogin: onLogin);
         },
       ),
     );

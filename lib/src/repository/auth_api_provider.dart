@@ -29,11 +29,10 @@ class AuthApiProvider {
 
   Future<UserState> loadUserState({
     @required String mobileNo,
+    @required int category,
     bool isAYApi = true,
   }) async {
-    Map<String, dynamic> reqData = {
-      'mht_id': mobileNo,
-    };
+    Map<String, dynamic> reqData = {'mht_id': mobileNo, 'category': category};
     return await AppApi.postApiWithParseRes(
       fromJson: (json) => UserState.fromJson(json),
       reqData: reqData,

@@ -11,6 +11,7 @@ import 'package:youth_app/src/ui/about.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
 import 'package:youth_app/src/ui/game.dart';
 import 'package:youth_app/src/ui/login.dart';
+import 'package:youth_app/src/ui/select_quiz_page.dart';
 import 'package:youth_app/src/ui/sendNotification.dart';
 import 'package:youth_app/src/ui/subscription.dart';
 import 'package:youth_app/src/utils/app_settings.dart';
@@ -150,12 +151,12 @@ class _MainPageRevampState extends State<MainPageRevamp> {
           children: <Widget>[
             createMenu(
               color: Colors.deepOrangeAccent,
-              title: 'Power of 9',
+              title: 'World Of Quiz',
               onClick: () async {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AYQuizStartPage(),
+                    builder: (context) => SelectQuizPage(),
                   ),
                 );
                 getUserRole();

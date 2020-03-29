@@ -43,7 +43,9 @@ class _SubscriptionState extends State<Subscription>
     try {
       Loading.show(context);
       UserState userState = await repository.loadUserState(
-          mobileNo: CacheData.userInfo.contactNumber);
+        mobileNo: CacheData.userInfo.contactNumber,
+        category: 1,
+      );
       CacheData.userState = userState;
       Loading.hide(context);
     } catch (e) {

@@ -205,6 +205,7 @@ class _GameState extends State<Game> {
       final authApiProvider = AuthApiProvider();
       UserState userState = await authApiProvider.loadUserState(
         mobileNo: '${CacheData.userInfo?.contactNumber}',
+        category : 1,
       );
       CacheData.userState = userState;
       Loading.hide(context);
