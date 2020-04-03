@@ -7,6 +7,10 @@ import '../bloc/bloc.dart';
 import '../utils/cachedata.dart';
 
 class Leaderboard extends StatefulWidget {
+  int categoryNumber;
+
+  Leaderboard(this.categoryNumber);
+
   @override
   _LeaderboardState createState() => _LeaderboardState();
 }
@@ -19,7 +23,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
   @override
   void initState() {
-    bloc.getLeaderboard();
+    bloc.getLeaderboard(widget.categoryNumber);
     super.initState();
   }
 
@@ -57,7 +61,10 @@ class _LeaderboardState extends State<Leaderboard> {
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
             child: Text(
-              ' ${data?.totalscoreMonth ?? 0}',
+              widget.categoryNumber == 1
+                  ? ' ${data?.totalscoreMonth ?? 0}'
+                  : '${data?.totalscoreWeek ?? 0}',
+              // If category not 1 then quiz is GnaniPurush so display week score
               style: Theme.of(context).textTheme.body2,
             ),
           ),
@@ -157,7 +164,8 @@ class _LeaderboardState extends State<Leaderboard> {
                                   '${snapshot.data}',
                                   style: Theme.of(context).textTheme.headline,
                                 ),
-                                Text('${Setup.getOrdinalOfNumber(snapshot.data)}'),
+                                Text(
+                                    '${Setup.getOrdinalOfNumber(snapshot.data)}'),
                               ],
                             );
                           },

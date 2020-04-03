@@ -128,7 +128,7 @@ class _SelectQuizPageState extends State<SelectQuizPage>
             children: <Widget>[
               createMenu(
                 color: Colors.lightBlueAccent,
-                title: 'Gnani Purush',
+                title: 'Quiz Zone',
                 onClick: () async {
                   await Navigator.push(
                     context,

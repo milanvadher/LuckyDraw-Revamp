@@ -7,6 +7,7 @@ class UserState {
   int totalscore;
   int totalscoreMonth;
   int lives;
+  int totalscoreWeek;
 
   UserState({this.quizLevels,
     this.completed,
@@ -16,6 +17,8 @@ class UserState {
   });
 
   UserState.fromJson(Map<String, dynamic> json) {
+    print("==================JSON=====================");
+    print(json);
     if (json['quiz_levels'] != null) {
       quizLevels = new List<QuizLevel>();
       json['quiz_levels'].forEach((v) {
@@ -36,6 +39,7 @@ class UserState {
     }
     totalscore = json['totalscore'];
     totalscoreMonth = json['totalscore_month'];
+    totalscoreWeek = json['totalscore_week'];
     lives = json['lives'];
   }
 
@@ -49,6 +53,7 @@ class UserState {
     }
     data['totalscore'] = this.totalscore;
     data['totalscore_month'] = this.totalscoreMonth;
+    data['totalscore_week'] = this.totalscoreWeek;
     data['lives'] = this.lives;
     return data;
   }

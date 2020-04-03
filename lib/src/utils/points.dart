@@ -5,8 +5,8 @@ import 'package:rxdart/rxdart.dart';
 class Point {
   static PublishSubject<int> points = PublishSubject<int>();
 
-  static Widget display() {
-    updatePoint();
+  static Widget display(int categoryNumber) {
+    updatePoint(categoryNumber: categoryNumber);
     return Container(
       margin: EdgeInsets.all(12),
       child: Card(
@@ -35,7 +35,9 @@ class Point {
               padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
               child: StreamBuilder(
                 stream: points,
-                initialData: CacheData.userState?.totalscoreMonth ?? 0,
+                initialData: categoryNumber == 1
+                    ? CacheData.userState?.totalscoreMonth ?? 0
+                    : CacheData.userState?.totalscoreWeek ?? 0,
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   return Text(
                     '${snapshot.hasData ? snapshot.data : 0}',
@@ -50,8 +52,10 @@ class Point {
     );
   }
 
-  static updatePoint() {
-    points.sink.add(CacheData.userState?.totalscoreMonth);
+  static updatePoint({int categoryNumber=1}) {
+    points.sink.add( categoryNumber == 1
+        ? CacheData.userState?.totalscoreMonth
+        : CacheData.userState?.totalscoreWeek);
   }
 
   static dispose() {
