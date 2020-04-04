@@ -72,7 +72,7 @@ class _AYQuizStartPageState extends State<AYQuizStartPage>
           if (snapshot.data == null) {
             return Container();
           }
-          return snapshot.data ? Level() : LoginPage(onLogin: onLogin);
+          return snapshot.data ? Level(1) : LoginPage(onLogin: onLogin); // Category number for AY quiz = 1
         },
       ),
     );

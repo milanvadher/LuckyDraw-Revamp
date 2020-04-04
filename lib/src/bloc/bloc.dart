@@ -15,9 +15,9 @@ class Bloc {
   Observable<Coupon> get couponsList => couponFetcher.stream;
   Observable<Question> get question => questionFetcher.stream;
 
-  getLeaderboard() async {
+  getLeaderboard(int categoryNumber) async {
     try {
-      LeaderList response = await repository.getLeaders();
+      LeaderList response = await repository.getLeaders(categoryNumber);
       print('bloc ::: $response');
       leadersFetcher.sink.add(response);
     } catch (e) {

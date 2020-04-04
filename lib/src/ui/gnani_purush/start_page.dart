@@ -74,7 +74,7 @@ class _GnaniPurushStartPageState extends State<GnaniPurushStartPage>
             return Container();
           }
           return snapshot.data
-              ? GnaniPurushLevel()
+              ? GnaniPurushLevel(2) // Category number of GnaniPurush quiz = 2
               : LoginPage(onLogin: onLogin);
         },
       ),

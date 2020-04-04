@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:youth_app/src/model/ay_question.dart';
 import 'package:youth_app/src/model/quizlevel.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/ui/ay_profile.dart';
@@ -10,6 +11,8 @@ import '../utils/cachedata.dart';
 import 'game.dart';
 
 class Level extends StatefulWidget {
+  int categoryNumber;
+  Level(this.categoryNumber);
   @override
   _LevelState createState() => _LevelState();
 }
@@ -131,8 +134,11 @@ class _LevelState extends State<Level> {
   @override
   void initState() {
     super.initState();
-    levelList =
+    List<QuizLevel> tempLevelList =
         CacheData.userState != null ? CacheData.userState.quizLevels : [];
+    levelList = tempLevelList.where((level){
+      return level.category[0].categoryNumber == widget.categoryNumber;
+    }).toList();
     refreshUi.sink.add(true);
   }
 
@@ -166,7 +172,7 @@ class _LevelState extends State<Level> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AYProfile(),
+                  builder: (context) => AYProfile(1), // Category number for AY quiz
                 ),
               );
             },
@@ -229,7 +235,7 @@ class _LevelState extends State<Level> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Leaderboard()),
+            MaterialPageRoute(builder: (context) => Leaderboard(widget.categoryNumber)),
           );
           // Fluttertoast.showToast(msg: 'Leaderboard !! Work in progress !!!');
         },

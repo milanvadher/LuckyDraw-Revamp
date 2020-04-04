@@ -20,7 +20,7 @@ class Repository {
   final AppSettingApiProvider _appSettingApiProvider = AppSettingApiProvider();
   final LeadersApiProvider _leadersApiProvider = LeadersApiProvider();
 
-  Future<LeaderList> getLeaders() => _leadersApiProvider.getLeaders();
+  Future<LeaderList> getLeaders(int categoryNumber) => _leadersApiProvider.getLeaders(categoryNumber);
 
   // Login User
   Future<User> login({
@@ -45,6 +45,8 @@ class Repository {
       isAYApi: isAYapi,
       category: category,
     );
+    print("=====================USER STATE=========================");
+    print(userstate);
     return userstate;
   }
 

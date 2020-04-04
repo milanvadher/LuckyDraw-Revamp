@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:youth_app/src/model/ay_question.dart';
 import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/model/quizlevel.dart';
 import 'package:youth_app/src/model/user_level.dart';
 import 'package:youth_app/src/model/validate_answer.dart';
 import 'package:youth_app/src/repository/app_api.dart';
@@ -34,11 +35,11 @@ class QuestionApiProvider {
   }
 
   Future<List<AYQuestion>> getAllQuestions({
-    @required int levelIndex,
+    @required QuizLevel level,
     @required int from,
   }) async {
     Map<String, dynamic> reqData = {
-      'level': levelIndex,
+      'level': level.levelIndex,
       'QuestionFrom': from,
     };
     return await AppApi.postApiWithParseRes(
@@ -54,12 +55,14 @@ class QuestionApiProvider {
     @required int questionId,
     @required String answer,
     @required int level,
+    @required int categoryNumber
   }) async {
     Map<String, dynamic> reqData = {
       "question_id": questionId,
       "mht_id": CacheData.userInfo.contactNumber,
       "answer": answer,
-      "level": level
+      "level": level,
+      "category": categoryNumber
     };
     return await AppApi.postApiWithParseRes(
       fromJson: (json) => ValidateAnswer.fromJson(json),

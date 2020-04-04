@@ -434,7 +434,7 @@ class _PikacharState extends State<Pikachar> {
         appBar: AppBar(
           title: Text('Pikachar'),
           actions: <Widget>[
-            Point.display(),
+            Point.display(1),
           ],
         ),
         body: SafeArea(

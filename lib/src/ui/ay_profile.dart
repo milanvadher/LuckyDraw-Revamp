@@ -8,6 +8,8 @@ import 'package:youth_app/src/utils/loading.dart';
 import 'package:youth_app/src/utils/points.dart';
 
 class AYProfile extends StatefulWidget {
+  int categoryNumber;
+  AYProfile(this.categoryNumber);
   @override
   _AYProfileState createState() => _AYProfileState();
 }
@@ -54,7 +56,7 @@ class _AYProfileState extends State<AYProfile> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Point.display(),
+            Point.display(widget.categoryNumber),
           ],
         ),
       ),

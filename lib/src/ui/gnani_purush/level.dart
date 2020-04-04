@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:youth_app/src/model/quizlevel.dart';
 import 'package:youth_app/src/model/user_state.dart';
+import 'package:youth_app/src/ui/animated_dialog_box.dart';
 import 'package:youth_app/src/ui/ay_profile.dart';
 import 'package:youth_app/src/ui/leaderboard.dart';
 
@@ -10,6 +11,10 @@ import '../../utils/cachedata.dart';
 import '../game.dart';
 
 class GnaniPurushLevel extends StatefulWidget {
+  int categoryNumber;
+
+  GnaniPurushLevel(this.categoryNumber);
+
   @override
   _GnaniPurushLevelState createState() => _GnaniPurushLevelState();
 }
@@ -50,15 +55,16 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Level : ${level.levelIndex}'),
+//                      Text('Level : ${level.levelIndex}'),  //  To remove because the level numbers will be wrong after adding gyani purush quiz
                       Text('Max. Points : ${level.totalscores}'),
                     ],
                   ),
                 ),
                 isThreelevel
                     ? Text(
-                        '⭐ ${level.description}',
-                        style: TextStyle(fontSize: 11),
+                        '', // Changed because description is shown in the alert box
+//                  '⭐ ${level.description}',
+                  style: TextStyle(fontSize: 11),
                       )
                     : SizedBox(height: 0, width: 0),
               ],
@@ -75,16 +81,33 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
                       textColor: Colors.black);
                 }
               : () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Game(
-                        isBonusLevel: false,
-                        level: level,
-                      ),
+                  await animated_dialog_box.showInOutDailog(
+                    context: context,
+                    yourWidget: Text(level.description),
+                    firstButton: RaisedButton(
+                      child: Text("Close"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    secondButton: RaisedButton(
+                      child: Text("Okay"),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Game(
+                              isBonusLevel: false,
+                              level: level,
+                            ),
+                          ),
+                        );
+                        refreshUi.sink.add(true);
+                      },
                     ),
                   );
-                  refreshUi.sink.add(true);
+
                 },
           trailing: isCompleted
               ? CircleAvatar(
@@ -131,8 +154,12 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
   @override
   void initState() {
     super.initState();
-    levelList =
+    List<QuizLevel> tempLevelList =
         CacheData.userState != null ? CacheData.userState.quizLevels : [];
+    levelList = tempLevelList.where((level) {
+      return level.category[0].categoryNumber == 2;
+    }).toList();
+
     refreshUi.sink.add(true);
   }
 
@@ -166,7 +193,7 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AYProfile(),
+                  builder: (context) => AYProfile(2), // Category 2 for gnani purush category
                 ),
               );
             },
@@ -229,7 +256,8 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Leaderboard()),
+            MaterialPageRoute(
+                builder: (context) => Leaderboard(widget.categoryNumber)),
           );
           // Fluttertoast.showToast(msg: 'Leaderboard !! Work in progress !!!');
         },

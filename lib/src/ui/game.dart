@@ -167,8 +167,9 @@ class _GameState extends State<Game> {
               .questionSt
           : 0;
       questions = await questionApiProvider.getAllQuestions(
-        levelIndex: widget.level.levelIndex,
+        level: widget.level,
         from: fromQuestion,
+
       );
     } catch (e) {
       question.sink.addError(e);
@@ -233,6 +234,7 @@ class _GameState extends State<Game> {
       answer: answer,
       level: level,
       questionId: questionId,
+      categoryNumber: widget.level.category[0].categoryNumber
     );
     (CacheData.userState.currentLevels
             .where((level) => level.level == widget.level.levelIndex))
@@ -240,12 +242,13 @@ class _GameState extends State<Game> {
         .questionSt = validateAnswer.questionSt;
     print('Validate ANS ===> ');
     CacheData.userState.totalscoreMonth = validateAnswer.totalscoreMonth;
+    CacheData.userState.totalscoreWeek = validateAnswer.totalscoreWeek;
     CacheData.userInfo.questionState = validateAnswer.questionSt;
-    Point.updatePoint();
+    Point.updatePoint(categoryNumber:widget.level.category[0].categoryNumber);
     print(validateAnswer.answerStatus);
     Loading.hide(context);
     if (validateAnswer.answerStatus) {
-      validateAnswer.updateSessionScore();
+      validateAnswer.updateSessionScore(categoryNumber: widget.level.category[0].categoryNumber);
       await AnsResultAnimation.rightAns(context, false);
     } else {
       await AnsResultAnimation.wrongAns(context);
@@ -322,7 +325,7 @@ class _GameState extends State<Game> {
         title: questionNumber(),
         centerTitle: true,
         actions: <Widget>[
-          Point.display(),
+          Point.display(widget.level.category[0].categoryNumber),
         ],
       ),
       body: SafeArea(
