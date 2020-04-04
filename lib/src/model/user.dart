@@ -4,14 +4,15 @@ class User {
   String contactNumber;
   String username;
   bool profile;
+  int role;
 
-  User({
-    this.questionState,
-    this.points,
-    this.contactNumber,
-    this.username,
-    this.profile,
-  });
+  User(
+      {this.questionState,
+      this.points,
+      this.contactNumber,
+      this.username,
+      this.profile,
+      this.role});
 
   User.fromJson(Map<String, dynamic> json) {
     questionState = json['questionState'];
@@ -19,6 +20,7 @@ class User {
     contactNumber = json['contactNumber'];
     username = json['username'];
     profile = json['profile'];
+    role = json['role'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class User {
     data['contactNumber'] = this.contactNumber;
     data['username'] = this.username;
     data['profile'] = this.profile;
+    data['role'] = this.role;
     return data;
   }
 }

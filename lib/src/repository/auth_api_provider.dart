@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
+import 'package:youth_app/src/model/subscription.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/utils/cachedata.dart';
@@ -28,11 +29,10 @@ class AuthApiProvider {
 
   Future<UserState> loadUserState({
     @required String mobileNo,
+    @required int category,
     bool isAYApi = true,
   }) async {
-    Map<String, dynamic> reqData = {
-      'mht_id': mobileNo,
-    };
+    Map<String, dynamic> reqData = {'mht_id': mobileNo, 'category': category};
     return await AppApi.postApiWithParseRes(
       fromJson: (json) => UserState.fromJson(json),
       reqData: reqData,
@@ -126,5 +126,27 @@ class AuthApiProvider {
     } catch (e) {
       return null;
     }
+  }
+
+  Future<SubscriptionModel> subscription(
+      {@required String contactNumber,
+      String email,
+      String username,
+      bool isEmail,
+      bool isSMS,
+      String firebasetoken}) async {
+    Map<String, dynamic> reqData = {
+      'username': username,
+      'isEmail': isEmail,
+      'isSMS': isSMS,
+      'firebasetoken': firebasetoken,
+      'contactNumber': contactNumber,
+      'email': email
+    };
+    return await AppApi.postApiWithParseRes(
+      fromJson: (json) => SubscriptionModel.fromJson(json),
+      reqData: reqData,
+      apiEndPoint: 'subscription',
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:youth_app/src/model/app_setting.dart';
 import 'package:youth_app/src/model/leaders.dart';
 import 'package:youth_app/src/model/question.dart';
+import 'package:youth_app/src/model/subscription.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/model/user_state.dart';
 import 'package:youth_app/src/repository/app_settings_api_provider.dart';
@@ -36,11 +37,13 @@ class Repository {
   // UserState User
   Future<UserState> loadUserState({
     @required String mobileNo,
+    @required int category,
     bool isAYapi = true,
   }) async {
     UserState userstate = await _authApiProvider.loadUserState(
       mobileNo: mobileNo,
       isAYApi: isAYapi,
+      category: category,
     );
     return userstate;
   }
@@ -145,5 +148,22 @@ class Repository {
 
   Future<AppSetting> getAppSettings() {
     return _appSettingApiProvider.getAppSettings();
+  }
+
+  Future<SubscriptionModel> subscription(
+      {@required String contactNumber,
+      String email,
+      String username,
+      bool isEmail,
+      bool isSMS,
+      String firebasetoken}) async {
+    SubscriptionModel subscribe = await _authApiProvider.subscription(
+        email: email,
+        contactNumber: contactNumber,
+        username: username,
+        isEmail: isEmail,
+        isSMS: isSMS,
+        firebasetoken: firebasetoken);
+    return subscribe;
   }
 }
