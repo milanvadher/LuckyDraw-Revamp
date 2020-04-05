@@ -274,29 +274,29 @@ class _MainPageRevampState extends State<MainPageRevamp> {
           ],
         ),
       ),
-      floatingActionButton: StreamBuilder(
-          initialData: defalutColors,
-          stream: isTransforming,
-          builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
-            // !showSubscribtion.shareValue().value &&
-            // gradientRotationInterval(snapshot?.data ?? defalutColors);
-            return FloatingActionButton.extended(
-                icon: Icon(Icons.subscriptions),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Subscription(),
-                        fullscreenDialog: true),
-                  );
-                  // _bottomSheet(context);
-                  // showSubscribtion.sink.add(true);
-                },
-                backgroundColor: snapshot?.data,
-                label: Text('Subscribe'));
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      // floatingActionButton: StreamBuilder(
+      //     initialData: defalutColors,
+      //     stream: isTransforming,
+      //     builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
+      //       // !showSubscribtion.shareValue().value &&
+      //       // gradientRotationInterval(snapshot?.data ?? defalutColors);
+      //       return FloatingActionButton.extended(
+      //           icon: Icon(Icons.subscriptions),
+      //           onPressed: () {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (context) => Subscription(),
+      //                   fullscreenDialog: true),
+      //             );
+      //             // _bottomSheet(context);
+      //             // showSubscribtion.sink.add(true);
+      //           },
+      //           backgroundColor: snapshot?.data,
+      //           label: Text('Subscribe'));
+      //     }),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
 
