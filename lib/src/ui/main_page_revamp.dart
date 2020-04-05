@@ -44,9 +44,9 @@ class _MainPageRevampState extends State<MainPageRevamp> {
 
   checkAppUpdate() async {
     bool result = await AppSettings.isUpdateAvailable;
-    // if (result != null && result) {
-    //   AppSettings.showUpdateDialog(context: context);
-    // }
+    if (result != null && result) {
+      AppSettings.showUpdateDialog(context: context);
+    }
   }
 
   onClickMenu(String text) {
