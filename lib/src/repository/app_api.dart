@@ -31,6 +31,7 @@ class AppApi {
           }
           return fromJson(json.decode(response.body));
         }
+        print(fromJson(json.decode(response.body)));
         return fromJson(json.decode(response.body));
       }
       if (throwError) {

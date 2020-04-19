@@ -9,10 +9,13 @@ import 'package:youth_app/src/ui/leaderboard.dart';
 
 import '../utils/cachedata.dart';
 import 'game.dart';
+import 'levelLeaderboard.dart';
 
 class Level extends StatefulWidget {
   int categoryNumber;
+
   Level(this.categoryNumber);
+
   @override
   _LevelState createState() => _LevelState();
 }
@@ -136,7 +139,7 @@ class _LevelState extends State<Level> {
     super.initState();
     List<QuizLevel> tempLevelList =
         CacheData.userState != null ? CacheData.userState.quizLevels : [];
-    levelList = tempLevelList.where((level){
+    levelList = tempLevelList.where((level) {
       return level.category[0].categoryNumber == widget.categoryNumber;
     }).toList();
     refreshUi.sink.add(true);
@@ -172,7 +175,8 @@ class _LevelState extends State<Level> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AYProfile(1), // Category number for AY quiz
+                  builder: (context) =>
+                      AYProfile(1), // Category number for AY quiz
                 ),
               );
             },
@@ -235,7 +239,7 @@ class _LevelState extends State<Level> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Leaderboard(widget.categoryNumber)),
+            MaterialPageRoute(builder: (context) => Leaderboard.category(widget.categoryNumber)),
           );
           // Fluttertoast.showToast(msg: 'Leaderboard !! Work in progress !!!');
         },

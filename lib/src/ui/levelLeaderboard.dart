@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:youth_app/src/model/leaders.dart';
+import 'package:youth_app/src/model/level_leader.dart';
 import 'package:youth_app/src/utils/common_function.dart';
 import 'package:youth_app/src/utils/setup.dart';
 import '../bloc/bloc.dart';
 import '../utils/cachedata.dart';
 
-class Leaderboard extends StatefulWidget {
+class LevelLeaderboard extends StatefulWidget {
   int categoryNumber;
   int levelNumber;
 
   String type;
-  Leaderboard.category(this.categoryNumber){
+  LevelLeaderboard.category(this.categoryNumber){
    type="category";
   }
-  Leaderboard.level(this.levelNumber){
+  LevelLeaderboard.level(this.levelNumber){
     type="level";
   }
   @override
   _LeaderboardState createState() => _LeaderboardState();
 }
 
-class _LeaderboardState extends State<Leaderboard> {
+class _LeaderboardState extends State<LevelLeaderboard> {
   // ProfilePicService profilePicService = ProfilePicService();
   // PublishSubject<ImageProvider> userProfilePic =
   //     PublishSubject<ImageProvider>();
@@ -44,13 +44,13 @@ class _LeaderboardState extends State<Leaderboard> {
     super.dispose();
   }
 
-  setUserPosition(LeaderList leaderList) {
+  setUserPosition(LevelLeaderList leaderList) {
     userRank.sink.add(leaderList.userRank);
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget leader(Leaders data, rank, index) {
+    Widget leader(LevelLeader data, rank, index) {
       return ListTile(
         leading: Container(
           child: Row(
@@ -72,9 +72,7 @@ class _LeaderboardState extends State<Leaderboard> {
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
             child: Text(
-              widget.categoryNumber == 1
-                  ? ' ${data?.totalscoreMonth ?? 0}'
-                  : '${data?.totalscoreWeek ?? 0}',
+             data.score.toString(),
               // If category not 1 then quiz is GnaniPurush so display week score
               style: Theme.of(context).textTheme.body2,
             ),
@@ -86,8 +84,8 @@ class _LeaderboardState extends State<Leaderboard> {
     Widget leaderList() {
       return Container(
         child: StreamBuilder(
-          stream: bloc.leadersList,
-          builder: (BuildContext context, AsyncSnapshot<LeaderList> snapshot) {
+          stream: bloc.levelLeadersList,
+          builder: (BuildContext context, AsyncSnapshot<LevelLeaderList> snapshot) {
             if (snapshot.hasData) {
               setUserPosition(snapshot.data);
               return ListView.separated(

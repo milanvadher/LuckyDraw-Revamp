@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,6 +10,7 @@ import 'package:youth_app/src/ui/leaderboard.dart';
 
 import '../../utils/cachedata.dart';
 import '../game.dart';
+import '../levelLeaderboard.dart';
 
 class GnaniPurushLevel extends StatefulWidget {
   int categoryNumber;
@@ -83,7 +85,7 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
               : () async {
                   await animated_dialog_box.showInOutDailog(
                     context: context,
-                    yourWidget: Text(level.description),
+                    yourWidget: Text(level.description!=null ? level.description : "" ),
                     firstButton: RaisedButton(
                       child: Text("Close"),
                       onPressed: () {
@@ -254,11 +256,8 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.amber,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Leaderboard(widget.categoryNumber)),
-          );
+          _showModalSheet();
+
           // Fluttertoast.showToast(msg: 'Leaderboard !! Work in progress !!!');
         },
         child: Image(
@@ -266,6 +265,34 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
           height: 50,
         ),
       ),
+    );
+  }
+
+  void _showModalSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return ListView.builder(
+              itemCount: levelList.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: EdgeInsets.all(10),
+                  child: RaisedButton(
+                    child: Text(levelList[index].name),
+                    onPressed: () {
+                      openLeaderBoard(levelList[index].levelIndex);
+                    },
+                  ),
+                );
+              });
+        });
+  }
+
+  void openLeaderBoard(int levelNumber) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => LevelLeaderboard.level(levelNumber)),
     );
   }
 }

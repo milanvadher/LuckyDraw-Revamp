@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:youth_app/src/model/app_setting.dart';
 import 'package:youth_app/src/model/leaders.dart';
+import 'package:youth_app/src/model/level_leader.dart';
 import 'package:youth_app/src/model/question.dart';
 import 'package:youth_app/src/model/subscription.dart';
 import 'package:youth_app/src/model/user.dart';
@@ -21,6 +22,7 @@ class Repository {
   final LeadersApiProvider _leadersApiProvider = LeadersApiProvider();
 
   Future<LeaderList> getLeaders(int categoryNumber) => _leadersApiProvider.getLeaders(categoryNumber);
+  Future<LevelLeaderList> getLevelLeaders(int levelNumber) => _leadersApiProvider.getLeveleaders(levelNumber);
 
   // Login User
   Future<User> login({
