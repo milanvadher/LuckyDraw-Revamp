@@ -48,8 +48,34 @@ class _GameState extends State<Game> {
   @override
   void initState() {
     print('${widget.isBonusLevel}, ${widget.level}');
+    if (CacheData.userState.currentLevels
+        .where((lvl) => lvl.level == widget.level.levelIndex)
+        .isEmpty) {
+      checkLevelIsInCurruntLevel();
+    }
     loadQuestions();
     super.initState();
+  }
+  // CacheData.userState.currentLevels
+
+  checkLevelIsInCurruntLevel() async {
+    try {
+      Loading.show(context);
+      UserLevel ul = await questionApiProvider.checkUserLevel(
+        levelIndex: widget.level.levelIndex,
+      );
+      CacheData.userState.currentLevels.add(new Current(level: ul.level, questionSt: ul.questionSt));
+      Loading.hide(context);
+    } catch (e) {
+      print('Error in checkLevelIsInCurruntLevel');
+      print(e);
+      Fluttertoast.showToast(
+        msg: '$e',
+        backgroundColor: Colors.red,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 
   listenTimesUp() {
@@ -147,13 +173,6 @@ class _GameState extends State<Game> {
     }
   }
 
-  Future<int> getCurruntLevelQuestionIndex() async {
-    userLevel = await questionApiProvider.checkUserLevel(
-      levelIndex: widget.level.levelIndex,
-    );
-    return userLevel.questionSt;
-  }
-
   loadQuestions() async {
     try {
       int fromQuestion = CacheData.userState.currentLevels
@@ -169,7 +188,6 @@ class _GameState extends State<Game> {
       questions = await questionApiProvider.getAllQuestions(
         level: widget.level,
         from: fromQuestion,
-
       );
     } catch (e) {
       question.sink.addError(e);
@@ -206,7 +224,7 @@ class _GameState extends State<Game> {
       final authApiProvider = AuthApiProvider();
       UserState userState = await authApiProvider.loadUserState(
         mobileNo: '${CacheData.userInfo?.contactNumber}',
-        category : 1,
+        category: 1,
       );
       CacheData.userState = userState;
       Loading.hide(context);
@@ -229,32 +247,33 @@ class _GameState extends State<Game> {
     print('Validate Ans');
     try {
       Loading.show(context);
-    QuestionApiProvider questionApiProvider = new QuestionApiProvider();
-    ValidateAnswer validateAnswer = await questionApiProvider.validateAnswer(
-      answer: answer,
-      level: level,
-      questionId: questionId,
-      categoryNumber: widget.level.category[0].categoryNumber
-    );
-    (CacheData.userState.currentLevels
-            .where((level) => level.level == widget.level.levelIndex))
-        .first
-        .questionSt = validateAnswer.questionSt;
-    print('Validate ANS ===> ');
-    CacheData.userState.totalscoreMonth = validateAnswer.totalscoreMonth;
-    CacheData.userState.totalscoreWeek = validateAnswer.totalscoreWeek;
-    CacheData.userInfo.questionState = validateAnswer.questionSt;
-    Point.updatePoint(categoryNumber:widget.level.category[0].categoryNumber);
-    print(validateAnswer.answerStatus);
-    Loading.hide(context);
-    if (validateAnswer.answerStatus) {
-      validateAnswer.updateSessionScore(categoryNumber: widget.level.category[0].categoryNumber);
-      await AnsResultAnimation.rightAns(context, false);
-    } else {
-      await AnsResultAnimation.wrongAns(context);
-    }
-    await loadNextQuestion();
-    return validateAnswer.answerStatus;
+      QuestionApiProvider questionApiProvider = new QuestionApiProvider();
+      ValidateAnswer validateAnswer = await questionApiProvider.validateAnswer(
+          answer: answer,
+          level: level,
+          questionId: questionId,
+          categoryNumber: widget.level.category[0].categoryNumber);
+      (CacheData.userState.currentLevels
+              .where((lvl) => lvl.level == widget.level.levelIndex))
+          .first
+          .questionSt = validateAnswer.questionSt;
+      print('Validate ANS ===> ');
+      CacheData.userState.totalscoreMonth = validateAnswer.totalscoreMonth;
+      CacheData.userState.totalscoreWeek = validateAnswer.totalscoreWeek;
+      CacheData.userInfo.questionState = validateAnswer.questionSt;
+      Point.updatePoint(
+          categoryNumber: widget.level.category[0].categoryNumber);
+      print(validateAnswer.answerStatus);
+      Loading.hide(context);
+      if (validateAnswer.answerStatus) {
+        validateAnswer.updateSessionScore(
+            categoryNumber: widget.level.category[0].categoryNumber);
+        await AnsResultAnimation.rightAns(context, false);
+      } else {
+        await AnsResultAnimation.wrongAns(context);
+      }
+      await loadNextQuestion();
+      return validateAnswer.answerStatus;
     } catch (e) {
       Loading.hide(context);
       Fluttertoast.showToast(

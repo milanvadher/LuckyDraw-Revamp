@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 //const String apiUrl = 'http://3.16.51.94:60371'; // Node URL
 // const String apiUrl = 'http://3.16.51.94:3000'; // Python URL
 // const String ayApiUrl = 'http://3.16.51.94:3001'; // Python URL GNANG
- const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000'; // Live URL
+
+const String apiUrl = 'http://luckydrawapi.dbf.ooo:8000'; // Live URL
 const String ayApiUrl = 'http://luckydrawapi.dbf.ooo:3001'; // Live URL GNANG
 // const String apiUrl = 'http://192.168.43.135:3000'; // Live URL
 //const String apiUrl = 'http://192.168.43.228:3000'; //  @rajpar29 local url
