@@ -18,5 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 ## For build
 
 ```terminal
-flutter build apk --target-platform android-arm,android-arm64 --split-per-abi --build-name 2.2.1 --build-number 13
+flutter build apk --target-platform android-arm,android-arm64 --split-per-abi --build-name 2.2.3 --build-number 15
 ```
