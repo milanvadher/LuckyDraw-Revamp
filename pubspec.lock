@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.5"
+  flip_card:
+    dependency: "direct main"
+    description:
+      name: flip_card
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.4"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -625,13 +632,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  webview_flutter:
-    dependency: "direct main"
+  webview_media:
+    dependency: transitive
     description:
-      name: webview_flutter
+      name: webview_media
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.13"
+    version: "0.1.2"
   xml:
     dependency: transitive
     description:
@@ -646,6 +653,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.16"
+  youtube_player_flutter:
+    dependency: "direct main"
+    description:
+      name: youtube_player_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.0+7"
 sdks:
-  dart: ">=2.4.0 <3.0.0"
-  flutter: ">=1.7.8+hotfix.3 <2.0.0"
+  dart: ">=2.5.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"

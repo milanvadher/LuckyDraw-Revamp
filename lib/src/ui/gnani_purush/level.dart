@@ -25,12 +25,10 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
   List<QuizLevel> levelList;
   PublishSubject<bool> refreshUi = PublishSubject<bool>();
 
-  Widget levelCard(
-    int index,
-    bool isCompleted,
-    bool isTimeBased,
-    QuizLevel level,
-  ) {
+  Widget levelCard(int index,
+      bool isCompleted,
+      bool isTimeBased,
+      QuizLevel level,) {
     bool isThreelevel =
         level.description != null && level.description.isNotEmpty;
     return Container(
@@ -64,10 +62,10 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
                 ),
                 isThreelevel
                     ? Text(
-                        '', // Changed because description is shown in the alert box
+                  '', // Changed because description is shown in the alert box
 //                  '⭐ ${level.description}',
                   style: TextStyle(fontSize: 11),
-                      )
+                )
                     : SizedBox(height: 0, width: 0),
               ],
             ),
@@ -75,47 +73,48 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
           isThreeLine: isThreelevel,
           onTap: isCompleted
               ? () {
-                  Fluttertoast.cancel();
-                  Fluttertoast.showToast(
-                      msg: 'Horray !! You have completed this Level',
-                      gravity: ToastGravity.CENTER,
-                      backgroundColor: Colors.greenAccent,
-                      textColor: Colors.black);
-                }
+            Fluttertoast.cancel();
+            Fluttertoast.showToast(
+                msg: 'Horray !! You have completed this Level',
+                gravity: ToastGravity.CENTER,
+                backgroundColor: Colors.greenAccent,
+                textColor: Colors.black);
+          }
               : () async {
-                  await animated_dialog_box.showInOutDailog(
-                    context: context,
-                    yourWidget: Text(level.description!=null ? level.description : "" ),
-                    firstButton: RaisedButton(
-                      child: Text("Close"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    secondButton: RaisedButton(
-                      child: Text("Okay"),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Game(
-                              isBonusLevel: false,
-                              level: level,
-                            ),
+            await animated_dialog_box.showInOutDailog(
+              context: context,
+              yourWidget: Text(
+                  level.description != null ? level.description : ""),
+              firstButton: RaisedButton(
+                child: Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              secondButton: RaisedButton(
+                child: Text("Okay"),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          Game(
+                            isBonusLevel: false,
+                            level: level,
                           ),
-                        );
-                        refreshUi.sink.add(true);
-                      },
                     ),
                   );
-
+                  refreshUi.sink.add(true);
                 },
+              ),
+            );
+          },
           trailing: isCompleted
               ? CircleAvatar(
-                  backgroundColor: Colors.green.shade200,
-                  child: Icon(Icons.done),
-                )
+            backgroundColor: Colors.green.shade200,
+            child: Icon(Icons.done),
+          )
               : Container(height: 0, width: 0),
         ),
       ),
@@ -140,11 +139,14 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
               Container(
                 padding: EdgeInsets.only(bottom: 10),
                 child:
-                    Icon(isTimeBased ? Icons.alarm : Icons.timeline, size: 30),
+                Icon(isTimeBased ? Icons.alarm : Icons.timeline, size: 30),
               ),
               Text(
                 'Level $index',
-                style: Theme.of(context).textTheme.headline,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline,
               )
             ],
           ),
@@ -157,7 +159,7 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
   void initState() {
     super.initState();
     List<QuizLevel> tempLevelList =
-        CacheData.userState != null ? CacheData.userState.quizLevels : [];
+    CacheData.userState != null ? CacheData.userState.quizLevels : [];
     levelList = tempLevelList.where((level) {
       return level.category[0].categoryNumber == 2;
     }).toList();
@@ -195,7 +197,8 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AYProfile(2), // Category 2 for gnani purush category
+                  builder: (context) =>
+                      AYProfile(2), // Category 2 for gnani purush category
                 ),
               );
             },
@@ -210,45 +213,48 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
               padding: EdgeInsets.all(5),
               children: levelList.length > 0
                   ? levelList.map((level) {
-                      return levelCard(
-                        level.levelIndex,
-                        isCompleted(level.levelIndex),
-                        level.levelType == 'TIME_BASED',
-                        level,
-                      );
-                    }).toList()
+                return levelCard(
+                  level.levelIndex,
+                  isCompleted(level.levelIndex),
+                  level.levelType == 'TIME_BASED',
+                  level,
+                );
+              }).toList()
                   : [
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: MediaQuery.of(context).size.height - 125,
-                        ),
-                        child: Container(
-                          child: Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(bottom: 25),
-                                  child: Image(
-                                    height: 100,
-                                    image: AssetImage('images/chilling.png'),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Text(
-                                    'No Levels Available',
-                                    style: TextStyle(fontSize: 24, height: 1.3),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              ],
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery
+                        .of(context)
+                        .size
+                        .height - 125,
+                  ),
+                  child: Container(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(bottom: 25),
+                            child: Image(
+                              height: 100,
+                              image: AssetImage('images/chilling.png'),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'No Levels Available',
+                              style: TextStyle(fontSize: 24, height: 1.3),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
             );
           },
         ),
@@ -269,22 +275,37 @@ class _GnaniPurushLevelState extends State<GnaniPurushLevel> {
   }
 
   void _showModalSheet() {
+    List<Widget> levelOptionList = [];
+    levelOptionList.add(Container(
+      padding: EdgeInsets.all(10),
+      child: RaisedButton(
+        child: Text("All levels"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Leaderboard.category(widget.categoryNumber)),
+          );
+        },
+      ),
+    ),);
+    levelList.forEach((level) {
+      levelOptionList.add(Container(
+        padding: EdgeInsets.all(10),
+        child: RaisedButton(
+          child: Text(level.name),
+          onPressed: () {
+            openLeaderBoard(level.levelIndex);
+          },
+        ),
+      ),);
+    },);
+
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return ListView.builder(
-              itemCount: levelList.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.all(10),
-                  child: RaisedButton(
-                    child: Text(levelList[index].name),
-                    onPressed: () {
-                      openLeaderBoard(levelList[index].levelIndex);
-                    },
-                  ),
-                );
-              });
+          return ListView(
+            children: levelOptionList,
+          );
         });
   }
 

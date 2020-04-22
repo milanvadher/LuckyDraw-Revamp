@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/bloc/bloc.dart';
+import 'package:youth_app/src/course/pages/course/course_list.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/repository/repository.dart';
 import 'package:youth_app/src/ui/about.dart';
+import 'package:youth_app/src/ui/ay_challenge/ay_challenge_menu.dart';
 import 'package:youth_app/src/ui/ay_quiz/start_page.dart';
 import 'package:youth_app/src/ui/game.dart';
 import 'package:youth_app/src/ui/login.dart';
@@ -31,6 +34,7 @@ class MainPageRevamp extends StatefulWidget {
 class _MainPageRevampState extends State<MainPageRevamp> {
   double radientVal = 100;
   PublishSubject<Color> isTransforming = PublishSubject<Color>();
+
   // PublishSubject<bool> showSubscribtion = PublishSubject<bool>();
   Color defalutColors = Color.fromRGBO(150, 200, 255, 1);
   PersistentBottomSheetController _bottomController;
@@ -84,6 +88,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               ),
               Text(
                 '$title',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline,
               )
             ],
@@ -168,6 +173,24 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               ),
             ),
             createMenu(
+              color: Colors.deepOrangeAccent,
+              title: 'Akram Challenge',
+              onClick: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AyChallenge(),
+                  ),
+                );
+                getUserRole();
+              },
+              icon: Icon(
+                FontAwesomeIcons.trophy,
+                size: 40,
+                color: Colors.deepOrangeAccent,
+              ),
+            ),
+            createMenu(
               color: Colors.amber.shade700,
               title: 'Website',
               icon: ImageIcon(
@@ -238,6 +261,23 @@ class _MainPageRevampState extends State<MainPageRevamp> {
                 color: Colors.red.shade300,
               ),
             ),
+//            createMenu(
+//              color: Colors.teal.shade300,
+//              title: 'Courses',
+//              onClick: () {
+//                print('REG LINK ==>');
+//                print(registrationURL);
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) => CourseListPage()),
+//                );
+//              },
+//              icon: ImageIcon(
+//                AssetImage('images/registration_icon.png'),
+//                size: 50,
+//                color: Colors.teal.shade300,
+//              ),
+//            ),
             userRole == 1
                 ? createMenu(
                     color: Colors.amber.shade700,
