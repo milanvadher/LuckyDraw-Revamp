@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youth_app/src/bloc/bloc.dart';
 import 'package:youth_app/src/course/pages/course/course_list.dart';
+import 'package:youth_app/src/course/pages/loginCheckPage.dart';
 import 'package:youth_app/src/model/user.dart';
 import 'package:youth_app/src/repository/repository.dart';
 import 'package:youth_app/src/ui/about.dart';
@@ -247,6 +248,23 @@ class _MainPageRevampState extends State<MainPageRevamp> {
               ),
             ),
             createMenu(
+              color: Colors.teal.shade300,
+              title: 'Courses',
+              onClick: () {
+                print('REG LINK ==>');
+                print(registrationURL);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CourseLoginCheckPage()),
+                );
+              },
+              icon: ImageIcon(
+                AssetImage('images/registration_icon.png'),
+                size: 50,
+                color: Colors.teal.shade300,
+              ),
+            ),
+            createMenu(
               color: Colors.red.shade300,
               title: 'About',
               onClick: () {
@@ -261,23 +279,7 @@ class _MainPageRevampState extends State<MainPageRevamp> {
                 color: Colors.red.shade300,
               ),
             ),
-//            createMenu(
-//              color: Colors.teal.shade300,
-//              title: 'Courses',
-//              onClick: () {
-//                print('REG LINK ==>');
-//                print(registrationURL);
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(builder: (context) => CourseListPage()),
-//                );
-//              },
-//              icon: ImageIcon(
-//                AssetImage('images/registration_icon.png'),
-//                size: 50,
-//                color: Colors.teal.shade300,
-//              ),
-//            ),
+
             userRole == 1
                 ? createMenu(
                     color: Colors.amber.shade700,

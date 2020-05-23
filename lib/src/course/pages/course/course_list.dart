@@ -23,9 +23,12 @@ class CourseListState extends State<CourseListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff0D1019),
-      appBar: AppBar(
-        title: Text("Courses"),
+      backgroundColor: Color(0xff121212),
+     appBar: AppBar(
+        elevation: 8,
+        iconTheme: IconThemeData(color: Color(0xffffffff)),
+        backgroundColor: Color(0xff272727),
+        title: Text("Courses",style: TextStyle(color: Colors.white),),
       ),
       body: courses == null
           ? Center(
@@ -46,28 +49,38 @@ class CourseListState extends State<CourseListPage> {
   _courseCard(Course course) {
     return Container(
       margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-      decoration: new BoxDecoration(
-        border: new Border.all(color: Colors.lightBlue.shade300),
-        borderRadius: BorderRadius.circular(10),
-      ),
+      // decoration: new BoxDecoration(
+      //   border: new Border.all(color: Colors.lightBlue.shade300),
+      //   borderRadius: BorderRadius.circular(10),
+      // ),
       width: double.maxFinite,
       child: InkWell(
         onTap: () => _navigateToCourse(course),
         child: Card(
-          elevation: 5,
+          color: Color(0xff272727),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 8,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  course.fields.courseName,
-                  style: TextStyle(fontSize: 24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      course.courseName,
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    Text(
+                      course.courseDescription,
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
+                    )
+                  ],
                 ),
-                Text(
-                  course.fields.courseDescription,
-                  style: TextStyle(fontSize: 14, color: Colors.white70),
-                )
+
+                course.completed ? Icon(Icons.done, color: Colors.green,size: 30,) :Container()
               ],
             ),
           ),

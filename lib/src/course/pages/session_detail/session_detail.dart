@@ -1,11 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:youth_app/src/course/models/session_detail.dart';
 import 'package:youth_app/src/course/pages/common_widgets/description.dart';
 import 'package:youth_app/src/course/pages/common_widgets/divider.dart';
 import 'package:youth_app/src/course/pages/common_widgets/document_links.dart';
+import 'package:youth_app/src/course/pages/course_detail/course_detail.dart';
 import 'package:youth_app/src/course/pages/quiz/quiz_page.dart';
+import 'package:youth_app/src/course/services/course_cache.dart';
 import 'package:youth_app/src/course/services/course_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -23,6 +28,7 @@ class SessionDetailPage extends StatefulWidget {
 
 class SessionDetailState extends State<SessionDetailPage> {
   CourseService _courseService = CourseService();
+  CourseCache _courseCache = CourseCache();
   SessionDetail sessionDetail;
   YoutubePlayerController _controller;
 
@@ -30,24 +36,38 @@ class SessionDetailState extends State<SessionDetailPage> {
   void initState() {
     super.initState();
     _fetchSession(widget.parentCourseId, widget.sessionId);
+    _sessionUpdate();
   }
 
   @override
   void deactivate() {
-    // Pauses video while navigating to next page.
-    _controller.pause();
     super.deactivate();
+    // Pauses video while navigating to next page.
+    if (_controller != null) {
+      _controller.pause();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    print("BUILD Session Detail");
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
-      backgroundColor: Color(0xff0D1019),
+      backgroundColor: Color(0xff121212),
       // **NULL CHECKS TO AVOID ACCESSING BEFORE LOADING**
       appBar: AppBar(
+        backgroundColor: Color(0xff272727),
+        iconTheme: IconThemeData(color: Color(0xffffffff)),
+        elevation: 8,
         title: sessionDetail == null
             ? Text("")
-            : Text(sessionDetail.session.fields.sessionName),
+            : Text(
+                sessionDetail.session.fields.sessionName,
+                style: TextStyle(color: Colors.white),
+              ),
       ),
       body: sessionDetail == null
           ? Center(child: CircularProgressIndicator())
@@ -76,19 +96,21 @@ class SessionDetailState extends State<SessionDetailPage> {
 
   _playQuizButton(List<Question> questions) {
     if (questions.length > 0) {
-//      _controller.pause();
+      //      _controller.pause();
       return FloatingActionButton.extended(
         backgroundColor: Colors.lightGreenAccent,
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
-                  builder: (context) => QuizPage(questions, sessionDetail)));
+                  builder: (context) => QuizPage(
+                      questions: questions, sessionDetail: sessionDetail)));
         },
         label: Text("  Play Quiz"),
         icon: Icon(FontAwesomeIcons.gamepad),
       );
     } else {
+      _courseCache.setQuizOver(widget.sessionId);
       return Container();
     }
   }
@@ -96,6 +118,7 @@ class SessionDetailState extends State<SessionDetailPage> {
   _video() {
     // **NULL CHECKS TO AVOID ACCESSING BEFORE LOADING**
     if (sessionDetail.session.fields.sessionVideo == null) {
+      _courseCache.setVideoOver(widget.sessionId);
       return Container();
     }
 
@@ -116,8 +139,11 @@ class SessionDetailState extends State<SessionDetailPage> {
         handleColor: Colors.amberAccent,
       ),
       onEnded: (metaData) {
-        print(metaData);
+        _courseCache.setVideoOver(widget.sessionId);
+        // print(metaData);
         print("Ended");
+        _sessionUpdate();
+        _courseService.statisticVideoUpdate(widget.sessionId);
       },
     );
   }
@@ -130,9 +156,23 @@ class SessionDetailState extends State<SessionDetailPage> {
     });
   }
 
+  _sessionUpdate() async {
+    bool isQuizOver = await _courseCache.getQuizStatus(widget.sessionId) ?? false;
+    bool isVideoOver = await _courseCache.getVideoStatus(widget.sessionId) ?? false;
+    print("SESSION STATUS");
+    print(isQuizOver);
+    print(isVideoOver);
+    if (isQuizOver && isVideoOver) {
+      _courseService.sessionComplete(widget.sessionId);
+    }
+  }
+
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    if (_controller != null) {
+      _controller.dispose();
+    }
+    // SystemChrome.setPreferredOrientations([]);
   }
 }

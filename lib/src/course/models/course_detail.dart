@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final courseDetail = courseDetailFromJson(jsonString);
-
 import 'dart:convert';
 
 CourseDetail courseDetailFromJson(String str) => CourseDetail.fromJson(json.decode(str));
@@ -42,7 +38,8 @@ class Fields {
   DateTime releaseDate;
   List<String> courseCategories;
   List<String> courseAudiences;
-  List<List<String>> documentLink;
+  List<DocumentLink> documentLink;
+  bool completed;
 
   Fields({
     this.courseName,
@@ -51,6 +48,7 @@ class Fields {
     this.courseCategories,
     this.courseAudiences,
     this.documentLink,
+    this.completed,
   });
 
   factory Fields.fromJson(Map<String, dynamic> json) => Fields(
@@ -59,7 +57,8 @@ class Fields {
     releaseDate: DateTime.parse(json["release_date"]),
     courseCategories: List<String>.from(json["course_categories"].map((x) => x)),
     courseAudiences: List<String>.from(json["course_audiences"].map((x) => x)),
-    documentLink: List<List<String>>.from(json["document_link"].map((x) => List<String>.from(x.map((x) => x)))),
+    documentLink: List<DocumentLink>.from(json["document_link"].map((x) => DocumentLink.fromJson(x))),
+    completed: json["completed"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -68,31 +67,54 @@ class Fields {
     "release_date": releaseDate.toIso8601String(),
     "course_categories": List<dynamic>.from(courseCategories.map((x) => x)),
     "course_audiences": List<dynamic>.from(courseAudiences.map((x) => x)),
-    "document_link": List<dynamic>.from(documentLink.map((x) => List<dynamic>.from(x.map((x) => x)))),
+    "document_link": List<dynamic>.from(documentLink.map((x) => x.toJson())),
+    "completed": completed,
   };
 }
 
+class DocumentLink {
+  String name;
+  String link;
+
+  DocumentLink({
+    this.name,
+    this.link,
+  });
+
+  factory DocumentLink.fromJson(Map<String, dynamic> json) => DocumentLink(
+    name: json["name"],
+    link: json["link"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "link": link,
+  };
+}
 
 class Session {
   int id;
   String sessionName;
   DateTime releaseDate;
-
+  bool completed;
   Session({
     this.id,
     this.sessionName,
     this.releaseDate,
+    this.completed
   });
 
   factory Session.fromJson(Map<String, dynamic> json) => Session(
     id: json["id"],
     sessionName: json["session_name"],
     releaseDate: DateTime.parse(json["release_date"]),
+    completed: json["completed"]
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "session_name": sessionName,
     "release_date": releaseDate.toIso8601String(),
+    "completed": completed
   };
 }

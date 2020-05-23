@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +10,6 @@ import 'package:youth_app/src/course/pages/common_widgets/document_links.dart';
 import 'package:youth_app/src/course/pages/common_widgets/section_headiline.dart';
 import 'package:youth_app/src/course/pages/session_detail/session_detail.dart';
 import 'package:youth_app/src/course/services/course_service.dart';
-
 
 class CourseDetailPage extends StatefulWidget {
   final int courseId;
@@ -30,13 +31,20 @@ class CourseDetailState extends State<CourseDetailPage> {
     super.initState();
     _fetchCourse(widget.courseId);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff0D1019),
+      backgroundColor: Color(0xff121212),
       appBar: AppBar(
-        title: course == null ? Text("") : Text(course.fields.courseName),
+        elevation: 8,
+        iconTheme: IconThemeData(color: Color(0xffffffff)),
+        backgroundColor: Color(0xff272727),
+        title: course == null
+            ? Text("")
+            : Text(
+                course.fields.courseName,
+                style: TextStyle(color: Colors.white),
+              ),
       ),
       body: course == null
           ? Center(child: CircularProgressIndicator())
@@ -52,7 +60,7 @@ class CourseDetailState extends State<CourseDetailPage> {
         LineDivider(),
         SectionHeading("Categories "),
         _courseCategories(course.fields.courseCategories),
-        DocumentLinks(course.fields.documentLink,context),
+        DocumentLinks(course.fields.documentLink, context),
         SectionHeading("Sessions "),
         _sessionList(course.sessions),
       ],
@@ -67,32 +75,38 @@ class CourseDetailState extends State<CourseDetailPage> {
     );
   }
 
-
   _sessionCard(Session session) {
     return Container(
       margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       width: double.maxFinite,
-      decoration: new BoxDecoration(
-        border: new Border.all(color: Colors.lightBlue.shade300),
-        borderRadius: BorderRadius.circular(10),
-      ),
       child: InkWell(
         onTap: () => _navigateToSession(course.pk, session.id),
         child: Card(
-          elevation: 5,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          color: Color(0xff272727),
+          elevation: 10,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  session.sessionName,
-                  style: TextStyle(fontSize: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      session.sessionName,
+                      style: TextStyle(
+                        fontSize: 20,
+                        // color: Color(0xffecb981),
+                      ),
+                    ),
+                    Text(
+                      DateFormat('dd-MM-yyyy').format(session.releaseDate),
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
+                  ],
                 ),
-                Text(
-                  DateFormat('dd-MM-yyyy').format(session.releaseDate),
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                ),
+                session.completed ? Icon(Icons.done, color: Colors.green,size: 30,) :Container()
               ],
             ),
           ),
@@ -107,7 +121,8 @@ class CourseDetailState extends State<CourseDetailPage> {
       (category) => chips.add(
         Chip(
           label: Text(category),
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Color(0xffCF6679),
+          labelStyle: TextStyle(color: Colors.black),
         ),
       ),
     );
@@ -121,12 +136,13 @@ class CourseDetailState extends State<CourseDetailPage> {
     );
   }
 
-
-
-  _navigateToSession(int courseId, int sessionId){
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SessionDetailPage(courseId, sessionId)));
+  _navigateToSession(int courseId, int sessionId) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SessionDetailPage(courseId, sessionId)));
   }
+
   _fetchCourse(int courseId) {
     _courseService.getCourseById(courseId).then((data) {
       setState(() {
