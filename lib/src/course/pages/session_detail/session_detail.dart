@@ -121,7 +121,6 @@ class SessionDetailState extends State<SessionDetailPage> {
       _courseCache.setVideoOver(widget.sessionId);
       return Container();
     }
-
     _controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(
           sessionDetail.session.fields.sessionVideo.videoUrl),
@@ -157,8 +156,10 @@ class SessionDetailState extends State<SessionDetailPage> {
   }
 
   _sessionUpdate() async {
-    bool isQuizOver = await _courseCache.getQuizStatus(widget.sessionId) ?? false;
-    bool isVideoOver = await _courseCache.getVideoStatus(widget.sessionId) ?? false;
+    bool isQuizOver =
+        await _courseCache.getQuizStatus(widget.sessionId) ?? false;
+    bool isVideoOver =
+        await _courseCache.getVideoStatus(widget.sessionId) ?? false;
     print("SESSION STATUS");
     print(isQuizOver);
     print(isVideoOver);
