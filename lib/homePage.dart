@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:youth_app/webViewPage.dart';
 import 'package:animated_background/animated_background.dart';
 
-import 'api/fetchUser.dart';
+import 'api/fetchUserApi.dart';
+import 'api/notifyApi.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
@@ -15,6 +16,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final Future<List<dynamic>> listUsers = fetchUsers();
+  final Future<dynamic> notifyMeApi = notifyMe("divyang", "7777901836");
+
   ParticleOptions particularsOptions = const ParticleOptions(
     maxOpacity: 0.3,
     particleCount: 50,
@@ -25,6 +28,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => {notifyMe("divyang", "7777901836")},
+          child: Text("Notify Me")),
       backgroundColor: Colors.blue.shade800,
       body: AnimatedBackground(
         behaviour: RandomParticleBehaviour(options: particularsOptions),
@@ -66,35 +72,38 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            child: Container(
-                              child: Card(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.all(20),
-                                      child: Text(
-                                        snapshot.data
-                                            ?.elementAt(index)
-                                            .menuTitle!,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width >
+                            child: Card(
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Container(
+                                    height: 100,
+                                    child: Image.network(
+                                        'https://picsum.photos/250?image=9'),
+                                  ),
+                                  Text(
+                                    snapshot.data?.elementAt(index).menuTitle!,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width >
                                                     700
                                                 ? 25
                                                 : 21,
-                                            color: Colors.blue.shade700),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                        color: Colors.blue.shade700),
+                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.all(20),
+                                  //   child:
+                                  // ),
+                                ],
                               ),
                             ),
                             onTap: () {
+                              // menu_image
                               if (snapshot.data
                                       ?.elementAt(index)
                                       ?.menuLink
@@ -140,6 +149,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               MediaQuery.of(context).size.width > 500 ? 25 : 15,
                           color: Colors.white),
                     ),
+                    Text(
+                      "Error :: ${snapshot.error?.toString()}",
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.width > 500 ? 25 : 15,
+                          color: Colors.white),
+                    )
                   ],
                 ),
               );
