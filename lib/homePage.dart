@@ -63,8 +63,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             backgroundColor: Colors.white,
             title: ListTile(
               title: Text('Notify Me'),
-              subtitle: Text(
-                  "Fill in the form below to get regular notification on the arraival of new Akram Youth"),
+              subtitle: Text("For new Akram Youth arrival"),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,

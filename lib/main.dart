@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'homePage.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 

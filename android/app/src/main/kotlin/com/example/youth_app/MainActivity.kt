@@ -1,4 +1,4 @@
-package com.example.youth_app
+package org.dadabhagwan.youth
 
 import io.flutter.embedding.android.FlutterActivity
 
