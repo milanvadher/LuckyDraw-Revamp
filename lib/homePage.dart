@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:youth_app/webViewPage.dart';
 import 'package:animated_background/animated_background.dart';
 
 import 'api/fetchUserApi.dart';
-import 'api/notifyApi.dart';
+import 'api/notifyMeApi.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
@@ -16,7 +18,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final Future<List<dynamic>> listUsers = fetchUsers();
-  final Future<dynamic> notifyMeApi = notifyMe("divyang", "7777901836");
 
   ParticleOptions particularsOptions = const ParticleOptions(
     maxOpacity: 0.3,
@@ -25,12 +26,110 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     spawnMaxSpeed: 100.0,
   );
 
+  String name = "";
+  String number = "";
+  TextEditingController _nameFieldController = TextEditingController();
+  TextEditingController _numberFieldController = TextEditingController();
+  bool registeredNoti = false;
+
+  callNotifyMeApi(String name, String number) {
+    notifyMeApi(name, number).then((value) {
+      registeredNoti = true;
+      final snackBar = SnackBar(
+        content: Text(value.toString() == (1).toString()
+            ? "User Registation to Notification Successfull."
+            : "User Already Registered for Notification!"),
+        behavior: SnackBarBehavior.fixed,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return value;
+    }).onError((error, stackTrace) {
+      final snackBar = SnackBar(
+        content: Text("Got error : " + error.toString()),
+        behavior: SnackBarBehavior.fixed,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return error.toString();
+    });
+  }
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: ListTile(
+              title: Text('Notify Me'),
+              subtitle: Text(
+                  "Fill in the form below to get regular notification on the arraival of new Akram Youth"),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  controller: _nameFieldController,
+                  decoration: InputDecoration(
+                      hintText: "Enter your name", label: Text("Full Name")),
+                ),
+                TextField(
+                  onChanged: (value) {
+                    number = value;
+                  },
+                  keyboardType: TextInputType.number,
+                  controller: _numberFieldController,
+                  decoration: InputDecoration(
+                      hintText: "Enter your Mobile Number",
+                      label: Text("Mobile Number")),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.resolveWith((states) => 1.0),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.red.shade300),
+                ),
+                child: Text('CANCEL', style: TextStyle(color: Colors.white)),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.resolveWith((states) => 1.0),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.green.shade300),
+                ),
+                child: Text('OK', style: TextStyle(color: Colors.white)),
+                onPressed: () {
+                  callNotifyMeApi(name, number);
+                  _nameFieldController.clear();
+                  _numberFieldController.clear();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => {notifyMe("divyang", "7777901836")},
-          child: Text("Notify Me")),
+      floatingActionButton: registeredNoti
+          ? null
+          : FloatingActionButton.small(
+              onPressed: () => _displayTextInputDialog(context),
+              child: Icon(Icons.notifications),
+              tooltip: "Get Akram Youth Notifications...",
+            ),
       backgroundColor: Colors.blue.shade800,
       body: AnimatedBackground(
         behaviour: RandomParticleBehaviour(options: particularsOptions),
@@ -72,34 +171,61 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            child: Card(
-                              margin: EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Container(
-                                    height: 100,
-                                    child: Image.network(
-                                        'https://picsum.photos/250?image=9'),
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Container(
+                              child: Card(
+                                margin: const EdgeInsets.all(10),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                elevation: 5,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(snapshot.data
+                                          ?.elementAt(index)
+                                          ?.menuImage),
+                                      fit: BoxFit.cover,
+                                      alignment: Alignment.topCenter,
+                                    ),
                                   ),
-                                  Text(
-                                    snapshot.data?.elementAt(index).menuTitle!,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width >
-                                                    700
-                                                ? 25
-                                                : 21,
-                                        color: Colors.blue.shade700),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: Offset(0, 2),
+                                              )
+                                            ],
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
+                                        child: Text(
+                                          snapshot.data
+                                              ?.elementAt(index)
+                                              .menuTitle!,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                          .size
+                                                          .width >
+                                                      700
+                                                  ? 25
+                                                  : 21,
+                                              color: Colors.blue.shade700),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  // Padding(
-                                  //   padding: EdgeInsets.all(20),
-                                  //   child:
-                                  // ),
-                                ],
+                                ),
                               ),
                             ),
                             onTap: () {
@@ -150,12 +276,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           color: Colors.white),
                     ),
                     Text(
-                      "Error :: ${snapshot.error?.toString()}",
+                      'Error |::| ' + snapshot.error.toString(),
                       style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width > 500 ? 25 : 15,
                           color: Colors.white),
-                    )
+                    ),
                   ],
                 ),
               );
